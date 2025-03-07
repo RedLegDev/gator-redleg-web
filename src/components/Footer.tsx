@@ -12,7 +12,7 @@ const Footer = () => {
               <span className="text-redleg">Gator Redlegs</span> Chapter
             </h3>
             <p className="text-gray-400 mb-6">
-              The Florida Chapter of the United States Field Artillery Association
+              The Florida Chapter of the <a href="https://www.fieldartillery.org/" target="_blank" rel="noopener noreferrer" className="text-redleg hover:underline">United States Field Artillery Association (USFAA)</a>
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-redleg transition-colors">

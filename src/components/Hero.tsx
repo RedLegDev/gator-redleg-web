@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -40,7 +41,7 @@ const Hero = () => {
           ref={titleRef}
           className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 opacity-0 transform translate-y-8 transition-all duration-1000"
         >
-          GATOR REDLEGS CHAPTER
+          GATOR REDLEG CHAPTER
         </h1>
         
         <div className="w-24 h-1 bg-redleg mx-auto mb-8 animate-fade-in"></div>
@@ -49,7 +50,7 @@ const Hero = () => {
           ref={quoteRef}
           className="text-xl md:text-2xl max-w-3xl mx-auto mb-12 opacity-0 transform translate-y-8 transition-all duration-1000 delay-300"
         >
-          The harder the fighting and the longer the war... the more they lean on the gunners.
+          The Florida Chapter of the United States Field Artillery Association
         </p>
         
         <div 

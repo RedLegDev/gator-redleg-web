@@ -46,7 +46,7 @@ const Mission = () => {
               <div className="scroll-reveal">
                 <h2 className="section-heading">WHO WE ARE</h2>
                 <p className="text-lg mb-6 text-artillery leading-relaxed">
-                  The Florida Chapter of the United States Field Artillery Association, known as the Gator Redleg Chapter, is a professional organization dedicated to supporting Florida's Field Artillery community.
+                  The Gator Redleg Chapter of the United States Field Artillery Association (USFAA) is a professional organization dedicated to supporting Florida's Field Artillery community.
                 </p>
                 <p className="text-lg text-artillery leading-relaxed">
                   Our chapter brings together active duty, National Guard, Reserve, and retired Field Artillery Soldiers, creating a network of mutual support and professional development.
