@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div>
             <h3 className="font-bold text-2xl mb-4">
-              <span className="text-redleg">Gator Redlegs</span> Chapter
+              <span className="text-redleg">Gator Redlegs</span>
             </h3>
             <p className="text-gray-400 mb-6">
               The Florida Chapter of the <a href="https://www.fieldartillery.org/" target="_blank" rel="noopener noreferrer" className="text-redleg hover:underline">United States Field Artillery Association (USFAA)</a>
@@ -110,7 +110,7 @@ const Footer = () => {
           <div className="flex justify-center">
             <div className="flex flex-col space-y-2">
               <p className="text-gray-500 text-sm mb-4 md:mb-0">
-                &copy; {new Date().getFullYear()} Gator Redleg Chapter of the United States Field Artillery Association. 
+                &copy; {new Date().getFullYear()} Gator Redlegs - Florida Chapter of the United States Field Artillery Association. 
                 All rights reserved.
               </p>
               <p className="text-gray-500 text-sm">

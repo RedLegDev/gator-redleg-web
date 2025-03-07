@@ -110,7 +110,7 @@ const Header = () => {
           onClick={closeMenu}
         >
           <h1 className="text-2xl font-bold text-artillery">
-            <span className="text-redleg">Gator Redlegs</span> Chapter
+            <span className="text-redleg">Gator Redlegs</span>
           </h1>
         </Link>
 

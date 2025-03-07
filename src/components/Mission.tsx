@@ -46,10 +46,10 @@ const Mission = () => {
               <div className="scroll-reveal">
                 <h2 className="section-heading">WHO WE ARE</h2>
                 <p className="text-lg mb-6 text-artillery leading-relaxed">
-                  The Gator Redleg Chapter of the United States Field Artillery Association (USFAA) is a professional organization dedicated to supporting Florida's Field Artillery community.
+                  The Gator Redlegs is a professional organization dedicated to supporting Florida's Field Artillery community as the Florida Chapter of the USFAA.
                 </p>
                 <p className="text-lg text-artillery leading-relaxed">
-                  Our chapter brings together active duty, National Guard, Reserve, and retired Field Artillery Soldiers, creating a network of mutual support and professional development.
+                  We bring together active duty, National Guard, Reserve, and retired Field Artillery Soldiers, creating a network of mutual support and professional development.
                 </p>
               </div>
             </div>
@@ -75,7 +75,7 @@ const Mission = () => {
               <h2 className="section-heading mx-auto">OUR MISSION</h2>
               <div className="max-w-4xl mx-auto">
                 <p className="text-lg mb-6 text-artillery leading-relaxed">
-                  The Gator Redleg Chapter of the USFAA is a 501(c)(3) non-profit professional association serving Florida's Field Artillery Soldiers, veterans and their families. As a professional association, the Chapter promotes the efficiency of the Field Artillery by maintaining its best traditions, and perpetuating the memory and history of our fallen.
+                  The Gator Redlegs is a 501(c)(3) non-profit professional association serving Florida's Field Artillery Soldiers, veterans and their families. As a professional association, we promote the efficiency of the Field Artillery by maintaining its best traditions, and perpetuating the memory and history of our fallen.
                 </p>
                 <p className="text-lg text-artillery leading-relaxed">
                   As a non-profit, we support Soldiers through family scholarships and contributions to charities serving the veteran community. The Gator Redlegs foster camaraderie in the Field Artillery profession of arms and create a climate of mutual support within the community for our currently serving Field Artillerists.
