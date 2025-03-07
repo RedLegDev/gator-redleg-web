@@ -1,0 +1,13 @@
+
+services:
+  web:
+    pull_policy: build
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # This command gets the current git hash and passes it to the build
+        GIT_HASH: ${GIT_HASH:-$$(git rev-parse HEAD)}
+    ports:
+      - "8088:80"
+    restart: unless-stopped
