@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -64,14 +63,6 @@ const Hero = () => {
             <button className="button-ghost text-white border-white hover:bg-white/10">Support Our Mission</button>
           </Link>
         </div>
-      </div>
-      
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
-        <div className="w-1 h-10 relative overflow-hidden">
-          <div className="absolute inset-0 bg-white rounded-full animate-slide-in"></div>
-        </div>
-        <span className="text-sm font-light mt-2">Scroll Down</span>
       </div>
     </section>
   );
