@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -106,7 +107,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex justify-center">
             <div className="flex flex-col space-y-2">
               <p className="text-gray-500 text-sm mb-4 md:mb-0">
                 &copy; {new Date().getFullYear()} Gator Redleg Chapter of the United States Field Artillery Association. 
@@ -115,14 +116,6 @@ const Footer = () => {
               <p className="text-gray-500 text-sm">
                 Built and maintained by <a href="https://www.redleg.dev" target="_blank" rel="noopener noreferrer" className="text-redleg hover:underline">Red Leg Dev</a>
               </p>
-            </div>
-            <div className="flex space-x-6">
-              <Link to="/privacy-policy" className="text-gray-500 text-sm hover:text-white transition-colors">
-                Privacy Policy
-              </Link>
-              <Link to="/terms-of-service" className="text-gray-500 text-sm hover:text-white transition-colors">
-                Terms of Service
-              </Link>
             </div>
           </div>
         </div>
