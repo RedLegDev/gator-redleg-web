@@ -24,7 +24,7 @@ export function NavBar({ items, className }: NavBarProps) {
   useEffect(() => {
     // Update the active tab based on the current URL
     const currentPath = location.pathname;
-    const activeItem = items.find(item => currentPath.startsWith(item.url));
+    const activeItem = items.find(item => currentPath.startsWith(item.url === '/' ? '/' : item.url));
     if (activeItem) {
       setActiveTab(activeItem.name);
     }
