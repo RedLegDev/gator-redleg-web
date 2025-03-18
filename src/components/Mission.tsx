@@ -69,6 +69,26 @@ const Mission = () => {
             </div>
           </div>
 
+          {/* Chapter Vision for 2025 */}
+          <div className="mb-24">
+            <div className="text-center mb-10">
+              <h2 className="section-heading mx-auto">CHAPTER VISION FOR 2025</h2>
+              <p className="text-lg text-artillery max-w-4xl mx-auto">
+                Our strategic roadmap for advancing Florida's Field Artillery community
+              </p>
+            </div>
+            <div className="scroll-reveal w-full rounded-lg overflow-hidden shadow-2xl border border-gray-200">
+              <div className="aspect-w-16 aspect-h-9">
+                <iframe 
+                  src="https://docs.google.com/document/d/e/2PACX-1vS79gIlTTQ4ce-5cXpsJZuKdx3fu0p67Fi-LCMRXJY5HQrYwaC-tfTr_dv7oPb0jHY2GQNj0oYQLdhz/pub?embedded=true"
+                  className="w-full h-[600px]"
+                  frameBorder="0"
+                  title="Gator Redlegs Chapter Vision for 2025"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+
           {/* Our Mission */}
           <div className="text-center mb-24">
             <div className="scroll-reveal">
