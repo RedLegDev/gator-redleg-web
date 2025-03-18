@@ -35,11 +35,19 @@ const HistoricalPhotos = () => {
     },
     {
       id: 'photo3',
-      src: '/lovable-uploads/a4b8420f-0d4f-4f90-a4cc-bc37a65c457d.png',
-      alt: 'Regimental Crest',
-      caption: 'The Regimental Crest',
+      src: '/lovable-uploads/94a399e4-5142-426b-aff8-140dce908017.png',
+      alt: 'Distinguished Unit Insignia',
+      caption: 'Distinguished Unit Insignia',
       year: 'Present',
-      description: 'The official crest of the Florida Field Artillery, symbolizing our proud heritage and traditions.'
+      description: 'The Distinguished Unit Insignia of the 116th Field Artillery featuring the motto "Vestigia Nulla Retrorsum" (No Step Backward).'
+    },
+    {
+      id: 'photo4',
+      src: '/lovable-uploads/bd767145-b0bf-48ab-b1cf-b97f6b6034cc.png',
+      alt: 'Coat of Arms',
+      caption: 'Coat of Arms',
+      year: 'Present',
+      description: 'The Coat of Arms of the 116th Field Artillery, displaying the red, blue, and red bands with the fleur-de-lis symbol, representing our heritage and traditions.'
     },
   ];
 
@@ -115,7 +123,7 @@ const HistoricalPhotos = () => {
                 <h2 className="text-2xl font-bold text-artillery">Preserving Our History</h2>
               </div>
               <p className="text-gray-700 mb-6">
-                The Gator Redlegs Chapter is committed to preserving the rich history of the Field Artillery in Florida. 
+                The Gator Redlegs is committed to preserving the rich history of the Field Artillery in Florida. 
                 If you have historical photographs, documents, or artifacts related to the 116th Field Artillery or 
                 other Florida artillery units, we would be honored to include them in our archives.
               </p>

@@ -3,7 +3,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Separator } from '@/components/ui/separator';
-import { ChevronRight, BookOpen, Flag, Clock } from 'lucide-react';
+import { ChevronRight, BookOpen, Flag, Clock, Award, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const History = () => {
@@ -65,6 +65,37 @@ const History = () => {
               </div>
             </div>
             
+            {/* Unit Insignia Section - NEW */}
+            <div className="mb-12 bg-white rounded-lg shadow-lg p-8">
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="md:w-1/3">
+                  <div className="flex justify-center">
+                    <img 
+                      src="/lovable-uploads/94a399e4-5142-426b-aff8-140dce908017.png" 
+                      alt="Distinguished Unit Insignia" 
+                      className="h-auto max-w-full shadow-lg rounded-lg"
+                    />
+                  </div>
+                </div>
+                <div className="md:w-2/3">
+                  <div className="flex items-center mb-4">
+                    <div className="mr-4 p-2 bg-redleg/10 rounded-full">
+                      <Shield className="h-6 w-6 text-redleg" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-artillery">Distinguished Unit Insignia</h2>
+                  </div>
+                  
+                  <p className="text-artillery-muted mb-4">
+                    The unit insignia of the 116th Field Artillery carries deep symbolism representing our heritage and values. The shield features a distinctive red, white, and blue design incorporating the traditional artillery colors. The fleur-de-lis in the lower portion represents our historical connections to French artillery traditions, while the circular emblem at the top symbolizes unity and precision.
+                  </p>
+                  
+                  <p className="text-artillery-muted">
+                    The motto "Vestigia Nulla Retrorsum" is Latin for "No Step Backward," embodying the unwavering dedication and forward-focused commitment of Florida's Field Artillery units throughout their history.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
             <Separator className="my-10 bg-gray-200" />
             
             {/* Mission section */}
@@ -84,6 +115,37 @@ const History = () => {
                 <p>
                   As a non-profit, we support Soldiers through family scholarships and contributions to charities serving the veteran community. The Gator Redlegs foster camaraderie in the Field Artillery profession of arms and create a climate of mutual support within the community for our currently serving Field Artillerists.
                 </p>
+              </div>
+            </div>
+            
+            {/* Coat of Arms Section - NEW */}
+            <div className="mb-12 bg-white rounded-lg shadow-lg p-8">
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="md:w-1/3">
+                  <div className="flex justify-center">
+                    <img 
+                      src="/lovable-uploads/bd767145-b0bf-48ab-b1cf-b97f6b6034cc.png" 
+                      alt="Coat of Arms" 
+                      className="h-auto max-w-full shadow-lg rounded-lg"
+                    />
+                  </div>
+                </div>
+                <div className="md:w-2/3">
+                  <div className="flex items-center mb-4">
+                    <div className="mr-4 p-2 bg-redleg/10 rounded-full">
+                      <Award className="h-6 w-6 text-redleg" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-artillery">Coat of Arms</h2>
+                  </div>
+                  
+                  <p className="text-artillery-muted mb-4">
+                    The Coat of Arms of the 116th Field Artillery features a shield with three horizontal bands in red, blue, and red — symbolizing both service and sacrifice. The prominent fleur-de-lis represents our historical connections and French artillery influences. 
+                  </p>
+                  
+                  <p className="text-artillery-muted">
+                    The circular emblem at the top symbolizes unity, commitment, and the ongoing cycle of service that defines the Field Artillery's mission. The distinctive red and blue colors pay homage to both artillery tradition and our Florida heritage.
+                  </p>
+                </div>
               </div>
             </div>
             

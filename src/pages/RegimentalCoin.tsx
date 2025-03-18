@@ -19,20 +19,21 @@ const RegimentalCoin = () => {
               <div className="flex flex-col md:flex-row items-center gap-8 mb-6">
                 <div className="md:w-1/3 flex justify-center">
                   <img 
-                    src="/lovable-uploads/a4b8420f-0d4f-4f90-a4cc-bc37a65c457d.png" 
-                    alt="Regimental Crest" 
+                    src="/lovable-uploads/bd767145-b0bf-48ab-b1cf-b97f6b6034cc.png" 
+                    alt="Distinguished Unit Insignia" 
                     className="w-64 h-auto object-contain shadow-md rounded-md border-2 border-gray-200"
                   />
                 </div>
                 <div className="md:w-2/3">
-                  <h2 className="text-2xl font-bold mb-4 text-artillery">The Regimental Crest</h2>
+                  <h2 className="text-2xl font-bold mb-4 text-artillery">Distinguished Unit Insignia</h2>
                   <p className="text-gray-700 mb-4">
-                    This crest represents the proud heritage and lineage of the Florida Field Artillery. 
+                    The Distinguished Unit Insignia represents the proud heritage and lineage of the Florida Field Artillery.
                     The design features symbolic elements that connect to our history, mission, and values.
                   </p>
                   <p className="text-gray-700">
-                    The alligator at the top symbolizes our Florida roots, while the shield with its distinctive 
-                    red, blue, and white sections incorporates traditional artillery colors and emblems.
+                    The shield's distinctive red, blue, and red bands represent service and sacrifice, while the fleur-de-lis
+                    symbolizes our historical connections. The motto "Vestigia Nulla Retrorsum" (No Step Backward) embodies
+                    our unwavering commitment to move forward.
                   </p>
                 </div>
               </div>
@@ -41,7 +42,7 @@ const RegimentalCoin = () => {
             <div className="mb-10">
               <h2 className="text-3xl font-bold mb-6 text-artillery">About Our Regimental Coin</h2>
               <p className="text-gray-700 mb-6">
-                The Gator Redleg Chapter's challenge coin carries the proud heritage of Florida's Field Artillery. 
+                The Gator Redlegs challenge coin carries the proud heritage of Florida's Field Artillery. 
                 Each element of the coin's design connects to our history and traditions, serving as a tangible 
                 reminder of the chapter's mission and the legacy we uphold.
               </p>
@@ -82,7 +83,7 @@ const RegimentalCoin = () => {
             <div className="bg-gray-100 rounded-lg p-8 mb-10">
               <h2 className="text-3xl font-bold mb-6 text-artillery">How to Earn the Coin</h2>
               <p className="text-gray-700 mb-6">
-                The Gator Redleg Chapter presents its regimental coin to members who demonstrate exceptional 
+                The Gator Redlegs presents its regimental coin to members who demonstrate exceptional 
                 dedication to the chapter's mission and values. Ways to earn this prestigious symbol include:
               </p>
               

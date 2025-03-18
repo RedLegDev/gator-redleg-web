@@ -47,6 +47,14 @@ const Hero = () => {
       <div className="absolute top-0 left-0 w-full h-1 bg-redleg"></div>
       
       <div className="container mx-auto px-4 relative z-10 text-center">
+        <div className="flex justify-center items-center mb-6">
+          <img 
+            src="/lovable-uploads/bd767145-b0bf-48ab-b1cf-b97f6b6034cc.png" 
+            alt="116th Field Artillery Insignia" 
+            className="h-24 md:h-32 animate-fade-in"
+          />
+        </div>
+        
         <h1 
           ref={titleRef}
           className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 opacity-0 transform translate-y-8 transition-all duration-1000"
