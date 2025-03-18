@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import History from "./pages/History";
 import Heritage from "./pages/Heritage";
 import FloridaArtillery from "./pages/FloridaArtillery";
+import StBarbara from "./pages/StBarbara";
 
 // Regimental Coin route
 import RegimentalCoin from "./pages/RegimentalCoin";
@@ -66,6 +67,7 @@ const App = () => (
           <Route path="/history" element={<History />} />
           <Route path="/history/heritage" element={<Heritage />} />
           <Route path="/history/florida-artillery" element={<FloridaArtillery />} />
+          <Route path="/history/st-barbara" element={<StBarbara />} />
           
           {/* Regimental Coin route */}
           <Route path="/regimental-coin" element={<RegimentalCoin />} />

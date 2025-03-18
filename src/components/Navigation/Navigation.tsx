@@ -39,6 +39,7 @@ const Navigation: React.FC = () => {
         { title: 'History', path: '/history' },
         { title: 'Heritage', path: '/history/heritage' },
         { title: 'Florida Artillery', path: '/history/florida-artillery' },
+        { title: 'St. Barbara', path: '/history/st-barbara' },
         { title: 'Regimental Coin', path: '/regimental-coin' }
       ]
     },

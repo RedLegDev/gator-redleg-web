@@ -1,9 +1,8 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Separator } from '@/components/ui/separator';
-import { ChevronRight, BookOpen, Flag, Clock, Award, Shield } from 'lucide-react';
+import { ChevronRight, BookOpen, Flag, Clock, Award, Shield, Bookmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const History = () => {
@@ -65,7 +64,7 @@ const History = () => {
               </div>
             </div>
             
-            {/* Unit Insignia Section - NEW */}
+            {/* Unit Insignia Section */}
             <div className="mb-12 bg-white rounded-lg shadow-lg p-8">
               <div className="flex flex-col md:flex-row items-center gap-8">
                 <div className="md:w-1/3">
@@ -118,7 +117,7 @@ const History = () => {
               </div>
             </div>
             
-            {/* Coat of Arms Section - NEW */}
+            {/* Coat of Arms Section */}
             <div className="mb-12 bg-white rounded-lg shadow-lg p-8">
               <div className="flex flex-col md:flex-row items-center gap-8">
                 <div className="md:w-1/3">
@@ -149,7 +148,42 @@ const History = () => {
               </div>
             </div>
             
-            {/* Timeline section - placeholder for future content */}
+            {/* St. Barbara Section */}
+            <div className="mb-12 bg-white rounded-lg shadow-lg p-8">
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="md:w-1/3">
+                  <div className="flex justify-center">
+                    <img 
+                      src="/lovable-uploads/a4b8420f-0d4f-4f90-a4cc-bc37a65c457d.png" 
+                      alt="Saint Barbara, Patron Saint of Artillery" 
+                      className="h-auto max-w-full shadow-lg rounded-lg"
+                    />
+                  </div>
+                </div>
+                <div className="md:w-2/3">
+                  <div className="flex items-center mb-4">
+                    <div className="mr-4 p-2 bg-redleg/10 rounded-full">
+                      <Bookmark className="h-6 w-6 text-redleg" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-artillery">The Legend of St. Barbara</h2>
+                  </div>
+                  
+                  <p className="text-artillery-muted mb-4">
+                    St. Barbara is the patron saint of artillerymen and those who face danger from thunderstorms, fire, and explosions. According to legend, she was the beautiful daughter of Dioscorus, a pagan nobleman who kept her locked in a tower to preserve her from the outside world.
+                  </p>
+                  
+                  <p className="text-artillery-muted mb-6">
+                    After her conversion to Christianity and subsequent martyrdom, St. Barbara became associated with protection from sudden death, making her the natural patroness for artillerymen throughout history.
+                  </p>
+                  
+                  <Link to="/history/st-barbara">
+                    <button className="button-red">Read the Full Legend</button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            
+            {/* Timeline section */}
             <div className="mb-12">
               <div className="flex items-center mb-4">
                 <div className="mr-4 p-2 bg-redleg/10 rounded-full">
