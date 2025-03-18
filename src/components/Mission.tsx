@@ -69,7 +69,22 @@ const Mission = () => {
             </div>
           </div>
 
-          {/* Chapter Vision for 2025 */}
+          {/* Our Mission */}
+          <div className="text-center mb-24">
+            <div className="scroll-reveal">
+              <h2 className="section-heading mx-auto">OUR MISSION</h2>
+              <div className="max-w-4xl mx-auto">
+                <p className="text-lg mb-6 text-artillery leading-relaxed">
+                  The Gator Redlegs is a 501(c)(3) non-profit professional association serving Florida's Field Artillery Soldiers, veterans and their families. As a professional association, we promote the efficiency of the Field Artillery by maintaining its best traditions, and perpetuating the memory and history of our fallen.
+                </p>
+                <p className="text-lg text-artillery leading-relaxed">
+                  As a non-profit, we support Soldiers through family scholarships and contributions to charities serving the veteran community. The Gator Redlegs foster camaraderie in the Field Artillery profession of arms and create a climate of mutual support within the community for our currently serving Field Artillerists.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Chapter Vision for 2025 - Moved down below Our Mission */}
           <div className="mb-24">
             <div className="text-center mb-10">
               <h2 className="section-heading mx-auto">CHAPTER VISION FOR 2025</h2>
@@ -85,21 +100,6 @@ const Mission = () => {
                   frameBorder="0"
                   title="Gator Redlegs Chapter Vision for 2025"
                 ></iframe>
-              </div>
-            </div>
-          </div>
-
-          {/* Our Mission */}
-          <div className="text-center mb-24">
-            <div className="scroll-reveal">
-              <h2 className="section-heading mx-auto">OUR MISSION</h2>
-              <div className="max-w-4xl mx-auto">
-                <p className="text-lg mb-6 text-artillery leading-relaxed">
-                  The Gator Redlegs is a 501(c)(3) non-profit professional association serving Florida's Field Artillery Soldiers, veterans and their families. As a professional association, we promote the efficiency of the Field Artillery by maintaining its best traditions, and perpetuating the memory and history of our fallen.
-                </p>
-                <p className="text-lg text-artillery leading-relaxed">
-                  As a non-profit, we support Soldiers through family scholarships and contributions to charities serving the veteran community. The Gator Redlegs foster camaraderie in the Field Artillery profession of arms and create a climate of mutual support within the community for our currently serving Field Artillerists.
-                </p>
               </div>
             </div>
           </div>
