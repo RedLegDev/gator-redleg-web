@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Bookmark, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface LegendaryFigureSectionProps {
   title: string;
@@ -45,7 +46,12 @@ const LegendaryFigureSection: React.FC<LegendaryFigureSectionProps> = ({
           {description}
           
           <Link to={linkTo}>
-            <button className="button-red">{linkText}</button>
+            <Button 
+              variant="default" 
+              className="bg-redleg hover:bg-redleg/90 text-white"
+            >
+              {linkText}
+            </Button>
           </Link>
         </div>
       </div>
