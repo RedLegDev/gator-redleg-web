@@ -35,6 +35,14 @@ const HistoricalPhotos = () => {
     },
     {
       id: 'photo3',
+      src: '/lovable-uploads/545c3e95-750d-44cb-a8a7-3bc273840ada.png',
+      alt: 'Gator Redlegs Organizational Insignia',
+      caption: 'Gator Redlegs Organizational Insignia',
+      year: 'Present',
+      description: 'The official organizational insignia of the Gator Redlegs, featuring the state of Florida outline, the coat of arms with red and blue bands, a fleur-de-lis symbol, and crossed cannons representing artillery service.'
+    },
+    {
+      id: 'photo4',
       src: '/lovable-uploads/94a399e4-5142-426b-aff8-140dce908017.png',
       alt: 'Distinguished Unit Insignia',
       caption: 'Distinguished Unit Insignia',
@@ -42,7 +50,7 @@ const HistoricalPhotos = () => {
       description: 'The Distinguished Unit Insignia of the 116th Field Artillery featuring the motto "Vestigia Nulla Retrorsum" (No Step Backward).'
     },
     {
-      id: 'photo4',
+      id: 'photo5',
       src: '/lovable-uploads/bd767145-b0bf-48ab-b1cf-b97f6b6034cc.png',
       alt: 'Coat of Arms',
       caption: 'Coat of Arms',

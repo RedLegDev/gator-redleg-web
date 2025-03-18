@@ -19,21 +19,21 @@ const RegimentalCoin = () => {
               <div className="flex flex-col md:flex-row items-center gap-8 mb-6">
                 <div className="md:w-1/3 flex justify-center">
                   <img 
-                    src="/lovable-uploads/bd767145-b0bf-48ab-b1cf-b97f6b6034cc.png" 
-                    alt="Distinguished Unit Insignia" 
+                    src="/lovable-uploads/545c3e95-750d-44cb-a8a7-3bc273840ada.png" 
+                    alt="Gator Redlegs Organizational Insignia" 
                     className="w-64 h-auto object-contain shadow-md rounded-md border-2 border-gray-200"
                   />
                 </div>
                 <div className="md:w-2/3">
-                  <h2 className="text-2xl font-bold mb-4 text-artillery">Distinguished Unit Insignia</h2>
+                  <h2 className="text-2xl font-bold mb-4 text-artillery">Organizational Insignia</h2>
                   <p className="text-gray-700 mb-4">
-                    The Distinguished Unit Insignia represents the proud heritage and lineage of the Florida Field Artillery.
-                    The design features symbolic elements that connect to our history, mission, and values.
+                    The Gator Redlegs insignia represents our identity as Florida's chapter of the United States Field Artillery Association. 
+                    It combines the state of Florida outline, the coat of arms with red and blue bands and a fleur-de-lis, and crossed cannons 
+                    symbolizing artillery service.
                   </p>
                   <p className="text-gray-700">
-                    The shield's distinctive red, blue, and red bands represent service and sacrifice, while the fleur-de-lis
-                    symbolizes our historical connections. The motto "Vestigia Nulla Retrorsum" (No Step Backward) embodies
-                    our unwavering commitment to move forward.
+                    The design incorporates elements of Florida's state seal and the traditional crossed cannons of the Field Artillery branch,
+                    highlighting our dual commitment to our state and to the artillery tradition.
                   </p>
                 </div>
               </div>

@@ -34,6 +34,40 @@ const Heritage = () => {
               </p>
             </div>
             
+            {/* Organizational Insignia Section */}
+            <div className="mb-12 bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                <div className="p-8 flex flex-col justify-center">
+                  <div className="flex items-center mb-4">
+                    <div className="mr-4 p-2 bg-redleg/10 rounded-full">
+                      <Shield className="h-6 w-6 text-redleg" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-artillery">Organizational Insignia</h2>
+                  </div>
+                  
+                  <p className="text-artillery-muted mb-6">
+                    Our organizational insignia represents the Gator Redlegs' identity as Florida's chapter of the 
+                    United States Field Artillery Association. It combines the Florida state outline with traditional 
+                    artillery symbols.
+                  </p>
+                  
+                  <p className="text-artillery-muted">
+                    The crossed cannons represent Field Artillery service, while the shield with red and blue bands and 
+                    fleur-de-lis symbolizes our connection to the 116th Field Artillery's distinguished history and 
+                    Florida's military tradition.
+                  </p>
+                </div>
+                
+                <div className="bg-gray-100 p-8 flex items-center justify-center">
+                  <img 
+                    src="/lovable-uploads/545c3e95-750d-44cb-a8a7-3bc273840ada.png" 
+                    alt="Gator Redlegs Organizational Insignia" 
+                    className="h-64 w-auto object-contain shadow-lg rounded-lg"
+                  />
+                </div>
+              </div>
+            </div>
+            
             {/* Unit Insignia & Coat of Arms Section */}
             <div className="mb-12 bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="grid grid-cols-1 md:grid-cols-2">
