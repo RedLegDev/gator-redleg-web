@@ -30,7 +30,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative h-screen flex items-center justify-center text-white overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center text-white overflow-hidden pb-24">
       {/* Hero background image */}
       <div 
         className="absolute inset-0 bg-cover bg-center" 
@@ -73,7 +73,7 @@ const Hero = () => {
         
         <div 
           ref={ctaRef}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 transform translate-y-8 transition-all duration-1000 delay-500"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 transform translate-y-8 transition-all duration-1000 delay-500 mb-16"
         >
           <Link to="/membership">
             <button className="button-red">Become a Member</button>
