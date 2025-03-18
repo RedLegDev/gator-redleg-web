@@ -11,7 +11,6 @@ interface Event {
   id: string;
   title: string;
   description: string;
-  date: string;
   location: string;
   image: string;
   path: string;
@@ -22,7 +21,6 @@ const events: Event[] = [
     id: "st-barbaras-day",
     title: "Saint Barbara's Day Ball",
     description: "Join us for our annual Saint Barbara's Day Ball, celebrating the patron saint of Field Artillery. This formal event includes dinner, awards ceremony, and dancing. It's an opportunity to honor our Field Artillery heritage and recognize outstanding members of our community.",
-    date: "December 4, 2023",
     location: "MacDill Air Force Base, Tampa, FL",
     image: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
     path: "/activities/events/st-barbaras-day"
@@ -31,7 +29,6 @@ const events: Event[] = [
     id: "softball",
     title: "Kenny Fike Memorial Softball Tournament",
     description: "The annual Kenny Fike Memorial Softball Tournament brings together Field Artillery units and veterans for a day of friendly competition. This tournament honors the memory of Kenny Fike while raising funds to support military families in need.",
-    date: "September 15, 2023",
     location: "Veterans Park, Tampa, FL",
     image: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
     path: "/activities/events/softball"
@@ -40,7 +37,6 @@ const events: Event[] = [
     id: "golf",
     title: "Annual Golf Tournament",
     description: "Our spring golf tournament is a popular event that brings together Redlegs and supporters for a day on the links. Teams compete in a scramble format with prizes for various achievements. All proceeds support our scholarship fund and other chapter initiatives.",
-    date: "April 22, 2023",
     location: "Westchase Golf Club, Tampa, FL",
     image: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
     path: "/activities/events/golf"
@@ -49,7 +45,6 @@ const events: Event[] = [
     id: "5k",
     title: "5K Fun Run",
     description: "Our newest event, the 5K Fun Run, promotes fitness and camaraderie among Field Artillery personnel, veterans, and their families. This family-friendly event welcomes participants of all ages and abilities to walk or run in support of our cause.",
-    date: "March 26, 2023",
     location: "Al Lopez Park, Tampa, FL",
     image: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
     path: "/activities/events/5k"
@@ -96,12 +91,7 @@ const Events = () => {
                     <div className="md:w-2/3">
                       <CardHeader>
                         <CardTitle className="text-2xl text-artillery">{event.title}</CardTitle>
-                        <CardDescription className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
-                          <span className="flex items-center">
-                            <Calendar className="h-4 w-4 mr-1" />
-                            {event.date}
-                          </span>
-                          <span className="hidden sm:inline">•</span>
+                        <CardDescription className="flex items-center gap-2 text-sm">
                           <span className="flex items-center">
                             <MapPin className="h-4 w-4 mr-1" />
                             {event.location}

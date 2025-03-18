@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -7,7 +6,6 @@ interface Event {
   title: string;
   description: string;
   image: string;
-  date: string;
   link: string;
 }
 
@@ -17,7 +15,6 @@ const events: Event[] = [
     title: "Saint Barbara's Day Ball",
     description: "Our most important annual event celebrating the patron saint of Field Artillery.",
     image: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    date: "December 4, 2023",
     link: "/activities/events/st-barbaras-day"
   },
   {
@@ -25,7 +22,6 @@ const events: Event[] = [
     title: "Kenny Fike Memorial Softball Tournament",
     description: "Annual softball tournament honoring the memory of Kenny Fike and raising funds for military families.",
     image: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    date: "September 15, 2023",
     link: "/activities/events/softball"
   },
   {
@@ -33,7 +29,6 @@ const events: Event[] = [
     title: "Annual Golf Tournament",
     description: "Spring golf tournament bringing together Redlegs for a day of camaraderie and fundraising.",
     image: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    date: "April 22, 2023",
     link: "/activities/events/golf"
   },
   {
@@ -41,7 +36,6 @@ const events: Event[] = [
     title: "5K Fun Run",
     description: "Our newest event - a 5K run to raise funds for the chapter and other military organizations.",
     image: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    date: "March 26, 2023",
     link: "/activities/events/5k"
   }
 ];
@@ -103,9 +97,6 @@ const Events = () => {
                   alt={event.title}
                   className="object-cover w-full h-full"
                 />
-                <div className="absolute top-0 right-0 bg-redleg text-white text-sm font-medium py-1 px-3">
-                  {event.date}
-                </div>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-2">{event.title}</h3>

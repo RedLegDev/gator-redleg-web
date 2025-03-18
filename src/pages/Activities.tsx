@@ -1,10 +1,9 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Calendar, Trophy, Users, Award } from 'lucide-react';
+import { ChevronRight, Trophy, Users, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Separator } from '@/components/ui/separator';
 
@@ -14,7 +13,6 @@ interface ActivityCard {
   description: string;
   path: string;
   icon: React.ReactNode;
-  date?: string;
 }
 
 const eventsActivities: ActivityCard[] = [
@@ -23,32 +21,28 @@ const eventsActivities: ActivityCard[] = [
     title: "Saint Barbara's Day Ball",
     description: "Our most important annual event celebrating the patron saint of Field Artillery.",
     path: "/activities/events/st-barbaras-day",
-    icon: <Award className="h-10 w-10 text-redleg" />,
-    date: "December 4, 2023"
+    icon: <Award className="h-10 w-10 text-redleg" />
   },
   {
     id: "softball",
     title: "Kenny Fike Memorial Softball Tournament",
     description: "Annual softball tournament honoring the memory of Kenny Fike and raising funds for military families.",
     path: "/activities/events/softball",
-    icon: <Trophy className="h-10 w-10 text-redleg" />,
-    date: "September 15, 2023"
+    icon: <Trophy className="h-10 w-10 text-redleg" />
   },
   {
     id: "golf",
     title: "Annual Golf Tournament",
     description: "Spring golf tournament bringing together Redlegs for a day of camaraderie and fundraising.",
     path: "/activities/events/golf",
-    icon: <Users className="h-10 w-10 text-redleg" />,
-    date: "April 22, 2023"
+    icon: <Users className="h-10 w-10 text-redleg" />
   },
   {
     id: "5k",
     title: "5K Fun Run",
     description: "Our newest event - a 5K run to raise funds for the chapter and other military organizations.",
     path: "/activities/events/5k",
-    icon: <Calendar className="h-10 w-10 text-redleg" />,
-    date: "March 26, 2023"
+    icon: <Trophy className="h-10 w-10 text-redleg" />
   }
 ];
 
@@ -107,9 +101,6 @@ const Activities = () => {
                       </div>
                       <div>
                         <CardTitle className="text-xl text-artillery">{activity.title}</CardTitle>
-                        {activity.date && (
-                          <CardDescription>{activity.date}</CardDescription>
-                        )}
                       </div>
                     </CardHeader>
                     <CardContent>
