@@ -26,11 +26,11 @@ const StBarbara = () => {
               The Legend of St. Barbara
             </h1>
             
-            {/* Hero image */}
+            {/* Hero image - updated with new image */}
             <div className="mb-12 bg-gray-50 rounded-lg overflow-hidden shadow-lg">
               <div className="relative h-80 md:h-96 overflow-hidden">
                 <img 
-                  src="/lovable-uploads/a4b8420f-0d4f-4f90-a4cc-bc37a65c457d.png" 
+                  src="/lovable-uploads/1805cb03-b3c8-465a-9d44-389603c6c654.png" 
                   alt="Saint Barbara, Patron Saint of Artillery"
                   className="absolute w-full h-full object-cover object-center"
                 />
