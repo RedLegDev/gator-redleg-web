@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +11,7 @@ import History from "./pages/History";
 import Heritage from "./pages/Heritage";
 import FloridaArtillery from "./pages/FloridaArtillery";
 import StBarbara from "./pages/StBarbara";
+import MollyPitcher from "./pages/MollyPitcher";
 
 // Regimental Coin route
 import RegimentalCoin from "./pages/RegimentalCoin";
@@ -68,6 +68,7 @@ const App = () => (
           <Route path="/history/heritage" element={<Heritage />} />
           <Route path="/history/florida-artillery" element={<FloridaArtillery />} />
           <Route path="/history/st-barbara" element={<StBarbara />} />
+          <Route path="/history/molly-pitcher" element={<MollyPitcher />} />
           
           {/* Regimental Coin route */}
           <Route path="/regimental-coin" element={<RegimentalCoin />} />

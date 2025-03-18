@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Home, Info, Calendar, Image, Heart, User, Phone } from 'lucide-react';
 import { NavBar } from "@/components/ui/tubelight-navbar";
@@ -40,6 +39,7 @@ const Navigation: React.FC = () => {
         { title: 'Heritage', path: '/history/heritage' },
         { title: 'Florida Artillery', path: '/history/florida-artillery' },
         { title: 'St. Barbara', path: '/history/st-barbara' },
+        { title: 'Molly Pitcher', path: '/history/molly-pitcher' },
         { title: 'Regimental Coin', path: '/regimental-coin' }
       ]
     },

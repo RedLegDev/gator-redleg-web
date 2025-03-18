@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Separator } from '@/components/ui/separator';
-import { ChevronRight, BookOpen, Flag, Clock, Award, Shield, Bookmark } from 'lucide-react';
+import { ChevronRight, BookOpen, Flag, Clock, Award, Shield, Bookmark, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const History = () => {
@@ -178,6 +178,41 @@ const History = () => {
                   
                   <Link to="/history/st-barbara">
                     <button className="button-red">Read the Full Legend</button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            
+            {/* Molly Pitcher Section */}
+            <div className="mb-12 bg-white rounded-lg shadow-lg p-8">
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="md:w-1/3">
+                  <div className="flex justify-center">
+                    <img 
+                      src="/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png" 
+                      alt="Molly Pitcher at the Battle of Monmouth" 
+                      className="h-auto max-w-full shadow-lg rounded-lg"
+                    />
+                  </div>
+                </div>
+                <div className="md:w-2/3">
+                  <div className="flex items-center mb-4">
+                    <div className="mr-4 p-2 bg-redleg/10 rounded-full">
+                      <User className="h-6 w-6 text-redleg" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-artillery">The Story of Molly Pitcher</h2>
+                  </div>
+                  
+                  <p className="text-artillery-muted mb-4">
+                    Mary Hays McCauly, better known as "Molly Pitcher," became a legendary figure during the American Revolutionary War when she took her wounded husband's place at a cannon during the Battle of Monmouth on June 28, 1778.
+                  </p>
+                  
+                  <p className="text-artillery-muted mb-6">
+                    Her courage under fire earned her recognition from General Washington himself, who issued her a warrant as a noncommissioned officer. Her story represents the spirit and dedication that defines the artillery tradition.
+                  </p>
+                  
+                  <Link to="/history/molly-pitcher">
+                    <button className="button-red">Read Her Story</button>
                   </Link>
                 </div>
               </div>
