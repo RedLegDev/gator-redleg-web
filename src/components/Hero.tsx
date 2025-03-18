@@ -46,8 +46,8 @@ const Hero = () => {
       {/* Red decorative line */}
       <div className="absolute top-0 left-0 w-full h-1 bg-redleg"></div>
       
-      <div className="container mx-auto px-4 relative z-10 text-center">
-        <div className="flex justify-center items-center mb-6">
+      <div className="container mx-auto px-4 relative z-10 text-center pt-20">
+        <div className="flex justify-center items-center mb-6 mt-12">
           <img 
             src="/lovable-uploads/c4320cdb-23e3-429d-bdeb-cc34787d252c.png" 
             alt="Gator Redlegs Insignia" 
