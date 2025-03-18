@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Separator } from '@/components/ui/separator';
 import { ChevronRight, BookOpen, Medal, Shield, Flag, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import HistoryHero from '@/components/History/HistoryHero';
 
 const MollyPitcher = () => {
   return (
@@ -26,22 +27,12 @@ const MollyPitcher = () => {
               The Story of Molly Pitcher
             </h1>
             
-            {/* Hero image */}
-            <div className="mb-12 bg-gray-50 rounded-lg overflow-hidden shadow-lg">
-              <div className="relative h-80 md:h-96 overflow-hidden">
-                <img 
-                  src="/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png" 
-                  alt="Molly Pitcher at the Battle of Monmouth"
-                  className="absolute w-full h-full object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
-                  <div className="p-6 text-white">
-                    <h2 className="text-2xl font-bold mb-2">Hero of the Battle of Monmouth</h2>
-                    <p className="text-sm opacity-80">June 28, 1778</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Hero image - now using the HistoryHero component */}
+            <HistoryHero 
+              title="Hero of the Battle of Monmouth"
+              subtitle="June 28, 1778"
+              imageSrc="/lovable-uploads/01d0c1a8-8958-4724-a2e7-55d998adb066.png"
+            />
             
             {/* Biography section */}
             <div className="mb-12">
