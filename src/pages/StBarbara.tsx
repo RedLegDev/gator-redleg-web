@@ -3,7 +3,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Separator } from '@/components/ui/separator';
-import { ChevronRight, BookOpen, Fire, Calendar } from 'lucide-react';
+import { ChevronRight, BookOpen, Flame, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const StBarbara = () => {
@@ -79,7 +79,7 @@ const StBarbara = () => {
             <div className="mb-12">
               <div className="flex items-center mb-4">
                 <div className="mr-4 p-2 bg-redleg/10 rounded-full">
-                  <Fire className="h-6 w-6 text-redleg" />
+                  <Flame className="h-6 w-6 text-redleg" />
                 </div>
                 <h2 className="text-3xl font-bold text-artillery">Patron Saint of Artillery</h2>
               </div>
