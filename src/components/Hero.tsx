@@ -49,7 +49,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10 text-center">
         <div className="flex justify-center items-center mb-6">
           <img 
-            src="/lovable-uploads/545c3e95-750d-44cb-a8a7-3bc273840ada.png" 
+            src="/lovable-uploads/c4320cdb-23e3-429d-bdeb-cc34787d252c.png" 
             alt="Gator Redlegs Insignia" 
             className="h-48 md:h-64 animate-fade-in"
           />

@@ -57,9 +57,9 @@ const Mission = () => {
               <div className="scroll-reveal relative">
                 <div className="aspect-w-4 aspect-h-3 rounded-lg overflow-hidden shadow-2xl">
                   <img 
-                    src="/lovable-uploads/8d03f7c2-dfd3-4e15-ae50-c03ca6c8f2b2.png" 
-                    alt="Historic Field Artillery Unit" 
-                    className="object-cover w-full h-full"
+                    src="/lovable-uploads/c4320cdb-23e3-429d-bdeb-cc34787d252c.png" 
+                    alt="Gator Redlegs Insignia" 
+                    className="object-contain w-full h-full bg-white/5"
                   />
                 </div>
                 <div className="absolute -bottom-5 -left-5 bg-redleg text-white py-2 px-4 rounded-sm font-bold">
