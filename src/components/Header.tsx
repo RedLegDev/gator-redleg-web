@@ -1,13 +1,22 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown, Home, Clock, Award, Camera, Heart, Users, Info, ExternalLink } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 
 interface NavItem {
   title: string;
   path: string;
-  icon?: React.ReactNode;
   hasSubmenu?: boolean;
   submenu?: NavItem[];
 }
@@ -16,12 +25,10 @@ const navItems: NavItem[] = [
   { 
     title: 'Home', 
     path: '/',
-    icon: <Home className="w-4 h-4" /> 
   },
   { 
     title: 'About', 
     path: '/history',
-    icon: <Info className="w-4 h-4" />,
     hasSubmenu: true,
     submenu: [
       { title: 'Our Heritage', path: '/history/heritage' },
@@ -32,7 +39,6 @@ const navItems: NavItem[] = [
   { 
     title: 'Events', 
     path: '/activities',
-    icon: <Clock className="w-4 h-4" />,
     hasSubmenu: true,
     submenu: [
       { title: 'All Events', path: '/activities/events' },
@@ -46,7 +52,6 @@ const navItems: NavItem[] = [
   { 
     title: 'Media', 
     path: '/media',
-    icon: <Camera className="w-4 h-4" />,
     hasSubmenu: true,
     submenu: [
       { title: 'Photo Gallery', path: '/photos/gallery' },
@@ -58,7 +63,6 @@ const navItems: NavItem[] = [
   { 
     title: 'Support', 
     path: '/support',
-    icon: <Heart className="w-4 h-4" />,
     hasSubmenu: true,
     submenu: [
       { title: 'Donate', path: '/support/donate' },
@@ -68,12 +72,10 @@ const navItems: NavItem[] = [
   { 
     title: 'Membership', 
     path: '/membership',
-    icon: <Users className="w-4 h-4" /> 
   },
   { 
     title: 'Contact', 
     path: '/more/contact',
-    icon: <ExternalLink className="w-4 h-4" /> 
   },
 ];
 
@@ -120,45 +122,50 @@ const Header = () => {
           </h1>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation - Using shadcn NavigationMenu */}
         {!isMobile && (
-          <nav className="hidden md:flex space-x-6">
-            {navItems.map((item) => (
-              <div key={item.title} className="relative group">
-                {item.hasSubmenu ? (
-                  <button className="nav-item font-medium flex items-center">
-                    {item.icon && <span className="mr-1">{item.icon}</span>}
-                    {item.title}
-                    <ChevronDown className="ml-1 w-4 h-4 transition-transform group-hover:rotate-180" />
-                  </button>
-                ) : (
-                  <Link 
-                    to={item.path} 
-                    className="nav-item font-medium flex items-center"
-                  >
-                    {item.icon && <span className="mr-1">{item.icon}</span>}
-                    {item.title}
-                  </Link>
-                )}
-                
-                {item.hasSubmenu && (
-                  <div className="absolute left-0 mt-1 w-56 bg-white shadow-lg rounded-md overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left">
-                    <div className="py-2">
-                      {item.submenu?.map((subItem) => (
-                        <Link
-                          key={subItem.title}
-                          to={subItem.path}
-                          className="block px-4 py-2 text-sm text-artillery-light hover:bg-redleg/5 hover:text-redleg transition-colors"
-                        >
-                          {subItem.title}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </nav>
+          <NavigationMenu className="hidden md:flex">
+            <NavigationMenuList className="gap-1">
+              {navItems.map((item) => (
+                <NavigationMenuItem key={item.title}>
+                  {item.hasSubmenu ? (
+                    <NavigationMenuTrigger className="font-medium text-artillery hover:text-redleg hover:bg-transparent focus:bg-transparent">
+                      {item.title}
+                    </NavigationMenuTrigger>
+                  ) : (
+                    <Link to={item.path}>
+                      <NavigationMenuLink className={cn(
+                        navigationMenuTriggerStyle(),
+                        "font-medium text-artillery hover:text-redleg hover:bg-transparent focus:bg-transparent"
+                      )}>
+                        {item.title}
+                      </NavigationMenuLink>
+                    </Link>
+                  )}
+                  
+                  {item.hasSubmenu && (
+                    <NavigationMenuContent>
+                      <ul className="grid w-[220px] gap-1 p-2">
+                        {item.submenu?.map((subItem) => (
+                          <li key={subItem.title}>
+                            <Link to={subItem.path}>
+                              <NavigationMenuLink
+                                className={cn(
+                                  "block select-none space-y-1 rounded-md p-3 hover:bg-redleg/5 hover:text-redleg",
+                                )}
+                              >
+                                <div className="text-sm font-medium">{subItem.title}</div>
+                              </NavigationMenuLink>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  )}
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
         )}
 
         {/* Mobile Menu Button */}
@@ -178,10 +185,7 @@ const Header = () => {
                     className="w-full flex justify-between items-center text-left text-lg font-medium text-artillery"
                     onClick={() => toggleSubmenu(item.title)}
                   >
-                    <span className="flex items-center">
-                      {item.icon && <span className="mr-2">{item.icon}</span>}
-                      {item.title}
-                    </span>
+                    <span>{item.title}</span>
                     <ChevronDown className={`h-5 w-5 transform transition-transform ${openSubmenu === item.title ? 'rotate-180' : ''}`} />
                   </button>
                   {openSubmenu === item.title && (
@@ -202,10 +206,9 @@ const Header = () => {
               ) : (
                 <Link
                   to={item.path}
-                  className="block text-lg font-medium text-artillery hover:text-redleg flex items-center"
+                  className="block text-lg font-medium text-artillery hover:text-redleg"
                   onClick={closeMenu}
                 >
-                  {item.icon && <span className="mr-2">{item.icon}</span>}
                   {item.title}
                 </Link>
               )}
