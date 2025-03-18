@@ -9,6 +9,9 @@ import Footer from '@/components/Footer';
 
 const Index = () => {
   useEffect(() => {
+    // Update document title
+    document.title = "Gator Redlegs - Florida Chapter of the US Field Artillery Association";
+    
     // Scroll to top on page load
     window.scrollTo(0, 0);
 
