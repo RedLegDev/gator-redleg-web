@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -13,7 +14,6 @@ import MissionSection from '@/components/History/MissionSection';
 import MilestonesSection from '@/components/History/MilestonesSection';
 import LegendaryFigureSection from '@/components/History/LegendaryFigureSection';
 import DecorationSection from '@/components/History/DecorationSection';
-import HistoryCTA from '@/components/History/HistoryCTA';
 
 const History = () => {
   return (
@@ -128,9 +128,6 @@ const History = () => {
             
             {/* Timeline section */}
             <MilestonesSection />
-            
-            {/* Call to action */}
-            <HistoryCTA />
           </div>
         </div>
       </main>
