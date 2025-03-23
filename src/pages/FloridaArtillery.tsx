@@ -2,7 +2,7 @@
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { ChevronRight, Bookmark, Target, Clock } from 'lucide-react';
+import { ChevronRight, Bookmark, Target, Clock, AlertTriangle, Shield, Medal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Separator } from '@/components/ui/separator';
 
@@ -36,15 +36,26 @@ const FloridaArtillery = () => {
                 From its earliest days to the present, Florida's artillery units have embodied the values represented in our Distinguished Unit Insignia: 
                 precision, loyalty, and unwavering commitment to mission.
               </p>
+              <blockquote className="border-l-4 border-redleg pl-4 italic my-6">
+                <p className="text-lg">
+                  "The 116th Field Artillery has had a singular history in the period covered since the date of its organization in Florida. 
+                  Perhaps no regiment of the Florida National Guard within the United States has had such dramatic calls upon its services. 
+                  Woven into the pattern of everyday life, the work of the peacetime soldier calls forth little notice from the general public. 
+                  However, when disaster threatens the structure of the commonwealth, either man-made, or by the hand of Providence, 
+                  the National Guard steps promptly into the breach, and, with a steady hand firmly applied, brings aid and comfort to the stricken 
+                  and punishment to the law breaker."
+                </p>
+                <p className="text-sm mt-2">— From the official regimental history, compiled by Lieutenant Colonel George E. Grace, Florida Army National Guard</p>
+              </blockquote>
             </div>
             
-            {/* First Section - Formation */}
+            {/* Origins Section */}
             <div className="mb-12">
               <div className="flex items-center mb-6">
                 <div className="mr-4 p-2 bg-redleg/10 rounded-full">
                   <Bookmark className="h-6 w-6 text-redleg" />
                 </div>
-                <h2 className="text-3xl font-bold text-artillery">Formation and Early Years</h2>
+                <h2 className="text-3xl font-bold text-artillery">Origins & Early Years</h2>
               </div>
               
               <div className="bg-white p-8 rounded-lg shadow-lg">
@@ -58,17 +69,85 @@ const FloridaArtillery = () => {
                   </div>
                   <div className="md:w-2/3">
                     <p className="text-artillery-muted mb-4">
-                      The 116th Field Artillery Regiment was officially organized during the First World War at Camp Wheeler, Georgia from October 1 through November 1, 1917, as part of the 31st (Dixie) Division. Though transported overseas, it saw no combat action and was mustered from federal service on January 16, 1919.
+                      The regiment was originally organized as the 1st Florida Infantry during the Spanish–American War in 1898. During the First World War at Camp Wheeler, Georgia from 1 October 1917 through 1 November 1917, the 1st Florida Infantry was combined with other units from Alabama and Georgia to create the 116th Field Artillery, part of the 31st ("Dixie") Division.
                     </p>
                     <p className="text-artillery-muted">
-                      A pivotal moment in Florida's artillery history came on December 5, 1921, when Sumter L. Lowry Jr. of Tampa, Florida, upon commission issued by the Adjutant General, State of Florida, presented for federal recognition three batteries to constitute units of a regiment to be known as the 116th Field Artillery. These three firing batteries—A, B, and C—formed the basis of the First Battalion 116th Field Artillery under Major Lowry's command.
+                      It consisted of the battalion headquarters and Batteries B and C from the 1st Battalion, Georgia Field Artillery, 4 officers and 99 men from the 1st Florida Infantry Regiment, Troops A, D, G, H, I, and the Supply Troop from the 1st Alabama Cavalry Regiment, and the Band from the 2nd Alabama Infantry Regiment. Although transported overseas, it saw no combat action and was mustered out of federal service on 16 January 1919.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
             
+            {/* Formation Section */}
+            <div className="mb-12">
+              <div className="flex items-center mb-6">
+                <div className="mr-4 p-2 bg-redleg/10 rounded-full">
+                  <Shield className="h-6 w-6 text-redleg" />
+                </div>
+                <h2 className="text-3xl font-bold text-artillery">Formation in Florida</h2>
+              </div>
+              
+              <div className="bg-white p-8 rounded-lg shadow-lg">
+                <p className="text-artillery-muted mb-4">
+                  On 5 December 1921 Sumter de Leon Lowry Jr., of Tampa, Florida, upon commission issued by the Adjutant General of the State of Florida, presented for federal recognition three batteries to constitute units of a regiment to be known as the 116th Field Artillery. Thus, on 5 December 1921, three firing batteries, A, B, and C, formed the basis of the First Battalion, 116th Field Artillery, Major Sumter L. Lowry Jr. commanding.
+                </p>
+                <p className="text-artillery-muted mb-4">
+                  The battalion was inspected and mustered into service by then-Lieutenant Colonel Vivian Collins, Adjutant General of Florida. Completion of the First Battalion was effected on 15 February 1922, with the establishment of the Headquarters Battery and Combat Train. In 1922, the City of Tampa and Hillsborough County furnished land and funds for the construction of stables, gunsheds, and armory buildings.
+                </p>
+                <p className="text-artillery-muted">
+                  An expansive movement was made for the establishment of a full regiment by the founding of the Second Battalion. Firing batteries D, E, and F were located at Lakeland, Plant City, and Arcadia, with the Headquarters Battery and Combat Train of the Second Battalion in Bartow. The Second Battalion participated in the summer encampment in 1923, and was federally recognized as a unit on 23 August 1923, with Major Fred Hampton commanding. The regiment received federal recognition at Tampa on 20 January 1924.
+                </p>
+              </div>
+            </div>
+            
+            {/* 2nd Battalion Section */}
+            <div className="mb-12">
+              <div className="flex items-center mb-6">
+                <div className="mr-4 p-2 bg-redleg/10 rounded-full">
+                  <Medal className="h-6 w-6 text-redleg" />
+                </div>
+                <h2 className="text-3xl font-bold text-artillery">Expansion & Reorganization</h2>
+              </div>
+              
+              <div className="bg-white p-8 rounded-lg shadow-lg">
+                <p className="text-artillery-muted mb-4">
+                  Ultimately, the subordinate units of the 2nd Battalion, 116th Field Artillery were re-designated and relocated in some cases in different cities: HQ Battery – Lakeland. Battery A – Bartow. Battery B – Dade City. Battery C – Ocala. Service Battery – Haines City.
+                </p>
+                <p className="text-artillery-muted">
+                  On 16 July 1933, the regiment was converted from horse-drawn to truck-drawn, marking an important modernization in its capabilities and mission readiness.
+                </p>
+              </div>
+            </div>
+            
             <Separator className="my-10 bg-gray-200" />
+            
+            {/* Service to Community Section */}
+            <div className="mb-12">
+              <div className="flex items-center mb-6">
+                <div className="mr-4 p-2 bg-redleg/10 rounded-full">
+                  <AlertTriangle className="h-6 w-6 text-redleg" />
+                </div>
+                <h2 className="text-3xl font-bold text-artillery">Service to Florida Communities</h2>
+              </div>
+              
+              <div className="bg-white p-8 rounded-lg shadow-lg">
+                <p className="text-artillery-muted mb-4">
+                  Throughout its history, the 116th Field Artillery has been called upon numerous times to serve Florida communities in times of need:
+                </p>
+                <ul className="list-disc pl-6 mb-4 text-artillery-muted space-y-2">
+                  <li>Hurricane relief duties at Tampa and Moore Haven, Florida, from 16 September to 7 November 1926.</li>
+                  <li>Riot control duties in connection with the protection of prisoners at the Hillsborough County Jail in Tampa, from 31 May to 6 June 1927.</li>
+                  <li>Duties associated with the Mediterranean Fruit Fly quarantine in July 1929.</li>
+                  <li>Hurricane relief duties at Palm Beach and Okeechobee from 17 September to 4 November 1928 (2nd Battalion).</li>
+                  <li>Riot control duties in connection with elections in Tampa in September 1935.</li>
+                  <li>Guard duties in connection with the visit of President Franklin D. Roosevelt to Winter Park, Florida, on 31 March 1936.</li>
+                </ul>
+                <p className="text-artillery-muted">
+                  These missions reflect the regiment's commitment to serving the people of Florida beyond its military responsibilities, embodying the National Guard ethos of being always ready, always there.
+                </p>
+              </div>
+            </div>
             
             {/* Symbol Section */}
             <div className="mb-12">
@@ -124,9 +203,17 @@ const FloridaArtillery = () => {
               <div className="relative border-l-2 border-redleg/30 pl-8 ml-4 space-y-10">
                 <div className="relative">
                   <div className="absolute -left-[38px] top-0 w-6 h-6 bg-redleg rounded-full"></div>
+                  <h3 className="text-xl font-bold mb-1 text-redleg">1898</h3>
+                  <p className="text-gray-700">
+                    Originally organized as the 1st Florida Infantry during the Spanish–American War.
+                  </p>
+                </div>
+                
+                <div className="relative">
+                  <div className="absolute -left-[38px] top-0 w-6 h-6 bg-redleg rounded-full"></div>
                   <h3 className="text-xl font-bold mb-1 text-redleg">1917-1919</h3>
                   <p className="text-gray-700">
-                    Initial formation at Camp Wheeler as part of the 31st Division during World War I.
+                    Formation at Camp Wheeler as the 116th Field Artillery as part of the 31st Division during World War I.
                   </p>
                 </div>
                 
@@ -135,16 +222,31 @@ const FloridaArtillery = () => {
                   <h3 className="text-xl font-bold mb-1 text-redleg">December 5, 1921</h3>
                   <p className="text-gray-700">
                     Major Sumter L. Lowry Jr. establishes the first three batteries (A, B, and C) of what would 
-                    become the 116th Field Artillery Regiment.
+                    become the 116th Field Artillery Regiment in Florida.
                   </p>
                 </div>
                 
                 <div className="relative">
                   <div className="absolute -left-[38px] top-0 w-6 h-6 bg-redleg rounded-full"></div>
-                  <h3 className="text-xl font-bold mb-1 text-redleg">World War II Era</h3>
+                  <h3 className="text-xl font-bold mb-1 text-redleg">January 20, 1924</h3>
                   <p className="text-gray-700">
-                    The 116th Field Artillery serves with distinction, carrying forward the traditions 
-                    represented in its insignia.
+                    The full regiment receives federal recognition at Tampa.
+                  </p>
+                </div>
+                
+                <div className="relative">
+                  <div className="absolute -left-[38px] top-0 w-6 h-6 bg-redleg rounded-full"></div>
+                  <h3 className="text-xl font-bold mb-1 text-redleg">July 16, 1933</h3>
+                  <p className="text-gray-700">
+                    The regiment is converted from horse-drawn to truck-drawn.
+                  </p>
+                </div>
+                
+                <div className="relative">
+                  <div className="absolute -left-[38px] top-0 w-6 h-6 bg-redleg rounded-full"></div>
+                  <h3 className="text-xl font-bold mb-1 text-redleg">1926-1936</h3>
+                  <p className="text-gray-700">
+                    Multiple emergency response missions throughout Florida, including hurricane relief and civic support.
                   </p>
                 </div>
                 

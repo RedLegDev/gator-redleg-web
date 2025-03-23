@@ -18,12 +18,20 @@ const OriginsSection: React.FC = () => {
         </p>
         
         <p>
-          This regiment was originally organized during the First World War at Camp Wheeler, Georgia from 1 October 1917 through 1 November 1917, as part of the 31st (Dixie) Division. Although transported overseas it saw no combat action and was mustered from federal service on January 16, 1919.
+          The regiment was originally organized as the 1st Florida Infantry during the Spanish–American War in 1898. During the First World War at Camp Wheeler, Georgia from 1 October 1917 through 1 November 1917, the 1st Florida Infantry was combined with other units from Alabama and Georgia to create the 116th Field Artillery, part of the 31st ("Dixie") Division.
         </p>
         
         <p>
           On December 5, 1921 Sumter L. Lowry Jr. of Tampa, Florida, upon commission issued by the Adjutant General, State of Florida presented for federal recognition three batteries to constitute units of a regiment to be known as the 116th Field Artillery. Thus on December 5, 1921, three firing batteries, A, B, and C formed the basis of the First Battalion 116th Field Artillery. Major Sumter L. Lowry Jr. commanding. The battalion was inspected and mustered into service by then Lieutenant Colonel Vivian Collins present Adjutant General of Florida.
         </p>
+        
+        <blockquote className="border-l-4 border-redleg pl-4 italic my-6">
+          <p>
+            "The 116th Field Artillery has had a singular history in the period covered since the date of its organization in Florida. 
+            Perhaps no regiment of the Florida National Guard within the United States has had such dramatic calls upon its services."
+          </p>
+          <p className="text-sm mt-2">— Lt. Col. George E. Grace, Florida Army National Guard</p>
+        </blockquote>
       </div>
     </div>
   );
