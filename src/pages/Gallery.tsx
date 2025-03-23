@@ -1,8 +1,64 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+// Sample gallery data
+const galleryImages = [
+  {
+    id: 1,
+    src: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
+    alt: "St. Barbara's Day Ball",
+    category: "Events"
+  },
+  {
+    id: 2,
+    src: "/lovable-uploads/545c3e95-750d-44cb-a8a7-3bc273840ada.png",
+    alt: "Golf Tournament",
+    category: "Events"
+  },
+  {
+    id: 3,
+    src: "/lovable-uploads/8d03f7c2-dfd3-4e15-ae50-c03ca6c8f2b2.png",
+    alt: "Softball Tournament",
+    category: "Events"
+  },
+  {
+    id: 4,
+    src: "/lovable-uploads/cca47b6f-2e17-450d-a490-dfc013ec9eaf.png",
+    alt: "5K Run",
+    category: "Events"
+  },
+  {
+    id: 5,
+    src: "/lovable-uploads/bd767145-b0bf-48ab-b1cf-b97f6b6034cc.png",
+    alt: "Community Service",
+    category: "Community"
+  },
+  {
+    id: 6,
+    src: "/lovable-uploads/c4320cdb-23e3-429d-bdeb-cc34787d252c.png",
+    alt: "Scholarship Presentation",
+    category: "Scholarships"
+  },
+  {
+    id: 7,
+    src: "/lovable-uploads/94a399e4-5142-426b-aff8-140dce908017.png",
+    alt: "Board Meeting",
+    category: "Organization"
+  },
+  {
+    id: 8,
+    src: "/lovable-uploads/a4b8420f-0d4f-4f90-a4cc-bc37a65c457d.png",
+    alt: "Member Social",
+    category: "Events"
+  }
+];
+
+// Gallery categories
+const categories = ["All", "Events", "Community", "Scholarships", "Organization"];
 
 const Gallery = () => {
   return (
