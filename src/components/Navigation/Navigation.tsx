@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Home, Info, Calendar, Image, Heart, User, Phone } from 'lucide-react';
 import { NavBar } from "@/components/ui/tubelight-navbar";
@@ -91,7 +92,7 @@ const Navigation: React.FC = () => {
       hasSubmenu: true,
       submenu: [
         { title: 'Contact Us', path: '/more/contact' },
-        { title: 'FAQs', path: '/more/faqs' },
+        { title: 'FAQs', path: '/history' },
         { title: 'Privacy Policy', path: '/privacy-policy' },
         { title: 'Terms of Service', path: '/terms-of-service' }
       ]

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
 
 const Contact = () => {
   return (
@@ -30,14 +30,6 @@ const Contact = () => {
                 <div>
                   <h3 className="font-medium">Email</h3>
                   <a href="mailto:info@gatorredleg.org" className="text-redleg hover:underline">info@gatorredleg.org</a>
-                </div>
-              </div>
-              
-              <div className="flex items-start">
-                <Phone className="h-6 w-6 mr-4 text-redleg flex-shrink-0" />
-                <div>
-                  <h3 className="font-medium">Phone</h3>
-                  <p className="text-gray-600">(904) 555-1234</p>
                 </div>
               </div>
             </div>
