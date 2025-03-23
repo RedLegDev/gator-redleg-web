@@ -20,8 +20,9 @@ const Contact = () => {
                 <MapPin className="h-6 w-6 mr-4 text-redleg flex-shrink-0" />
                 <div>
                   <h3 className="font-medium">Address</h3>
-                  <p className="text-gray-600">Florida National Guard Headquarters</p>
-                  <p className="text-gray-600">St. Augustine, FL</p>
+                  <p className="text-gray-600">GATOR REDLEG ASSOCIATION INC</p>
+                  <p className="text-gray-600">4140 DRANE FIELD RD</p>
+                  <p className="text-gray-600">LAKELAND FL 33811-1209</p>
                 </div>
               </div>
               
