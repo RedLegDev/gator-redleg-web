@@ -1,64 +1,8 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-// Sample gallery data
-const galleryImages = [
-  {
-    id: 1,
-    src: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    alt: "St. Barbara's Day Ball",
-    category: "Events"
-  },
-  {
-    id: 2,
-    src: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    alt: "Golf Tournament",
-    category: "Events"
-  },
-  {
-    id: 3,
-    src: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    alt: "Softball Tournament",
-    category: "Events"
-  },
-  {
-    id: 4,
-    src: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    alt: "5K Run",
-    category: "Events"
-  },
-  {
-    id: 5,
-    src: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    alt: "Community Service",
-    category: "Community"
-  },
-  {
-    id: 6,
-    src: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    alt: "Scholarship Presentation",
-    category: "Scholarships"
-  },
-  {
-    id: 7,
-    src: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    alt: "Board Meeting",
-    category: "Organization"
-  },
-  {
-    id: 8,
-    src: "/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png",
-    alt: "Member Social",
-    category: "Events"
-  }
-];
-
-// Gallery categories
-const categories = ["All", "Events", "Community", "Scholarships", "Organization"];
 
 const Gallery = () => {
   return (
