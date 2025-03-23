@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Separator } from '@/components/ui/separator';
 import { ChevronRight, Bookmark, User, Shield, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Card, CardContent } from '@/components/ui/card';
 
 // Import the new components
 import HistoryHero from '@/components/History/HistoryHero';
@@ -32,6 +33,34 @@ const History = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-artillery section-heading">
               Our History
             </h1>
+            
+            {/* Quick Navigation Links */}
+            <div className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Link to="/history/st-barbara">
+                <Card className="hover:shadow-md transition-shadow">
+                  <CardContent className="flex items-center p-4 gap-3">
+                    <Bookmark className="h-6 w-6 text-redleg" />
+                    <div>
+                      <h3 className="font-semibold text-artillery">St. Barbara</h3>
+                      <p className="text-sm text-artillery-muted">Patron Saint of Artillery</p>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-redleg ml-auto" />
+                  </CardContent>
+                </Card>
+              </Link>
+              <Link to="/history/molly-pitcher">
+                <Card className="hover:shadow-md transition-shadow">
+                  <CardContent className="flex items-center p-4 gap-3">
+                    <User className="h-6 w-6 text-redleg" />
+                    <div>
+                      <h3 className="font-semibold text-artillery">Molly Pitcher</h3>
+                      <p className="text-sm text-artillery-muted">Hero of the Battle of Monmouth</p>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-redleg ml-auto" />
+                  </CardContent>
+                </Card>
+              </Link>
+            </div>
             
             {/* Hero section with historical image */}
             <HistoryHero 
