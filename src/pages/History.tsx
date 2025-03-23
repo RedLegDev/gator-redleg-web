@@ -13,6 +13,7 @@ import InsigniaSection from '@/components/History/InsigniaSection';
 import MissionSection from '@/components/History/MissionSection';
 import MilestonesSection from '@/components/History/MilestonesSection';
 import LegendaryFigureSection from '@/components/History/LegendaryFigureSection';
+import DecorationSection from '@/components/History/DecorationSection';
 import HistoryCTA from '@/components/History/HistoryCTA';
 
 const History = () => {
@@ -64,6 +65,9 @@ const History = () => {
             {/* Mission section */}
             <MissionSection />
             
+            {/* Decorations Section - New Addition */}
+            <DecorationSection />
+            
             {/* Coat of Arms Section */}
             <InsigniaSection
               title="Coat of Arms"
@@ -86,7 +90,7 @@ const History = () => {
               imageSrc="/lovable-uploads/a4b8420f-0d4f-4f90-a4cc-bc37a65c457d.png"
               imageAlt="Saint Barbara, Patron Saint of Artillery"
               icon={<Bookmark className="h-6 w-6 text-redleg" />}
-              linkTo="/st-barbara"
+              linkTo="/history/st-barbara"
               linkText="Read the Full Legend"
               description={
                 <>
@@ -107,7 +111,7 @@ const History = () => {
               imageSrc="/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png"
               imageAlt="Molly Pitcher at the Battle of Monmouth"
               icon={<User className="h-6 w-6 text-redleg" />}
-              linkTo="/molly-pitcher"
+              linkTo="/history/molly-pitcher"
               linkText="Read Her Story"
               description={
                 <>
