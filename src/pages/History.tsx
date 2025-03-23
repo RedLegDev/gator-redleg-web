@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -106,22 +105,22 @@ const History = () => {
               }
             />
             
-            {/* Molly Pitcher Section */}
+            {/* Molly Pitcher Section - Updated with new image */}
             <LegendaryFigureSection
               title="The Story of Molly Pitcher"
-              imageSrc="/lovable-uploads/462710ac-29ef-4a8c-9e07-448e45e8ada8.png"
+              imageSrc="/lovable-uploads/f1e293fd-7582-4827-9cc2-532c58979ef8.png"
               imageAlt="Molly Pitcher at the Battle of Monmouth"
               icon={<User className="h-6 w-6 text-redleg" />}
               linkTo="/history/molly-pitcher"
               linkText="Read Her Story"
+              imageClassName="h-auto max-w-full shadow-lg rounded-lg hover:opacity-90 transition-opacity max-h-80"
               description={
                 <>
                   <p className="text-artillery-muted mb-4">
-                    Mary Hays McCauly, better known as "Molly Pitcher," became a legendary figure during the American Revolutionary War when she took her wounded husband's place at a cannon during the Battle of Monmouth on June 28, 1778.
+                    Mary Hays McCauly, better known as Molly Pitcher, was the wife of an artilleryman who fought in the American Revolutionary War. During the Battle of Monmouth in 1778, she carried water to soldiers on the battlefield, earning her nickname "Molly Pitcher."
                   </p>
-                  
-                  <p className="text-artillery-muted mb-6">
-                    Her courage under fire earned her recognition from General Washington himself, who issued her a warrant as a noncommissioned officer. Her story represents the spirit and dedication that defines the artillery tradition.
+                  <p className="text-artillery-muted">
+                    When her husband collapsed at his cannon, Molly stepped forward and took his place, helping to operate the gun through the remainder of the battle. For her bravery, General Washington issued her a warrant as a non-commissioned officer.
                   </p>
                 </>
               }

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -27,12 +26,22 @@ const MollyPitcher = () => {
               The Story of Molly Pitcher
             </h1>
             
-            {/* Hero image - now using the HistoryHero component */}
-            <HistoryHero 
-              title="Hero of the Battle of Monmouth"
-              subtitle="June 28, 1778"
-              imageSrc="/lovable-uploads/01d0c1a8-8958-4724-a2e7-55d998adb066.png"
-            />
+            {/* Hero image - updated with new image */}
+            <div className="mb-12 bg-gray-50 rounded-lg overflow-hidden shadow-lg">
+              <div className="relative h-80 md:h-96 overflow-hidden">
+                <img 
+                  src="/lovable-uploads/f1e293fd-7582-4827-9cc2-532c58979ef8.png" 
+                  alt="Molly Pitcher at the Battle of Monmouth"
+                  className="mx-auto h-full object-contain p-4"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-30 flex items-end">
+                  <div className="p-6 text-white">
+                    <h2 className="text-2xl font-bold mb-2">Hero of the Battle of Monmouth</h2>
+                    <p className="text-sm opacity-80">June 28, 1778</p>
+                  </div>
+                </div>
+              </div>
+            </div>
             
             {/* Biography section */}
             <div className="mb-12">

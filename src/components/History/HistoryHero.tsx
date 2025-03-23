@@ -5,16 +5,22 @@ interface HistoryHeroProps {
   title: string;
   subtitle: string;
   imageSrc: string;
+  imageClassName?: string;
 }
 
-const HistoryHero: React.FC<HistoryHeroProps> = ({ title, subtitle, imageSrc }) => {
+const HistoryHero: React.FC<HistoryHeroProps> = ({ 
+  title, 
+  subtitle, 
+  imageSrc,
+  imageClassName = "absolute w-full h-full object-cover object-center" 
+}) => {
   return (
     <div className="mb-12 bg-gray-50 rounded-lg overflow-hidden shadow-lg">
       <div className="relative h-80 md:h-96 overflow-hidden">
         <img 
           src={imageSrc} 
           alt={title}
-          className="absolute w-full h-full object-cover object-center"
+          className={imageClassName}
         />
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
           <div className="p-6 text-white">
