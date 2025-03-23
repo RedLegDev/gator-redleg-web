@@ -33,6 +33,15 @@ const Contact = () => {
                   <a href="mailto:info@gatorredleg.org" className="text-redleg hover:underline">info@gatorredleg.org</a>
                 </div>
               </div>
+
+              <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+                <p className="text-sm text-gray-700 font-medium">
+                  We are a 501(c)(3) non-profit organization
+                </p>
+                <p className="text-sm text-gray-600">
+                  EIN: 82-4625785
+                </p>
+              </div>
             </div>
           </div>
           

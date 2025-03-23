@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -12,6 +13,10 @@ const Footer = () => {
             </h3>
             <p className="text-gray-400 mb-6">
               The Florida Chapter of the <a href="https://www.fieldartillery.org/" target="_blank" rel="noopener noreferrer" className="text-redleg hover:underline">United States Field Artillery Association (USFAA)</a>
+            </p>
+            <p className="text-gray-400 mb-6">
+              501(c)(3) Non-Profit Organization<br />
+              EIN: 82-4625785
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-redleg transition-colors">

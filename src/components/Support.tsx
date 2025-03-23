@@ -43,9 +43,15 @@ const Support = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div className="scroll-reveal">
               <h2 className="text-4xl md:text-5xl font-bold mb-8">Support Our Mission</h2>
-              <p className="text-lg mb-6 text-white/90 leading-relaxed">
+              <p className="text-lg mb-4 text-white/90 leading-relaxed">
                 Your support helps us continue our mission of serving Florida's Field Artillery community. Whether through financial contributions, volunteering, or becoming a member, you're making a difference in the lives of Soldiers and their families.
               </p>
+              <div className="bg-white/10 rounded-lg p-4 border border-white/20 mb-6">
+                <p className="text-white font-medium">
+                  501(c)(3) Non-Profit Organization<br />
+                  EIN: 82-4625785
+                </p>
+              </div>
               <p className="text-lg mb-8 text-white/90 leading-relaxed">
                 As a 501(c)(3) non-profit organization, all donations to the Gator Redleg Chapter are tax-deductible. Your generosity directly supports scholarships, emergency assistance, and community programs.
               </p>
