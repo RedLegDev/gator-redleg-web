@@ -63,6 +63,16 @@ const Support = () => {
             </div>
             
             <div>
+              <h3 className="font-bold text-lg mb-2">Learn About Our Mission</h3>
+              <p className="text-gray-600 mb-4">
+                Find out more about who we are and the important work we do for Florida's Field Artillery community.
+              </p>
+              <Link to="/about" className="text-redleg hover:underline font-medium">
+                Visit our About page →
+              </Link>
+            </div>
+            
+            <div>
               <h3 className="font-bold text-lg mb-2">Corporate Partnerships</h3>
               <p className="text-gray-600 mb-4">
                 We welcome partnerships with businesses and organizations that share our commitment to supporting Florida's Field Artillery community.

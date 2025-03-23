@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Home, Info, Calendar, Image, Heart, User, Phone } from 'lucide-react';
+import { Home, Info, Calendar, Image, Heart, User, Phone, BookOpen, History as HistoryIcon } from 'lucide-react';
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useLocation } from 'react-router-dom';
@@ -16,7 +16,8 @@ const Navigation: React.FC = () => {
   // Main navbar items (tubelight effect)
   const navItems = [
     { name: 'Home', url: '/', icon: Home },
-    { name: 'About', url: '/history', icon: Info },
+    { name: 'About', url: '/about', icon: Info },
+    { name: 'History', url: '/history', icon: HistoryIcon },
     { name: 'Events', url: '/activities', icon: Calendar },
     { name: 'Media', url: '/photos', icon: Image },
     { name: 'Support', url: '/support', icon: Heart },
@@ -33,10 +34,15 @@ const Navigation: React.FC = () => {
     },
     {
       title: 'About',
+      path: '/about',
+      hasSubmenu: false
+    },
+    {
+      title: 'History',
       path: '/history',
       hasSubmenu: true,
       submenu: [
-        { title: 'History', path: '/history' },
+        { title: 'Our History', path: '/history' },
         { title: 'Heritage', path: '/history/heritage' },
         { title: 'Florida Artillery', path: '/history/florida-artillery' },
         { title: 'St. Barbara', path: '/history/st-barbara' },

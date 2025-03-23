@@ -11,7 +11,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import HistoryHero from '@/components/History/HistoryHero';
 import OriginsSection from '@/components/History/OriginsSection';
 import InsigniaSection from '@/components/History/InsigniaSection';
-import MissionSection from '@/components/History/MissionSection';
 import MilestonesSection from '@/components/History/MilestonesSection';
 import LegendaryFigureSection from '@/components/History/LegendaryFigureSection';
 import DecorationSection from '@/components/History/DecorationSection';
@@ -89,9 +88,6 @@ const History = () => {
             </InsigniaSection>
             
             <Separator className="my-10 bg-gray-200" />
-            
-            {/* Mission section */}
-            <MissionSection />
             
             {/* Decorations Section - New Addition */}
             <DecorationSection />
