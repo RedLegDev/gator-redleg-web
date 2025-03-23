@@ -83,7 +83,7 @@ const Membership = () => {
                 </div>
                 <div className="mb-4">
                   <a 
-                    href="https://fieldartillery.org" 
+                    href="https://www.fieldartillery.org/membership-information" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-redleg hover:underline font-medium"
@@ -240,7 +240,7 @@ const Membership = () => {
                 Your membership supports scholarships, recognition awards, and community initiatives for Field Artillery Soldiers and their families.
               </p>
               <a 
-                href="https://fieldartillery.org/join" 
+                href="https://www.fieldartillery.org/membership-information" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block"
