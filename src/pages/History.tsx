@@ -84,14 +84,15 @@ const History = () => {
               </p>
             </InsigniaSection>
             
-            {/* St. Barbara Section */}
+            {/* St. Barbara Section - Updated with new image */}
             <LegendaryFigureSection
               title="The Legend of St. Barbara"
-              imageSrc="/lovable-uploads/a4b8420f-0d4f-4f90-a4cc-bc37a65c457d.png"
+              imageSrc="/lovable-uploads/4c7bd39e-600f-4df4-8645-2f6269c1bcc2.png"
               imageAlt="Saint Barbara, Patron Saint of Artillery"
               icon={<Bookmark className="h-6 w-6 text-redleg" />}
               linkTo="/history/st-barbara"
               linkText="Read the Full Legend"
+              imageClassName="h-auto max-w-full shadow-lg rounded-lg hover:opacity-90 transition-opacity max-h-80"
               description={
                 <>
                   <p className="text-artillery-muted mb-4">

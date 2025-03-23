@@ -30,11 +30,11 @@ const StBarbara = () => {
             <div className="mb-12 bg-gray-50 rounded-lg overflow-hidden shadow-lg">
               <div className="relative h-80 md:h-96 overflow-hidden">
                 <img 
-                  src="/lovable-uploads/1805cb03-b3c8-465a-9d44-389603c6c654.png" 
+                  src="/lovable-uploads/4c7bd39e-600f-4df4-8645-2f6269c1bcc2.png" 
                   alt="Saint Barbara, Patron Saint of Artillery"
-                  className="absolute w-full h-full object-cover object-center"
+                  className="mx-auto h-full object-contain p-4"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
+                <div className="absolute inset-0 bg-black bg-opacity-30 flex items-end">
                   <div className="p-6 text-white">
                     <h2 className="text-2xl font-bold mb-2">Patron Saint of Artillery</h2>
                     <p className="text-sm opacity-80">Feast Day: December 4th</p>

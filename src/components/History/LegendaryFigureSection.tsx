@@ -12,6 +12,7 @@ interface LegendaryFigureSectionProps {
   description: React.ReactNode;
   linkTo: string;
   linkText: string;
+  imageClassName?: string;
 }
 
 const LegendaryFigureSection: React.FC<LegendaryFigureSectionProps> = ({
@@ -21,7 +22,8 @@ const LegendaryFigureSection: React.FC<LegendaryFigureSectionProps> = ({
   icon,
   description,
   linkTo,
-  linkText
+  linkText,
+  imageClassName = "h-auto max-w-full shadow-lg rounded-lg hover:opacity-90 transition-opacity"
 }) => {
   return (
     <div className="mb-12 bg-white rounded-lg shadow-lg p-8">
@@ -32,7 +34,7 @@ const LegendaryFigureSection: React.FC<LegendaryFigureSectionProps> = ({
               <img 
                 src={imageSrc} 
                 alt={imageAlt} 
-                className="h-auto max-w-full shadow-lg rounded-lg hover:opacity-90 transition-opacity"
+                className={imageClassName}
               />
             </div>
           </Link>
