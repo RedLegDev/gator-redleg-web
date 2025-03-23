@@ -1,17 +1,26 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { ChevronRight } from 'lucide-react';
 
 const Support = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow">
-        <div className="container mx-auto px-4 py-24">
+      <main className="flex-grow pt-8 pb-16">
+        <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center text-artillery">Support Our Mission</h1>
-            <p className="text-lg text-gray-600 mb-6 text-center">
+            {/* Breadcrumb */}
+            <nav className="flex items-center text-sm text-gray-500 mb-6">
+              <Link to="/" className="hover:text-redleg">Home</Link>
+              <ChevronRight className="h-4 w-4 mx-1" />
+              <span className="text-gray-700">Support Our Mission</span>
+            </nav>
+            
+            <h1 className="text-4xl md:text-5xl font-bold mb-8 text-artillery">Support Our Mission</h1>
+            <p className="text-lg text-gray-600 mb-6">
               Learn how you can support the Gator Redlegs Chapter's mission to serve Field Artillery Soldiers and their families.
             </p>
             

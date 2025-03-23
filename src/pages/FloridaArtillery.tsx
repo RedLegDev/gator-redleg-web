@@ -10,7 +10,7 @@ const FloridaArtillery = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow pt-24 pb-16">
+      <main className="flex-grow pt-8 pb-16">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             {/* Breadcrumb */}

@@ -1,18 +1,28 @@
 
 import React from 'react';
-import { Mail, MapPin } from 'lucide-react';
+import { Mail, MapPin, ChevronRight } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { Link } from 'react-router-dom';
 
 const Contact = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow">
-        <div className="container mx-auto px-4 py-24">
+      <main className="flex-grow pt-8 pb-16">
+        <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center text-artillery">Contact Us</h1>
-            <p className="text-lg text-gray-600 mb-12 text-center">
+            {/* Breadcrumb */}
+            <nav className="flex items-center text-sm text-gray-500 mb-6">
+              <Link to="/" className="hover:text-redleg">Home</Link>
+              <ChevronRight className="h-4 w-4 mx-1" />
+              <Link to="/more" className="hover:text-redleg">More</Link>
+              <ChevronRight className="h-4 w-4 mx-1" />
+              <span className="text-gray-700">Contact</span>
+            </nav>
+            
+            <h1 className="text-4xl md:text-5xl font-bold mb-8 text-artillery">Contact Us</h1>
+            <p className="text-lg text-gray-600 mb-12">
               Have questions or want to get involved? Get in touch with the Gator Redlegs Chapter leadership.
             </p>
 
