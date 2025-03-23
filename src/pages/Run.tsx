@@ -3,7 +3,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Users, Clock, Trophy } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, Award } from 'lucide-react';
 import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Separator } from '@/components/ui/separator';
@@ -28,9 +28,9 @@ const Run = () => {
                 <span className="text-gray-400">5K Fun Run</span>
               </nav>
               
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">5K Fun Run</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">Field Artillery 5K Fun Run</h1>
               <p className="text-xl text-gray-300 mb-8">
-                A family-friendly event promoting fitness and camaraderie among Field Artillery personnel and their families.
+                Join us for a fitness-focused event supporting our scholarship fund.
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -38,14 +38,14 @@ const Run = () => {
                   <Calendar className="h-6 w-6 mr-3 text-redleg" />
                   <div>
                     <p className="text-sm text-gray-400">Date</p>
-                    <p className="font-medium">September 9, 2023</p>
+                    <p className="font-medium">March 15, 2023</p>
                   </div>
                 </div>
                 <div className="flex items-center">
                   <Clock className="h-6 w-6 mr-3 text-redleg" />
                   <div>
                     <p className="text-sm text-gray-400">Time</p>
-                    <p className="font-medium">7:30 AM - 11:00 AM</p>
+                    <p className="font-medium">8:00 AM Start</p>
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -56,10 +56,10 @@ const Run = () => {
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <Users className="h-6 w-6 mr-3 text-redleg" />
+                  <Award className="h-6 w-6 mr-3 text-redleg" />
                   <div>
-                    <p className="text-sm text-gray-400">Participants</p>
-                    <p className="font-medium">Runners and Walkers of All Ages</p>
+                    <p className="text-sm text-gray-400">Registration Fee</p>
+                    <p className="font-medium">$30 Adults | $15 Children (12 & under)</p>
                   </div>
                 </div>
               </div>
@@ -83,51 +83,42 @@ const Run = () => {
                   
                   <div className="prose max-w-none mb-8">
                     <p className="text-lg mb-4">
-                      Our 5K Fun Run is the newest addition to the Gator Redleg Chapter's annual events, promoting fitness and 
+                      The Field Artillery 5K Fun Run is one of our newest annual events, promoting fitness and 
                       camaraderie among Field Artillery personnel, veterans, and their families.
                     </p>
                     
                     <p className="mb-4">
-                      This family-friendly event welcomes participants of all ages and abilities. Whether you're a competitive 
-                      runner looking to set a personal record or prefer a leisurely walk through the park, this event is for you. 
-                      Children are encouraged to participate alongside their parents.
+                      This family-friendly event welcomes participants of all ages and abilities to walk or run 
+                      in support of our cause. The course winds through the beautiful Al Lopez Park in Tampa, 
+                      providing a scenic and enjoyable experience for all participants.
                     </p>
                     
                     <p className="mb-4">
-                      The course winds through the beautiful Al Lopez Park, offering a scenic route that's suitable for all fitness 
-                      levels. Water stations will be positioned throughout the course, and medical support will be available.
+                      All proceeds from the run support our scholarship fund, which provides educational 
+                      assistance to family members of Field Artillery Soldiers.
                     </p>
                     
-                    <h3 className="text-xl font-bold mt-8 mb-4">Registration Includes</h3>
+                    <h3 className="text-xl font-bold mt-8 mb-4">Event Features</h3>
                     <ul className="list-disc pl-6 mb-4">
-                      <li>Official event t-shirt</li>
-                      <li>Race bib with timing chip</li>
-                      <li>Finisher medal</li>
-                      <li>Post-race refreshments</li>
-                      <li>Access to the post-race celebration</li>
+                      <li>Professionally timed 5K race</li>
+                      <li>Commemorative t-shirt for all registered participants</li>
+                      <li>Age group awards for top finishers</li>
+                      <li>Post-race refreshments and celebration</li>
+                      <li>Military team competition</li>
+                      <li>Family-friendly atmosphere</li>
                     </ul>
                     
-                    <h3 className="text-xl font-bold mt-8 mb-4">Categories and Awards</h3>
-                    <p className="mb-4">
-                      Awards will be presented to the top three male and female finishers in the following age categories:
-                    </p>
+                    <h3 className="text-xl font-bold mt-8 mb-4">Registration Options</h3>
                     <ul className="list-disc pl-6 mb-4">
-                      <li>14 and under</li>
-                      <li>15-19</li>
-                      <li>20-29</li>
-                      <li>30-39</li>
-                      <li>40-49</li>
-                      <li>50-59</li>
-                      <li>60+</li>
+                      <li>Individual Runner/Walker: $30</li>
+                      <li>Children (12 & under): $15</li>
+                      <li>Military Team (5 members): $125</li>
+                      <li>Virtual Participant: $25</li>
                     </ul>
                     
-                    <h3 className="text-xl font-bold mt-8 mb-4">Registration Fees</h3>
                     <p>
-                      Early Bird (until August 1): $25<br />
-                      Regular Registration: $35<br />
-                      Day-of Registration: $45<br />
-                      Military Discount: $5 off with valid military ID<br />
-                      Children under 12: $15
+                      Registration includes a commemorative t-shirt, race bib, timing chip, and post-race refreshments.
+                      Virtual participants receive a t-shirt and can complete the 5K on their own time and location.
                     </p>
                   </div>
                 </div>
@@ -138,41 +129,40 @@ const Run = () => {
                     
                     <div className="space-y-4">
                       <div>
-                        <p className="font-medium">6:30 AM</p>
+                        <p className="font-medium">7:00 AM</p>
                         <p className="text-artillery-muted">Check-in & Registration Opens</p>
                       </div>
                       <Separator />
                       <div>
-                        <p className="font-medium">7:15 AM</p>
-                        <p className="text-artillery-muted">Pre-race Stretching & Warm-up</p>
+                        <p className="font-medium">7:45 AM</p>
+                        <p className="text-artillery-muted">Pre-race Announcements</p>
                       </div>
                       <Separator />
                       <div>
-                        <p className="font-medium">7:30 AM</p>
-                        <p className="text-artillery-muted">5K Run/Walk Begins</p>
+                        <p className="font-medium">8:00 AM</p>
+                        <p className="text-artillery-muted">Race Start</p>
                       </div>
                       <Separator />
                       <div>
-                        <p className="font-medium">8:30 AM</p>
-                        <p className="text-artillery-muted">Kids' Fun Run (Ages 10 & Under)</p>
-                      </div>
-                      <Separator />
-                      <div>
-                        <p className="font-medium">9:00 AM</p>
-                        <p className="text-artillery-muted">Post-race Refreshments</p>
+                        <p className="font-medium">9:15 AM</p>
+                        <p className="text-artillery-muted">Awards Ceremony</p>
                       </div>
                       <Separator />
                       <div>
                         <p className="font-medium">10:00 AM</p>
-                        <p className="text-artillery-muted">Awards Ceremony</p>
+                        <p className="text-artillery-muted">Event Concludes</p>
                       </div>
                     </div>
                     
-                    <div className="mt-8 space-y-4">
-                      <h3 className="text-xl font-bold text-artillery mb-2">Course Map</h3>
-                      <div className="bg-gray-200 h-40 rounded flex items-center justify-center text-gray-500">
-                        Course Map Image
-                      </div>
+                    <div className="mt-8">
+                      <h3 className="text-xl font-bold text-artillery mb-4">Sponsorship Opportunities</h3>
+                      <ul className="space-y-2">
+                        <li>Title Sponsor: $1,500</li>
+                        <li>Starting Line Sponsor: $750</li>
+                        <li>Finish Line Sponsor: $750</li>
+                        <li>Water Station Sponsor: $500</li>
+                        <li>Mile Marker Sponsor: $250</li>
+                      </ul>
                       
                       <div className="mt-6">
                         <Link to="/support/donate">
