@@ -1,0 +1,33 @@
+
+{
+    "navigationFallback": {
+      "rewrite": "index.html",
+      "exclude": ["/images/*.{png,jpg,gif,ico}", "/*.{css,scss,js}"]
+    },
+    "routes": [
+      {
+        "route": "/business-card",
+        "rewrite": "index.html"
+      },
+      {
+        "route": "/document-auth",
+        "rewrite": "index.html"
+      },
+      {
+        "route": "/document-generator",
+        "rewrite": "index.html"
+      },
+      {
+        "route": "/manifest.json",
+        "headers": {
+          "Content-Type": "application/manifest+json"
+        }
+      },
+      {
+        "route": "/sw.js",
+        "headers": {
+          "Cache-Control": "no-cache, no-store, must-revalidate"
+        }
+      }
+    ]
+}
