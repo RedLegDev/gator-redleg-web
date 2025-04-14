@@ -9,7 +9,7 @@ const Support = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow pt-6 pb-16">
+      <main className="flex-grow pt-24 pb-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb */}
@@ -70,9 +70,11 @@ const Support = () => {
                   <p className="text-gray-600 mb-4">
                     Join our community of Field Artillery professionals and supporters. Your membership dues help fund our programs and activities.
                   </p>
-                  <Link to="/membership" className="text-redleg hover:underline font-medium">
-                    Learn about membership →
-                  </Link>
+                  <div className="text-redleg hover:underline font-medium">
+                    <Link to="/membership" className="inline-flex items-center">
+                      Learn about membership <ChevronRight className="h-4 w-4 ml-1" />
+                    </Link>
+                  </div>
                 </div>
                 
                 <div>
@@ -80,9 +82,11 @@ const Support = () => {
                   <p className="text-gray-600 mb-4">
                     Find out more about who we are and the important work we do for Florida's Field Artillery community.
                   </p>
-                  <Link to="/about" className="text-redleg hover:underline font-medium">
-                    Visit our About page →
-                  </Link>
+                  <div className="text-redleg hover:underline font-medium">
+                    <Link to="/about" className="inline-flex items-center">
+                      Visit our About page <ChevronRight className="h-4 w-4 ml-1" />
+                    </Link>
+                  </div>
                 </div>
                 
                 <div>
@@ -90,9 +94,11 @@ const Support = () => {
                   <p className="text-gray-600 mb-4">
                     We welcome partnerships with businesses and organizations that share our commitment to supporting Florida's Field Artillery community.
                   </p>
-                  <Link to="/more/contact" className="text-redleg hover:underline font-medium">
-                    Contact us about partnerships →
-                  </Link>
+                  <div className="text-redleg hover:underline font-medium">
+                    <Link to="/more/contact" className="inline-flex items-center">
+                      Contact us about partnerships <ChevronRight className="h-4 w-4 ml-1" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
