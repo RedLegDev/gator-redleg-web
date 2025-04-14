@@ -25,6 +25,11 @@ jobs:
         with:
           node-version: 'lts/*'
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
       - name: Setup @antfu/ni
         run: npm i -g @antfu/ni
 
