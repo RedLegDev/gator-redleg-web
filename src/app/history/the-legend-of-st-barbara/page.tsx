@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { Prose } from "@/components/Prose";
@@ -18,6 +19,18 @@ export default function StBarbaraPage() {
         subtitle="Patron saint of artillerymen · Feast Day, December 4th"
       />
       <Container className="py-16">
+        <figure className="mb-6 sm:float-right sm:ml-8 sm:max-w-[220px]">
+          <Image
+            src="/photos/st-barbara-icon.jpg"
+            alt="Devotional depiction of Saint Barbara, crowned and robed in red, holding a chalice beside her three-windowed tower with a cannon at her feet."
+            width={243}
+            height={408}
+            className="h-auto w-full rounded shadow"
+          />
+          <figcaption className="mt-2 font-label text-xs uppercase tracking-wide text-artillery-muted">
+            Saint Barbara, patroness of artillerymen.
+          </figcaption>
+        </figure>
         <Prose>
           <p>
             According to legend, Barbara was the daughter of Dioscorus, a Roman

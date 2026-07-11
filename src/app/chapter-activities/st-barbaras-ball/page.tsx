@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
@@ -46,6 +47,19 @@ export default function StBarbarasBallPage() {
             stories, welcome new faces, and raise a glass to the Redlegs who came
             before us.
           </p>
+
+          <figure className="mt-10 sm:float-right sm:ml-8 sm:mb-4 sm:max-w-xs">
+            <Image
+              src="/photos/st-barbaras-ball-2017.jpg"
+              alt="Program booklet for the Gator Redleg Chapter's Saint Barbara's Day Celebration, December 9, 2017, in St. Augustine, Florida, on a candlelit banquet table."
+              width={1000}
+              height={1401}
+              className="h-auto w-full rounded shadow-lg"
+            />
+            <figcaption className="mt-2 font-label text-xs uppercase tracking-wide text-artillery-muted">
+              St. Barbara&apos;s Day Celebration · St. Augustine, 2017
+            </figcaption>
+          </figure>
 
           {/* What to Know */}
           <div className="mt-10 rounded border-l-4 border-gold bg-neutral-50 p-6">
