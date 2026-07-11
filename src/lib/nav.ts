@@ -38,7 +38,14 @@ export const NAV: NavGroup[] = [
       { label: "Fiddler's Green", href: "/history/fiddlers-green" },
     ],
   },
-  { label: "Regimental Coin", href: "/regimental-coin" },
+  {
+    label: "About",
+    href: "/chapter-vision",
+    children: [
+      { label: "Chapter Vision", href: "/chapter-vision" },
+      { label: "Regimental Coin", href: "/regimental-coin" },
+    ],
+  },
   {
     label: "Chapter Activities",
     href: "/chapter-activities",
@@ -50,25 +57,17 @@ export const NAV: NavGroup[] = [
     ],
   },
   {
-    label: "Newsletter",
-    href: "/newsletter",
-    children: [
-      { label: "Basecamp", href: BASECAMP_URL, external: true },
-      { label: "Zoom Link", href: ZOOM_PATH },
-    ],
-  },
-  {
     label: "Support",
     href: "/support",
     children: [
       { label: "Fundraising", href: "/support/fundraising" },
+      { label: "Volunteering", href: "/volunteering" },
       { label: "Charitable Action Playbook", href: CHARITABLE_PLAYBOOK_URL, external: true },
       { label: "Request for Support", href: "/support/request-for-support" },
     ],
   },
+  { label: "Newsletter", href: "/newsletter" },
   { label: "Membership", href: "/membership" },
-  { label: "Volunteering", href: "/volunteering" },
-  { label: "Chapter Vision", href: "/chapter-vision" },
   { label: "Contact", href: "/contact" },
 ];
 

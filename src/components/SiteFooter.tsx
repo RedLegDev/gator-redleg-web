@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { NAV, FACEBOOK_URL } from "@/lib/nav";
+import { NAV, FACEBOOK_URL, BASECAMP_URL, ZOOM_PATH } from "@/lib/nav";
 import { Container } from "@/components/Container";
 
 const LOGO = "/lovable-uploads/c4320cdb-23e3-429d-bdeb-cc34787d252c.png";
@@ -94,6 +94,17 @@ export function SiteFooter() {
             >
               Store
             </a>
+            <a
+              href={BASECAMP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-gold"
+            >
+              Basecamp
+            </a>
+            <Link href={ZOOM_PATH} className="transition-colors hover:text-gold">
+              Zoom
+            </Link>
             <span className="text-white/40">
               © {new Date().getFullYear()} Gator Redleg Chapter
             </span>
