@@ -67,6 +67,7 @@ export const NAV: NavGroup[] = [
     ],
   },
   { label: "Membership", href: "/membership" },
+  { label: "Volunteering", href: "/volunteering" },
   { label: "Chapter Vision", href: "/chapter-vision" },
   { label: "Contact", href: "/contact" },
 ];
