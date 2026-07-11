@@ -4,6 +4,8 @@ import Script from "next/script";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { JsonLd } from "@/components/JsonLd";
+import { organizationSchema } from "@/lib/structured-data";
 
 // Inscriptional caps — evokes the regimental coin, medals, and monuments.
 const display = Cinzel({
@@ -55,6 +57,7 @@ export default function RootLayout({
       <body
         className={`${display.variable} ${label.variable} ${body.variable} antialiased`}
       >
+        <JsonLd data={organizationSchema} />
         <SiteHeader />
         <main>{children}</main>
         <SiteFooter />

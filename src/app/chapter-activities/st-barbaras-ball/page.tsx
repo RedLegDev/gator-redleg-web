@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
+import { JsonLd } from "@/components/JsonLd";
+import { stBarbarasBallEventSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "St. Barbara's Ball",
@@ -23,6 +25,7 @@ const DETAILS = [
 export default function StBarbarasBallPage() {
   return (
     <>
+      <JsonLd data={stBarbarasBallEventSchema} />
       <PageHero
         eyebrow="Save the Date"
         title="St. Barbara's Ball"
