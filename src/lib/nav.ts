@@ -68,6 +68,7 @@ export const NAV: NavGroup[] = [
   },
   { label: "Membership", href: "/membership" },
   { label: "Chapter Vision", href: "/chapter-vision" },
+  { label: "Contact", href: "/contact" },
 ];
 
 /** St. Barbara's Ball has its own second-level nav on the live site. */

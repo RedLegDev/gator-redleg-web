@@ -33,6 +33,7 @@ const ROUTES: Array<{ path: string; priority: number }> = [
   { path: "/support/request-for-support", priority: 0.6 },
   { path: "/membership", priority: 0.8 },
   { path: "/chapter-vision", priority: 0.6 },
+  { path: "/contact", priority: 0.6 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
