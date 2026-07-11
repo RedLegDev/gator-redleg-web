@@ -1,10 +1,20 @@
 import type { Metadata } from "next";
-import { Oswald, Inter } from "next/font/google";
+import { Cinzel, Oswald, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 
-const display = Oswald({
+// Inscriptional caps — evokes the regimental coin, medals, and monuments.
+const display = Cinzel({
   variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+});
+
+// Condensed military-signage voice for eyebrows, nav, and labels.
+const label = Oswald({
+  variable: "--font-label",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -42,8 +52,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${display.variable} ${body.variable} antialiased`}>
-        {children}
+      <body
+        className={`${display.variable} ${label.variable} ${body.variable} antialiased`}
+      >
+        <SiteHeader />
+        <main>{children}</main>
+        <SiteFooter />
         <Script
           defer
           data-domain="gatorredleg.org"
