@@ -69,23 +69,36 @@ export default function MembershipPage() {
           </p>
         </div>
 
-        <div className="mt-12 max-w-xl">
+        <div className="mt-12 max-w-2xl">
           <h2 className="font-display text-2xl font-bold tracking-wide text-artillery">
-            Membership Pricing
+            How to Affiliate With the Gator Redlegs
           </h2>
-          <dl className="mt-4 divide-y divide-black/10 border-y border-black/10">
-            {PRICING.map(([label, price]) => (
-              <div
-                key={label}
-                className="flex items-center justify-between py-3"
+          <ol className="mt-4 list-decimal space-y-3 pl-6 text-artillery-light">
+            <li>
+              Join or renew your membership through the United States Field
+              Artillery Association at{" "}
+              <a
+                href={EMBEDS.usfaaJoin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-redleg underline underline-offset-2 hover:text-redleg-dark"
               >
-                <dt className="text-artillery-light">{label}</dt>
-                <dd className="font-display font-semibold text-redleg">
-                  {price}
-                </dd>
-              </div>
-            ))}
-          </dl>
+                fieldartillery.org
+              </a>
+              . Annual, multi-year, and lifetime memberships are available —
+              USFAA sets current pricing.
+            </li>
+            <li>
+              Once you have a member account, log in to the USFAA Member Compass
+              portal and set your chapter affiliation to the{" "}
+              <strong>Gator Redleg Chapter</strong>.
+            </li>
+            <li>
+              That&apos;s it — your dues support USFAA&apos;s national mission,
+              and your affiliation keeps the Gator Redlegs strong here in central
+              Florida.
+            </li>
+          </ol>
         </div>
 
         <div className="mt-12 max-w-3xl rounded border-l-4 border-redleg bg-neutral-50 p-6">
