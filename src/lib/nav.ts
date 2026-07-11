@@ -66,16 +66,6 @@ export const NAV: NavGroup[] = [
       { label: "Request for Support", href: "/support/request-for-support" },
     ],
   },
-  {
-    label: "Photos",
-    href: "/photos",
-    children: [
-      { label: "2022 St. Barbara's Ball", href: "/photos/2022-st-barbaras-ball" },
-      { label: "2020 St. Barbara's Ball", href: "/photos/2020-st-barbaras-ball" },
-      { label: "2019 St. Barbara's Ball", href: "/photos/2019-st-barbaras-ball" },
-      { label: "2019 Redleg Social", href: "/photos/2019-redleg-social" },
-    ],
-  },
   { label: "Membership", href: "/membership" },
   { label: "Chapter Vision", href: "/chapter-vision" },
 ];
@@ -87,5 +77,4 @@ export const ST_BARBARAS_BALL_NAV: NavLink[] = [
   { label: "Sponsors", href: "/chapter-activities/st-barbaras-ball/sponsors" },
   { label: "FAQ", href: "/chapter-activities/st-barbaras-ball/faq" },
   { label: "Red Leg Social", href: "/chapter-activities/st-barbaras-ball/red-leg-social" },
-  { label: "Survey", href: "/chapter-activities/st-barbaras-ball/survey" },
 ];

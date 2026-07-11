@@ -12,20 +12,16 @@ export const EMBEDS = {
   // RSVP/tickets and sponsorship route through the Stripe-backed store.
   ballRsvp: "https://store.gatorredleg.org" as string | null,
   ballSponsors: "https://store.gatorredleg.org" as string | null,
-  ballSurvey: null as string | null, // Google Form survey
   // Known-good external links
   ballLodgingHotel: "https://hotel.hardrock.com/daytona-beach/",
   ballLodgingBooking:
     "https://be.synxis.com/?Hotel=78302&Chain=13924&Dest=HRH&config=RBEDB&theme=RBE&locale=en-US&arrive=2025-11-07&depart=2025-11-09&adult=1&child=0&group=2025BBNG",
 
-  // Tournament registrations
-  softballRegistration: null as string | null,
+  // Tournament registrations (softball & 5K currently unscheduled)
   golfRegistration: null as string | null,
-  runRegistration: null as string | null,
 
   // Support
   donate: null as string | null, // QGiv donation
-  newsletterSignup: null as string | null,
 
   // Chapter Vision doc
   chapterVisionDoc:
@@ -35,12 +31,6 @@ export const EMBEDS = {
   usfaaJoin: "https://www.fieldartillery.org/membership-information",
   usfaaInfo: "https://fieldartillery.org",
   usfaaNewMemberships: "https://fieldartillery.org/new-memberships/",
-
-  // Photo galleries (Google Photos albums)
-  photos2022Ball: null as string | null,
-  photos2020Ball: null as string | null,
-  photos2019Ball: null as string | null,
-  photos2019Social: null as string | null,
 } as const;
 
 export const CHARITIES = [

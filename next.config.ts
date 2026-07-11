@@ -26,6 +26,24 @@ const nextConfig: NextConfig = {
         destination: "/chapter-activities/:path*",
         permanent: true,
       },
+      // Dropped for now — redirect old live paths to their nearest parent.
+      { source: "/photos", destination: "/", permanent: false },
+      { source: "/photos/:path*", destination: "/", permanent: false },
+      {
+        source: "/chapter-activities/st-barbaras-ball/survey",
+        destination: "/chapter-activities/st-barbaras-ball",
+        permanent: false,
+      },
+      {
+        source: "/chapter-activities/softball-tournament/registration",
+        destination: "/chapter-activities/softball-tournament",
+        permanent: false,
+      },
+      {
+        source: "/chapter-activities/5k-run/registration",
+        destination: "/chapter-activities/5k-run",
+        permanent: false,
+      },
     ];
   },
 };

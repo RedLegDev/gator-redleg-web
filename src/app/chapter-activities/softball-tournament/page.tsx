@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
-import { Button } from "@/components/Button";
 
 export const metadata: Metadata = {
   title: "Softball Tournament",
@@ -37,10 +36,23 @@ export default function SoftballPage() {
             and recognize past and present United States Field Artillerymen.
           </p>
 
-          <div className="mt-8">
-            <Button href="/chapter-activities/softball-tournament/registration">
-              Register Your Team or Sponsorship
-            </Button>
+          <div className="mt-8 rounded border-l-4 border-gold bg-neutral-50 p-6">
+            <p className="font-label text-sm uppercase tracking-wide text-artillery-muted">
+              Not currently scheduled
+            </p>
+            <p className="mt-2 text-sm text-artillery-light">
+              Registration will open when the next tournament is announced.
+              Follow us on{" "}
+              <a
+                href="https://m.facebook.com/pages/Gator-Redleg-Chapter-of-US-Field-Artillery-Association/159706074074450"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-redleg underline"
+              >
+                Facebook
+              </a>{" "}
+              for updates.
+            </p>
           </div>
         </div>
       </Container>
