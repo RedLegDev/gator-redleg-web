@@ -1,10 +1,8 @@
 /**
  * External / embedded URLs.
  *
- * The live Google Sites embeds (RSVP, registrations, donation, forms, photo
- * albums) hide their real targets inside opaque Google wrapper iframes, so
- * those could not be scraped. Fill in the `null` values below with the real
- * QGiv / Google Form / Google Photos URLs and the pages wire up automatically.
+ * Fill in the `null` values below with the real URLs (Stripe donation link,
+ * ticketing, etc.) and the pages wire up automatically.
  */
 
 export const EMBEDS = {
@@ -17,11 +15,8 @@ export const EMBEDS = {
   ballLodgingBooking:
     "https://be.synxis.com/?Hotel=78302&Chain=13924&Dest=HRH&config=RBEDB&theme=RBE&locale=en-US&arrive=2025-11-07&depart=2025-11-09&adult=1&child=0&group=2025BBNG",
 
-  // Tournament registrations (softball & 5K currently unscheduled)
-  golfRegistration: null as string | null,
-
   // Support
-  donate: null as string | null, // QGiv donation
+  donate: null as string | null, // Stripe donation link
 
   // Chapter Vision doc
   chapterVisionDoc:

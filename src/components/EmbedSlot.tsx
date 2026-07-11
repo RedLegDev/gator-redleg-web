@@ -2,7 +2,7 @@ import { Button } from "@/components/Button";
 
 /**
  * Renders a call-to-action for content that lives in an external service
- * (QGiv, Google Forms, Google Photos). When the URL is known it renders a
+ * (Stripe, Google Forms, etc.). When the URL is known it renders a
  * button; when it isn't yet wired, it shows a tasteful pending state instead
  * of a broken embed.
  */

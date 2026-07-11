@@ -7,5 +7,9 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
-  }
+  },
+  "routes": [
+    { "pattern": "gatorredleg.org", "custom_domain": true },
+    { "pattern": "www.gatorredleg.org", "custom_domain": true }
+  ]
 }

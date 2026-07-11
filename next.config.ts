@@ -44,6 +44,11 @@ const nextConfig: NextConfig = {
         destination: "/chapter-activities/5k-run",
         permanent: false,
       },
+      {
+        source: "/chapter-activities/golf-tournament/registration",
+        destination: "/chapter-activities/golf-tournament",
+        permanent: false,
+      },
     ];
   },
 };
