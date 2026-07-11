@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gator Redleg Chapter — Website
 
-## Getting Started
+Next.js 15 (App Router) rebuild of [gatorredleg.org](https://www.gatorredleg.org/),
+replacing the previous Google Sites site. Scarlet + gold Field Artillery branding,
+deployed to Cloudflare Workers via `@opennextjs/cloudflare`.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js 15** App Router, React 19, TypeScript
+- **Tailwind CSS v4** — brand tokens in `src/app/globals.css`
+- **Fonts:** Cinzel (inscriptional display), Oswald (labels/nav), Inter (body)
+- **Cloudflare Workers** via `@opennextjs/cloudflare`
+- **Analytics:** Plausible (`analytics.redleg.dev`)
+
+## Develop
+
+```sh
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> Do **not** run `npm run build` while `npm run dev` is running — the production
+> build overwrites `.next` and breaks the dev server. Stop dev first.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/app/**` — one folder per route; URLs mirror the live site for parity
+- `src/components/**` — `SiteHeader`, `SiteFooter`, `PageHero`, `Prose`,
+  `SubNav`, `AzimuthRule`, `Button`, `EmbedSlot`, `Container`
+- `src/lib/nav.ts` — single source of truth for nav + URL structure
+- `src/lib/embeds.ts` — external / embedded URLs (QGiv, Google Forms, Photos).
+  **Fill in the `null` values** with the real form/donation/album URLs.
 
-## Learn More
+## URL parity
 
-To learn more about Next.js, take a look at the following resources:
+Routes mirror the live Google Sites paths. Redirects in `next.config.ts`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/home` → `/`
+- `/chapter-activites/*` → `/chapter-activities/*` (fixes the live site's
+  misspelled Softball registration link)
+- `/zoom` → the chapter Zoom room
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy (Cloudflare Workers)
 
-## Deploy on Vercel
+```sh
+npm run preview    # build + local workerd preview
+npm run deploy     # build + deploy to Cloudflare
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Config lives in `wrangler.jsonc` and `open-next.config.ts`. Cloudflare Workers
+Builds pins npm 10.9.2 — regenerate the lockfile with that version if CI errors
+on lockfile mismatch.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Still needed before go-live
+
+Several live pages embed opaque Google widgets whose targets weren't scrapable.
+Wire the real URLs into `src/lib/embeds.ts`: ticketing/RSVP, sponsorship
+purchase, tournament + 5K registrations, survey, newsletter, donation, request
+for support, and the photo-gallery albums. Also re-host the Google Drive flyers
+(softball, golf, fundraising) and the Chapter Vision doc as local assets.
