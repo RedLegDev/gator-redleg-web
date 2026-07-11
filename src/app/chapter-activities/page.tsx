@@ -44,8 +44,8 @@ export default function ChapterActivitiesPage() {
       <Container className="py-16">
         <Prose>
           <p>
-            The Gator Redleg Association holds three main events a year. During
-            the fall we hold an Annual Golf Tournament that raises money for the
+            The Gator Redleg Association holds three main events a year. In the
+            spring we hold an Annual Golf Tournament that raises money for the
             chapter and other military organizations — this year, proceeds from
             the 6th Annual Golf Tournament helped sponsor Hockey Heals 22, a{" "}
             <a

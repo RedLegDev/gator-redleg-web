@@ -15,7 +15,7 @@ export default function SupportPage() {
     <>
       <PageHero
         eyebrow="Chapter Patrons"
-        title="How Can You Support the Organization?"
+        title="How You Can Support the Chapter"
         subtitle="Contributions offset the cost of our Soldier and Veteran events and support veteran-oriented charities."
       />
       <Container className="py-16">

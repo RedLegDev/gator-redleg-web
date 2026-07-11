@@ -5,7 +5,7 @@ import { Container } from "@/components/Container";
 export const metadata: Metadata = {
   title: "Softball Tournament",
   description:
-    "The annual 1SG Fike Memorial Softball Tournament benefiting the Gator Redleg Chapter.",
+    "The annual Kenny Fike Memorial Softball Tournament benefiting the Gator Redleg Chapter.",
 };
 
 export default function SoftballPage() {
@@ -13,7 +13,7 @@ export default function SoftballPage() {
     <>
       <PageHero
         eyebrow="Chapter Activities"
-        title="1SG Fike Memorial Softball Tournament"
+        title="Kenny Fike Memorial Softball Tournament"
         subtitle="Open to the public — proceeds benefit the Gator Redleg Chapter."
       />
       <Container className="py-16">
