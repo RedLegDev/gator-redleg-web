@@ -24,14 +24,14 @@ export default function SupportPage() {
             Make a Donation
           </h2>
           <p className="mt-3 leading-relaxed text-artillery-light">
-            Consider making a one-time or recurring donation through the link
+            Consider making a one-time donation through the link
             below. As a registered 501(c)(3), all donations to the Gator Redlegs
             are tax deductible.
           </p>
           <EmbedSlot
             href={EMBEDS.donate}
             label="Donate to the Chapter"
-            note="Our secure donation link will live here — reach us on Facebook in the meantime."
+            note="Secure donation processing through our chapter store."
           />
         </div>
 

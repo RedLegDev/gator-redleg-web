@@ -10,7 +10,7 @@ export const EMBEDS = {
   ballRsvp: null as string | null,
 
   // Support
-  donate: null as string | null, // Stripe donation link
+  donate: "https://store.gatorredleg.org/donate" as string | null,
 
   // Chapter Vision doc — published-to-web embed URL (File → Share → Publish to web)
   chapterVisionDoc:
