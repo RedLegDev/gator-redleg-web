@@ -3,6 +3,8 @@ import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { Prose } from "@/components/Prose";
+import { JsonLd } from "@/components/JsonLd";
+import { ballFaqSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "St. Barbara's Ball FAQ",
@@ -22,6 +24,7 @@ const TOC = [
 export default function BallFaqPage() {
   return (
     <>
+      <JsonLd data={ballFaqSchema} />
       <PageHero
         eyebrow="St. Barbara's Ball"
         title="Frequently Asked Questions"

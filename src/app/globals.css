@@ -3,6 +3,12 @@
 /*
   Gator Redleg Chapter — brand tokens
   Scarlet red + gold on near-black "artillery" neutrals.
+
+  Type roles:
+    display  (Cinzel)  — monumental moments only: wordmark, hero, page titles.
+    heading  (Oswald)  — section and card headings; disciplined signage voice.
+    label    (Oswald)  — eyebrows, nav, and meta, set uppercase and tracked.
+    body     (Inter)   — running text.
 */
 @theme {
   --color-redleg: #c8102e;
@@ -19,6 +25,7 @@
 
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
+  --font-heading: var(--font-label);
   --font-label: var(--font-label);
 }
 
@@ -27,12 +34,48 @@
   --foreground: #1a1a1a;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body), system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-display), "Arial Narrow", system-ui, sans-serif;
+/* Headings default to the condensed signage face for legibility; the
+   monumental Cinzel face is applied intentionally via `font-display`. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-label), "Arial Narrow", system-ui, sans-serif;
+  text-wrap: balance;
+}
+
+/* Scarlet selection — a small brand cue that reads as intentional. */
+::selection {
+  background: var(--color-redleg);
+  color: #fff;
+}
+
+/* Consistent, visible keyboard focus everywhere. */
+:focus-visible {
+  outline: 2px solid var(--color-redleg);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
