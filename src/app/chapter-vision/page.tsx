@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
-import { Button } from "@/components/Button";
 import { EMBEDS } from "@/lib/embeds";
 
 export const metadata: Metadata = {
@@ -46,7 +45,16 @@ export default function ChapterVisionPage() {
         </div>
 
         <div className="mt-12">
-          <Button href={EMBEDS.chapterVisionDoc}>Read the Chapter Vision 2025</Button>
+          <h2 className="font-display text-xl font-semibold uppercase tracking-wide text-redleg">
+            The Full Vision
+          </h2>
+          <div className="mt-4 overflow-hidden rounded border border-artillery-light/20">
+            <iframe
+              src={EMBEDS.chapterVisionDoc}
+              title="Gator Redleg Chapter Vision"
+              className="h-[80vh] w-full"
+            />
+          </div>
         </div>
       </Container>
     </>

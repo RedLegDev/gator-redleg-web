@@ -12,9 +12,9 @@ export const EMBEDS = {
   // Support
   donate: null as string | null, // Stripe donation link
 
-  // Chapter Vision doc
+  // Chapter Vision doc — published-to-web embed URL (File → Share → Publish to web)
   chapterVisionDoc:
-    "https://docs.google.com/document/d/15CmyFuNwQ_mRUCtwE5GNw_unKccf6268Ua6k3B_1Qc8/edit?usp=sharing",
+    "https://docs.google.com/document/d/e/2PACX-1vS79gIlTTQ4ce-5cXpsJZuKdx3fu0p67Fi-LCMRXJY5HQrYwaC-tfTr_dv7oPb0jHY2GQNj0oYQLdhz/pub?embedded=true",
 
   // Membership (known). USFAA owns pricing/enrollment — always link out, never reprint.
   usfaaJoin: "https://www.fieldartillery.org/membership-information",
