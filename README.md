@@ -42,14 +42,18 @@ Routes mirror the live Google Sites paths. Redirects in `next.config.ts`:
 
 ## Deploy (Cloudflare Workers)
 
+Local:
+
 ```sh
 npm run preview    # build + local workerd preview
-npm run deploy     # build + deploy to Cloudflare
+npm run deploy     # build + deploy from your machine
 ```
 
-Config lives in `wrangler.jsonc` and `open-next.config.ts`. Cloudflare Workers
-Builds pins npm 10.9.2 — regenerate the lockfile with that version if CI errors
-on lockfile mismatch.
+**Cloudflare Workers Builds** (CI on push): set the build command to
+`npm run build:worker` (runs `opennextjs-cloudflare build` → `.open-next/`) and
+the deploy command to `npx wrangler deploy`. Config lives in `wrangler.jsonc`
+and `open-next.config.ts`. The lockfile is generated with npm 10.9.2 to match
+Workers Builds.
 
 ## Wired up
 
