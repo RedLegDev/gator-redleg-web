@@ -5,6 +5,7 @@ import {
   buildSubject,
   type ContactData,
 } from "@/lib/contact";
+import { BOARD_CC } from "@/lib/email";
 
 const RECIPIENT = "president@gatorredleg.org";
 // Must be an address on the Cloudflare Email Sending-onboarded domain.
@@ -40,6 +41,7 @@ export async function POST(request: Request) {
     await env.SEND_EMAIL.send({
       from: FROM,
       to: RECIPIENT,
+      cc: BOARD_CC,
       // Replies land in the sender's inbox, not a noreply void.
       replyTo: data.email,
       subject: buildSubject(data),
