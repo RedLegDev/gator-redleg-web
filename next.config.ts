@@ -49,6 +49,12 @@ const nextConfig: NextConfig = {
         destination: "/chapter-activities/golf-tournament",
         permanent: false,
       },
+      // 2026 Dining Out is local (Winter Haven Armory) — no hotel/lodging.
+      {
+        source: "/chapter-activities/st-barbaras-ball/lodging",
+        destination: "/chapter-activities/st-barbaras-ball",
+        permanent: false,
+      },
     ];
   },
 };

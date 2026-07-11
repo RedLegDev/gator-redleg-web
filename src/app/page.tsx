@@ -8,9 +8,9 @@ const LOGO = "/lovable-uploads/c4320cdb-23e3-429d-bdeb-cc34787d252c.png";
 const EVENTS = [
   {
     name: "St. Barbara's Ball",
-    when: "November",
+    when: "Dec 12, 2026",
     blurb:
-      "Our premier annual event honoring the patron saint of the Field Artillery.",
+      "Our premier annual event — a Dining Out honoring the patron saint of the Field Artillery.",
     href: "/chapter-activities/st-barbaras-ball",
   },
   {

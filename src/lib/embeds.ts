@@ -6,14 +6,8 @@
  */
 
 export const EMBEDS = {
-  // St. Barbara's Ball
-  // RSVP/tickets and sponsorship route through the Stripe-backed store.
-  ballRsvp: "https://store.gatorredleg.org" as string | null,
-  ballSponsors: "https://store.gatorredleg.org" as string | null,
-  // Known-good external links
-  ballLodgingHotel: "https://hotel.hardrock.com/daytona-beach/",
-  ballLodgingBooking:
-    "https://be.synxis.com/?Hotel=78302&Chain=13924&Dest=HRH&config=RBEDB&theme=RBE&locale=en-US&arrive=2025-11-07&depart=2025-11-09&adult=1&child=0&group=2025BBNG",
+  // St. Barbara's Ball — 2026 ticketing not open yet (opens late summer).
+  ballRsvp: null as string | null,
 
   // Support
   donate: null as string | null, // Stripe donation link
@@ -22,10 +16,10 @@ export const EMBEDS = {
   chapterVisionDoc:
     "https://docs.google.com/document/d/15CmyFuNwQ_mRUCtwE5GNw_unKccf6268Ua6k3B_1Qc8/edit?usp=sharing",
 
-  // Membership (known)
+  // Membership (known). USFAA owns pricing/enrollment — always link out, never reprint.
   usfaaJoin: "https://www.fieldartillery.org/membership-information",
-  usfaaInfo: "https://fieldartillery.org",
-  usfaaNewMemberships: "https://fieldartillery.org/new-memberships/",
+  usfaaInfo: "https://www.fieldartillery.org",
+  usfaaNewMemberships: "https://www.fieldartillery.org/membership-information",
 } as const;
 
 export const CHARITIES = [

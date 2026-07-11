@@ -92,19 +92,24 @@ export default function BallFaqPage() {
           </p>
 
           <h2 id="attire">Attire</h2>
-          <h3>Military Personnel</h3>
           <p>
-            Dress for the celebrations should be Bow Tie. Military personnel
-            should wear the black bow tie with one of the following uniforms:
-            Army Blue, Army Blue Mess, Army White, or Army White Mess. Celebrants
-            may wear ribbons or miniature or regular medals on the Army Blue or
-            White uniforms. Miniature medals are appropriate on the Army Blue
-            Mess or Army White Mess uniforms.
+            For the 2026 Dining Out, dress is <strong>cocktail attire</strong>;
+            Soldiers are encouraged to attend in uniform. A traditional Saint
+            Barbara&apos;s dining-in or dining-out is a formal affair — the
+            standards below describe that traditional formality for reference.
           </p>
-          <h3>Civilian</h3>
+          <h3>Military Personnel (traditional standard)</h3>
           <p>
-            For civilian guests, the appropriate attire is the tuxedo or formal
-            gown.
+            Traditionally, dress is Bow Tie: military personnel wear the black
+            bow tie with the Army Blue, Army Blue Mess, Army White, or Army White
+            Mess uniform. Celebrants may wear ribbons or miniature or regular
+            medals on the Army Blue or White uniforms; miniature medals are
+            appropriate on the mess uniforms.
+          </p>
+          <h3>Civilian (traditional standard)</h3>
+          <p>
+            For a traditional formal celebration, civilian guests wear the tuxedo
+            or formal gown.
           </p>
 
           <h2 id="rules-of-the-mess">Rules of the Mess</h2>

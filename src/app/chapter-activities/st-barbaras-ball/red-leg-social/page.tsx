@@ -5,7 +5,7 @@ import { Container } from "@/components/Container";
 export const metadata: Metadata = {
   title: "Red Leg Social",
   description:
-    "Join us Friday evening on the Avalon Terrace at the Hard Rock Hotel for the Red Leg Social.",
+    "The Red Leg Social kicks off St. Barbara's Ball weekend on Friday, December 11, 2026.",
 };
 
 export default function RedLegSocialPage() {
@@ -14,26 +14,19 @@ export default function RedLegSocialPage() {
       <PageHero
         eyebrow="St. Barbara's Ball"
         title="Red Leg Social"
-        subtitle="Join us for an unforgettable evening."
+        subtitle="Friday, December 11, 2026 — the night before the Dining Out."
       />
       <Container className="py-16">
         <div className="max-w-2xl text-lg leading-relaxed text-artillery-light">
           <p>
-            Join us Friday evening on the Avalon Terrace at the Hard Rock Hotel
-            for the Redleg Social, where you can enjoy the company of fellow
-            Redlegs in a relaxed and informal setting. Attire for the evening is
-            business casual.
+            Kick off St. Barbara&apos;s weekend with the Red Leg Social on Friday
+            evening. Reconnect with fellow Redlegs in a relaxed, informal setting
+            — swap stories, welcome new faces, and set the tone for the Dining
+            Out the following night.
           </p>
           <p className="mt-4">
-            Savor our delicious offerings, including popular Angus Beef Sliders,
-            Chicken Parmesan Sliders, and BBQ Pulled Pork Sliders, complemented
-            by a mashed potato bar and a fresh salad bar. Take advantage of the
-            cash bar with skilled bartenders ready to serve your favorite drinks.
-          </p>
-          <p className="mt-4">
-            This is a fantastic opportunity to reconnect, share stories, and
-            build camaraderie with fellow members in a vibrant atmosphere. We
-            look forward to seeing you there!
+            Venue and timing will be announced with ticketing later this summer.
+            Watch this space and follow us on Facebook for details.
           </p>
         </div>
       </Container>

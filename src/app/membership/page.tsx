@@ -7,20 +7,8 @@ import { EMBEDS } from "@/lib/embeds";
 export const metadata: Metadata = {
   title: "Membership",
   description:
-    "Join the United States Field Artillery Association and support the Gator Redlegs.",
+    "Join the United States Field Artillery Association and affiliate with the Gator Redleg Chapter.",
 };
-
-const PRICING = [
-  ["1 Year Membership", "$25.00"],
-  ["3 Year Membership", "$60.00"],
-  ["5 Year Membership", "$100.00"],
-  ["Lifetime — Age 17–40", "$425.00"],
-  ["Lifetime — Age 41–50", "$410.00"],
-  ["Lifetime — Age 51–60", "$365.00"],
-  ["Lifetime — Age 61–70", "$300.00"],
-  ["Lifetime — Age 71–80", "$265.00"],
-  ["Lifetime — Age 80+", "$215.00"],
-];
 
 export default function MembershipPage() {
   return (

@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { CHARITABLE_PLAYBOOK_URL } from "@/lib/nav";
+import { PROGRAM_GROUPS } from "@/lib/support-request";
 
-const WEBHOOK_URL = "https://hook.us1.make.com/amme7klajsfp0ukxlpdhi6o5sjdu1ypb";
+const SUPPORT_REQUEST_ENDPOINT = "/api/support-request";
 const CONTACT_EMAIL = "president@gatorredleg.org";
 
 type Guidance = { title: string; body: React.ReactNode };
@@ -138,115 +139,9 @@ const PROGRAM_GUIDANCE: Record<string, Guidance> = {
   },
 };
 
-const PROGRAM_GROUPS = [
-  {
-    label: "Unit Support Programs",
-    options: [
-      ["shake-and-bake", "Shake and Bake — Unit Financial Support ($250–$1,000)"],
-      ["coordinated-illumination", "Coordinated Illumination — Membership/Marketing Events ($100–$200)"],
-      ["sead", "SEAD — Unit/Chapter Fundraising (Silent Auctions)"],
-    ],
-  },
-  {
-    label: "Individual Support Programs",
-    options: [
-      ["quick-smoke", "Quick Smoke — Immediate Financial Support ($250–$1,000)"],
-      ["fire-mission", "Fire Mission — Soldier/NCO of Year Gifts (up to $150)"],
-      ["end-of-mission", "End of Mission — Regimental Coins (ETS/PCS)"],
-    ],
-  },
-  {
-    label: "Other",
-    options: [
-      ["scholarship", "Scholarship Request"],
-      ["other", "Other (Not covered by existing programs)"],
-    ],
-  },
-] as const;
-
 const inputClass =
   "w-full rounded border-2 border-black/15 px-3 py-2.5 text-sm transition-colors focus:border-redleg focus:outline-none focus:ring-2 focus:ring-redleg/20";
 const labelClass = "mb-1.5 block text-sm font-semibold text-artillery";
-
-function optionLabel(value: string): string {
-  for (const g of PROGRAM_GROUPS) {
-    const found = g.options.find(([v]) => v === value);
-    if (found) return found[1];
-  }
-  return value;
-}
-
-function buildEmailHtml(data: {
-  requesterName: string;
-  unit: string;
-  email: string;
-  eventDate: string;
-  requestType: string;
-  amount: string;
-  description: string;
-}): string {
-  const currentDate = new Date().toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-  const eventDate = new Date(data.eventDate);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const daysUntil = Math.ceil(
-    (eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
-  );
-  const formattedEventDate = eventDate.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-
-  let urgencyLabel = "";
-  let urgencyColor = "#666";
-  if (daysUntil <= 7) {
-    urgencyLabel = "URGENT - Within 7 days";
-    urgencyColor = "#B22234";
-  } else if (daysUntil <= 14) {
-    urgencyLabel = "High Priority - Within 2 weeks";
-    urgencyColor = "#FF6B00";
-  } else if (daysUntil <= 30) {
-    urgencyLabel = "Standard - Within 30 days";
-    urgencyColor = "#FFD700";
-  }
-
-  const amountRow = data.amount
-    ? `<tr><td style="padding:8px 0;font-weight:bold;">Amount Requested:</td><td style="padding:8px 0;font-size:18px;color:#B22234;font-weight:bold;">$${parseFloat(
-        data.amount
-      ).toFixed(2)}</td></tr>`
-    : "";
-
-  return `
-<!DOCTYPE html>
-<html><head><meta charset="UTF-8"></head>
-<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0; padding: 0;">
-  <div style="background-color:#B22234;color:white;padding:20px;text-align:center;">
-    <h2 style="margin:0;font-size:24px;">NEW SUPPORT REQUEST</h2>
-    <p style="margin:5px 0;font-size:14px;color:#FFD700;">Gator Redleg Chapter, USFAA</p>
-    <p style="margin:5px 0;font-size:12px;font-style:italic;">VESTIGIA NULLA RETRORSUM</p>
-  </div>
-  <table style="width:100%;border-collapse:collapse;margin:0;padding:20px;background-color:#f9f9f9;">
-    <tr><td style="padding:8px 0;font-weight:bold;width:35%;">Date Submitted:</td><td style="padding:8px 0;">${currentDate}</td></tr>
-    <tr><td style="padding:8px 0;font-weight:bold;">Requester:</td><td style="padding:8px 0;">${data.requesterName}</td></tr>
-    <tr><td style="padding:8px 0;font-weight:bold;">Unit/Organization:</td><td style="padding:8px 0;">${data.unit}</td></tr>
-    <tr><td style="padding:8px 0;font-weight:bold;">Contact Email:</td><td style="padding:8px 0;"><a href="mailto:${data.email}" style="color:#B22234;">${data.email}</a></td></tr>
-    <tr><td style="padding:8px 0;font-weight:bold;">Event/Need Date:</td><td style="padding:8px 0;">${formattedEventDate} <span style="color:#666;">(${daysUntil} days)</span>${urgencyLabel ? `<br><strong style="color:${urgencyColor};">${urgencyLabel}</strong>` : ""}</td></tr>
-    <tr><td colspan="2" style="padding:15px 0 8px 0;"><div style="background-color:#FFF9E6;padding:12px;border-left:4px solid #FFD700;"><strong style="color:#B22234;">Support Program:</strong><br>${optionLabel(data.requestType)}</div></td></tr>
-    ${amountRow}
-    <tr><td colspan="2" style="padding:15px 0 0 0;"><div style="background-color:white;padding:15px;border-left:4px solid #B22234;"><strong style="color:#B22234;font-size:16px;">Request Details:</strong><p style="margin:10px 0 0 0;white-space:pre-wrap;line-height:1.5;">${data.description}</p></div></td></tr>
-    <tr><td colspan="2" style="padding:15px 0 0 0;text-align:center;font-size:13px;color:#666;"><a href="${CHARITABLE_PLAYBOOK_URL}" style="color:#B22234;font-weight:bold;">Review Charitable Action Playbook</a></td></tr>
-  </table>
-  <div style="background-color:#333;color:white;padding:15px;text-align:center;">
-    <p style="margin:0;font-size:14px;font-style:italic;">Never Leave a Fallen Comrade</p>
-    <p style="margin:5px 0 0 0;font-size:12px;color:#999;">Gator Redleg Chapter · United States Field Artillery Association</p>
-  </div>
-</body></html>`.trim();
-}
 
 export function SupportRequestForm() {
   const [requestType, setRequestType] = useState("");
@@ -271,18 +166,12 @@ export function SupportRequestForm() {
     };
 
     setStatus("sending");
-    const programName = optionLabel(data.requestType).split(" — ")[0];
-    const payload = {
-      address: CONTACT_EMAIL,
-      subject: `Support Request: ${programName} - ${data.requesterName}`,
-      message: buildEmailHtml(data),
-    };
 
     try {
-      const res = await fetch(WEBHOOK_URL, {
+      const res = await fetch(SUPPORT_REQUEST_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error("Request failed");
       setStatus("ok");

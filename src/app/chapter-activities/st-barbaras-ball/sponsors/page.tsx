@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
-import { EmbedSlot } from "@/components/EmbedSlot";
-import { EMBEDS } from "@/lib/embeds";
+import { Button } from "@/components/Button";
 
 export const metadata: Metadata = {
   title: "Sponsors",
   description:
-    "Sponsorship opportunities for the St. Barbara's Ball — $100, $500, and $2,000 levels.",
+    "Sponsorship opportunities for the 2026 St. Barbara's Ball supporting Florida's Field Artillery.",
 };
 
 const TIERS = [
@@ -23,10 +22,12 @@ export default function SponsorsPage() {
       <Container className="py-16">
         <div className="max-w-2xl">
           <p className="text-lg leading-relaxed text-artillery-light">
-            Your sponsorship will express your support for Florida&apos;s
-            artillery Soldiers, promote your brand to roughly two hundred annual
-            attendees, and help to defray the costs associated with recognizing
-            our finest honorees at this annual celebration.
+            We&apos;re actively looking for sponsors to help offset the cost of
+            the evening so we can get as many Redlegs through the door as
+            possible. Your sponsorship expresses your support for Florida&apos;s
+            artillery Soldiers and promotes your brand to the Field Artillery
+            community. All funds collected go directly toward supporting the
+            Chapter&apos;s mission and event costs for our troops.
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -45,11 +46,15 @@ export default function SponsorsPage() {
             ))}
           </div>
 
-          <EmbedSlot
-            href={EMBEDS.ballSponsors}
-            label="Become a Sponsor"
-            note="Sponsorship purchase is handled through our partner — reach us on Facebook and we'll get you set up."
-          />
+          <p className="mt-8 text-artillery-light">
+            Interested in backing the event? Reach out and we&apos;d be glad to
+            talk through the options.
+          </p>
+          <div className="mt-4">
+            <Button href="mailto:president@gatorredleg.org">
+              Contact Us About Sponsorship
+            </Button>
+          </div>
         </div>
       </Container>
     </>

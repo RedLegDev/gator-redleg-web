@@ -73,7 +73,6 @@ export const NAV: NavGroup[] = [
 /** St. Barbara's Ball has its own second-level nav on the live site. */
 export const ST_BARBARAS_BALL_NAV: NavLink[] = [
   { label: "RSVP", href: "/chapter-activities/st-barbaras-ball/rsvp" },
-  { label: "Lodging", href: "/chapter-activities/st-barbaras-ball/lodging" },
   { label: "Sponsors", href: "/chapter-activities/st-barbaras-ball/sponsors" },
   { label: "FAQ", href: "/chapter-activities/st-barbaras-ball/faq" },
   { label: "Red Leg Social", href: "/chapter-activities/st-barbaras-ball/red-leg-social" },
