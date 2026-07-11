@@ -26,7 +26,10 @@ export const CHARITIES = [
   { name: "OCN Stand Down", href: "https://www.ocnstanddown.org/" },
   { name: "Wounded Warrior Project", href: "https://www.woundedwarriorproject.org/" },
   { name: "Heroes on the Water", href: "https://heroesonthewater.org/" },
-  { name: "Tampa Warriors", href: "https://tampawarriors.com/" },
+  // Formerly "Tampa Warriors" — merged with the Tampa Bay Lightning in 2023 to
+  // become the Lightning Warriors. The old tampawarriors.com domain lapsed and
+  // is now a squatter; do not restore it.
+  { name: "Lightning Warriors", href: "https://www.lightningwarriorshockey.org/" },
 ];
 
 export const REDLEG_DEV_URL = "https://redleg.dev";

@@ -49,7 +49,7 @@ export default function ChapterActivitiesPage() {
             chapter and other military organizations — this year, proceeds from
             the 6th Annual Golf Tournament helped sponsor Hockey Heals 22, a{" "}
             <a
-              href="https://tampawarriors.com/"
+              href="https://www.lightningwarriorshockey.org/"
               target="_blank"
               rel="noopener noreferrer"
             >
