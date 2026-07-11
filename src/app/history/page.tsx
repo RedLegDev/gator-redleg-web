@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { Prose } from "@/components/Prose";
+import { LinkCard } from "@/components/LinkCard";
 
 export const metadata: Metadata = {
   title: "History",
@@ -62,18 +62,13 @@ export default function HistoryPage() {
 
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {SUBPAGES.map((p) => (
-            <Link
+            <LinkCard
               key={p.href}
               href={p.href}
-              className="group border-t-4 border-redleg bg-neutral-50 p-6 transition-shadow hover:shadow-lg"
-            >
-              <h3 className="font-display text-xl font-semibold text-artillery group-hover:text-redleg">
-                {p.label}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-artillery-light">
-                {p.blurb}
-              </p>
-            </Link>
+              title={p.label}
+              blurb={p.blurb}
+              cta="Read more"
+            />
           ))}
         </div>
       </Container>

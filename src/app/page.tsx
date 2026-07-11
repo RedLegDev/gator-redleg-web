@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
 import { AzimuthRule } from "@/components/AzimuthRule";
+import { LinkCard } from "@/components/LinkCard";
 
 const LOGO = "/lovable-uploads/c4320cdb-23e3-429d-bdeb-cc34787d252c.png";
 
@@ -132,7 +133,7 @@ export default function Home() {
               },
             ].map((pillar) => (
               <div key={pillar.h} className="border-l-2 border-gold pl-5">
-                <h3 className="font-display text-lg font-semibold uppercase tracking-wide text-redleg">
+                <h3 className="font-heading text-base font-semibold uppercase tracking-[0.12em] text-redleg">
                   {pillar.h}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-artillery-light">
@@ -167,21 +168,14 @@ export default function Home() {
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {EVENTS.map((e) => (
-              <a
+              <LinkCard
                 key={e.name}
                 href={e.href}
-                className="group flex flex-col border-t-4 border-redleg bg-white p-6 shadow-sm transition-shadow hover:shadow-lg"
-              >
-                <span className="font-label text-xs uppercase tracking-widest text-artillery-muted">
-                  {e.when}
-                </span>
-                <span className="mt-2 font-display text-xl font-semibold text-artillery group-hover:text-redleg">
-                  {e.name}
-                </span>
-                <span className="mt-3 text-sm leading-relaxed text-artillery-light">
-                  {e.blurb}
-                </span>
-              </a>
+                meta={e.when}
+                title={e.name}
+                blurb={e.blurb}
+                cta="Details"
+              />
             ))}
           </div>
         </Container>

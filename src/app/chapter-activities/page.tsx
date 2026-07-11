@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { Prose } from "@/components/Prose";
+import { LinkCard } from "@/components/LinkCard";
 
 export const metadata: Metadata = {
   title: "Chapter Activities",
@@ -65,18 +65,12 @@ export default function ChapterActivitiesPage() {
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           {ACTIVITIES.map((a) => (
-            <Link
+            <LinkCard
               key={a.href}
               href={a.href}
-              className="group border-t-4 border-redleg bg-neutral-50 p-6 transition-shadow hover:shadow-lg"
-            >
-              <h2 className="font-display text-xl font-semibold text-artillery group-hover:text-redleg">
-                {a.label}
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-artillery-light">
-                {a.blurb}
-              </p>
-            </Link>
+              title={a.label}
+              blurb={a.blurb}
+            />
           ))}
         </div>
       </Container>
