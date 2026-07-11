@@ -51,10 +51,22 @@ Config lives in `wrangler.jsonc` and `open-next.config.ts`. Cloudflare Workers
 Builds pins npm 10.9.2 — regenerate the lockfile with that version if CI errors
 on lockfile mismatch.
 
+## Wired up
+
+- **Request for Support** — native form (`SupportRequestForm`) posting to the
+  existing Make.com webhook with the same HTML-email payload.
+- **Fundraising** — reproduced from the 2024 flyer.
+- **Chapter Vision** — links to the Google Doc.
+- **RSVP / Sponsors** — route to `store.gatorredleg.org` (Stripe flow).
+- **Charitable Action Playbook** — links to the public Basecamp doc.
+
 ## Still needed before go-live
 
-Several live pages embed opaque Google widgets whose targets weren't scrapable.
-Wire the real URLs into `src/lib/embeds.ts`: ticketing/RSVP, sponsorship
-purchase, tournament + 5K registrations, survey, newsletter, donation, request
-for support, and the photo-gallery albums. Also re-host the Google Drive flyers
-(softball, golf, fundraising) and the Chapter Vision doc as local assets.
+Wire the remaining `null` values in `src/lib/embeds.ts`:
+
+- Ball **survey** (Google Form) and **newsletter** signup
+- **Donation** link (QGiv / Stripe)
+- The four **photo-gallery** albums
+- Tournament + 5K **registration** targets (or point at store products)
+- Optionally: specific store **product URLs** for ball tickets (currently the
+  store homepage), and re-host the softball/golf flyer PDFs as local assets.

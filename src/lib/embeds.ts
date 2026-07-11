@@ -9,8 +9,9 @@
 
 export const EMBEDS = {
   // St. Barbara's Ball
-  ballRsvp: null as string | null, // QGiv ticketing / RSVP
-  ballSponsors: null as string | null, // QGiv sponsorship purchase
+  // RSVP/tickets and sponsorship route through the Stripe-backed store.
+  ballRsvp: "https://store.gatorredleg.org" as string | null,
+  ballSponsors: "https://store.gatorredleg.org" as string | null,
   ballSurvey: null as string | null, // Google Form survey
   // Known-good external links
   ballLodgingHotel: "https://hotel.hardrock.com/daytona-beach/",
@@ -24,8 +25,11 @@ export const EMBEDS = {
 
   // Support
   donate: null as string | null, // QGiv donation
-  requestForSupport: null as string | null, // Google Form
   newsletterSignup: null as string | null,
+
+  // Chapter Vision doc
+  chapterVisionDoc:
+    "https://docs.google.com/document/d/15CmyFuNwQ_mRUCtwE5GNw_unKccf6268Ua6k3B_1Qc8/edit?usp=sharing",
 
   // Membership (known)
   usfaaJoin: "https://www.fieldartillery.org/membership-information",

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
-import { EmbedSlot } from "@/components/EmbedSlot";
+import { Button } from "@/components/Button";
+import { EMBEDS } from "@/lib/embeds";
 
 export const metadata: Metadata = {
   title: "Chapter Vision",
@@ -44,12 +45,8 @@ export default function ChapterVisionPage() {
           ))}
         </div>
 
-        <div className="mt-12 max-w-2xl">
-          <EmbedSlot
-            href={null}
-            label="Chapter Vision 2025"
-            note="Our full Chapter Vision document will be posted here."
-          />
+        <div className="mt-12">
+          <Button href={EMBEDS.chapterVisionDoc}>Read the Chapter Vision 2025</Button>
         </div>
       </Container>
     </>

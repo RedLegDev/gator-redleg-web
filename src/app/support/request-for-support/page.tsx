@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
-import { EmbedSlot } from "@/components/EmbedSlot";
-import { EMBEDS } from "@/lib/embeds";
+import { SupportRequestForm } from "@/components/SupportRequestForm";
+import { CHARITABLE_PLAYBOOK_URL } from "@/lib/nav";
 
 export const metadata: Metadata = {
   title: "Request for Support",
@@ -20,17 +20,29 @@ export default function RequestForSupportPage() {
       />
       <Container className="py-16">
         <div className="max-w-2xl">
-          <p className="text-lg leading-relaxed text-artillery-light">
-            The Gator Redlegs provide financial and material support to Field
-            Artillery Soldiers, units, and families through our Charitable Action
-            Playbook. Submit your request below and the Executive Board will
-            review it.
-          </p>
-          <EmbedSlot
-            href={EMBEDS.requestForSupport}
-            label="Submit a Request"
-            note="Our request form will be posted here — reach us on Facebook in the meantime."
-          />
+          <div className="rounded border-l-4 border-gold bg-amber-50/60 p-6">
+            <h2 className="font-display text-lg font-semibold uppercase tracking-wide text-redleg">
+              Never Leave a Fallen Comrade
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-artillery-light">
+              The Gator Redleg Chapter stands ready to support Florida&apos;s
+              Field Artillery Soldiers, veterans, and their families through our
+              established support programs. New to our programs? Review our{" "}
+              <a
+                href={CHARITABLE_PLAYBOOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-redleg underline"
+              >
+                Charitable Action Playbook
+              </a>{" "}
+              to understand available support options and typical funding levels.
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <SupportRequestForm />
+          </div>
         </div>
       </Container>
     </>
