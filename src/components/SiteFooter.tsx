@@ -99,6 +99,17 @@ export function SiteFooter() {
             </span>
           </div>
         </div>
+        <p className="mt-6 text-center text-xs text-white/30 sm:text-right">
+          Managed by{" "}
+          <a
+            href="https://redleg.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-gold"
+          >
+            Red Leg Dev, LLC
+          </a>
+        </p>
       </Container>
     </footer>
   );

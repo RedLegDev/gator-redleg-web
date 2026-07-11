@@ -55,10 +55,9 @@ export default function Home() {
               <br />
               Redlegs
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80">
-              Serving Florida&apos;s Field Artillery Soldiers, veterans, and
-              their families — promoting the efficiency of the branch, keeping
-              its traditions, and honoring those who serve the King of Battle.
+            <p className="mt-6 max-w-xl text-lg italic leading-relaxed text-white/80">
+              &ldquo;The harder the fighting and the longer the war… the more
+              they lean on the gunners.&rdquo;
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button href="/membership" variant="primary" size="lg">
@@ -104,14 +103,44 @@ export default function Home() {
               For the Redlegs of Florida
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-artillery-light">
-              The Gator Redleg Chapter promotes the efficiency of the Field
-              Artillery, maintains its history and traditions, perpetuates the
-              memory of the fallen, and supports our Soldiers through
-              scholarships and charitable contributions — fostering camaraderie
-              across the profession of arms.
+              The Gator Redleg Chapter of the USFAA is a 501(c)(3) non-profit
+              professional association serving Florida&apos;s Field Artillery
+              Soldiers, veterans, and their families. As a professional
+              association, the Chapter promotes the efficiency of the Field
+              Artillery by maintaining its best traditions and perpetuating the
+              memory and history of our fallen. As a non-profit, we support
+              Soldiers through family scholarships and contributions to
+              charities serving the veteran community — fostering camaraderie in
+              the profession of arms.
             </p>
           </div>
           <AzimuthRule className="mx-auto mt-12 max-w-md" />
+
+          <div className="mt-12 grid gap-8 sm:grid-cols-3">
+            {[
+              {
+                h: "Community",
+                p: 'A support network for our veterans, military, and their families in times of emotional distress or financial hardship — so we truly "Never Leave a Fallen Comrade."',
+              },
+              {
+                h: "Activities",
+                p: "Meaningful events that preserve and strengthen the bonds of camaraderie between Artillerists past and present.",
+              },
+              {
+                h: "Support",
+                p: "An avenue for local governments, businesses, and charities to express their support for our hometown heroes.",
+              },
+            ].map((pillar) => (
+              <div key={pillar.h} className="border-l-2 border-gold pl-5">
+                <h3 className="font-display text-lg font-semibold uppercase tracking-wide text-redleg">
+                  {pillar.h}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-artillery-light">
+                  {pillar.p}
+                </p>
+              </div>
+            ))}
+          </div>
         </Container>
       </section>
 
