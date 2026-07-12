@@ -98,20 +98,22 @@ export default function StBarbarasBallPage() {
             <p className="mt-2 leading-relaxed text-artillery-light">
               We&apos;re actively looking for sponsors to help offset the cost of
               the evening so we can get as many Redlegs through the door as
-              possible. If you or your company would like to back the event,
-              reach out to{" "}
-              <a
-                href="mailto:president@gatorredleg.org"
-                className="font-semibold text-redleg underline"
-              >
-                president@gatorredleg.org
-              </a>{" "}
-              — we&apos;d be glad to talk.
+              possible. Three tiers are available —{" "}
+              <strong className="text-artillery">King of Battle</strong> ($2,000),{" "}
+              <strong className="text-artillery">Master Gunner</strong> ($500),
+              and <strong className="text-artillery">Gunner</strong> ($125, covers
+              a junior Soldier&apos;s ticket).
             </p>
+            <div className="mt-4">
+              <Button href="/chapter-activities/st-barbaras-ball/sponsors">
+                View Sponsorship Details
+              </Button>
+            </div>
           </div>
 
           <p className="mt-8 text-sm italic text-artillery-muted">
-            Watch this space — ticketing and sponsorship details are on the way.
+            Ticketing opens late summer — individual seats and full tables of
+            eight.
           </p>
         </div>
       </Container>
