@@ -45,6 +45,7 @@ export const NAV: NavGroup[] = [
       { label: "Chapter Vision", href: "/chapter-vision" },
       { label: "Chapter Bylaws", href: "/chapter-bylaws" },
       { label: "Chapter SOP", href: "/chapter-sop" },
+      { label: "Bullard Award", href: "/bullard-award" },
       { label: "Regimental Coin", href: "/regimental-coin" },
     ],
   },
