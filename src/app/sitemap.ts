@@ -30,6 +30,7 @@ const ROUTES: Array<{ path: string; priority: number }> = [
   { path: "/newsletter", priority: 0.6 },
   { path: "/support", priority: 0.8 },
   { path: "/support/fundraising", priority: 0.6 },
+  { path: "/support/charitable-action-playbook", priority: 0.6 },
   { path: "/support/request-for-support", priority: 0.6 },
   { path: "/membership", priority: 0.8 },
   { path: "/volunteering", priority: 0.6 },

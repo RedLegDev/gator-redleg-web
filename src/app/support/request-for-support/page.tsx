@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { SupportRequestForm } from "@/components/SupportRequestForm";
-import { CHARITABLE_PLAYBOOK_URL } from "@/lib/nav";
+import { CHARITABLE_PLAYBOOK_PATH } from "@/lib/nav";
 
 export const metadata: Metadata = {
   title: "Request for Support",
@@ -29,9 +29,7 @@ export default function RequestForSupportPage() {
               Field Artillery Soldiers, veterans, and their families through our
               established support programs. New to our programs? Review our{" "}
               <a
-                href={CHARITABLE_PLAYBOOK_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={CHARITABLE_PLAYBOOK_PATH}
                 className="font-semibold text-redleg underline"
               >
                 Charitable Action Playbook

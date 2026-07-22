@@ -23,8 +23,11 @@ export type NavGroup = {
 export const FACEBOOK_URL =
   "https://m.facebook.com/pages/Gator-Redleg-Chapter-of-US-Field-Artillery-Association/159706074074450";
 export const BASECAMP_URL = "https://3.basecamp.com";
-export const CHARITABLE_PLAYBOOK_URL =
-  "https://public.3.basecamp.com/p/YbEuXeM3TAKJnusdghRspEvs";
+/** On-site path for nav and in-app links. */
+export const CHARITABLE_PLAYBOOK_PATH =
+  "/support/charitable-action-playbook";
+/** Absolute URL for outbound email and external references. */
+export const CHARITABLE_PLAYBOOK_URL = `https://www.gatorredleg.org${CHARITABLE_PLAYBOOK_PATH}`;
 export const TAX_EXEMPTION_PDF = "/docs/gator-redleg-501c3-tax-exemption.pdf";
 export const ZOOM_PATH = "/zoom";
 
@@ -67,7 +70,7 @@ export const NAV: NavGroup[] = [
     children: [
       { label: "Fundraising", href: "/support/fundraising" },
       { label: "Volunteering", href: "/volunteering" },
-      { label: "Charitable Action Playbook", href: CHARITABLE_PLAYBOOK_URL, external: true },
+      { label: "Charitable Action Playbook", href: CHARITABLE_PLAYBOOK_PATH },
       { label: "Request for Support", href: "/support/request-for-support" },
     ],
   },

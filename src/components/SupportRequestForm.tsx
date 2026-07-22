@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CHARITABLE_PLAYBOOK_URL } from "@/lib/nav";
+import { CHARITABLE_PLAYBOOK_PATH } from "@/lib/nav";
 import { PROGRAM_GROUPS } from "@/lib/support-request";
 
 const SUPPORT_REQUEST_ENDPOINT = "/api/support-request";
@@ -300,9 +300,7 @@ export function SupportRequestForm() {
         <p className="mt-1 text-xs text-artillery-muted">
           See our{" "}
           <a
-            href={CHARITABLE_PLAYBOOK_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={CHARITABLE_PLAYBOOK_PATH}
             className="text-redleg underline"
           >
             Charitable Action Playbook
