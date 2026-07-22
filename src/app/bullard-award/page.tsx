@@ -33,9 +33,9 @@ export default function BullardAwardPage() {
             junior officers and NCOs for outstanding contributions to Florida&apos;s
             Field Artillery community. Two awards are presented each year — one
             to an Artillery officer (Lieutenant or Captain) and one to an
-            Artillery NCO (Corporal through Staff Sergeant) — with public
-            recognition at the annual National Guard Association of Florida
-            conference.
+            Artillery NCO (Corporal through Staff Sergeant) — with presentation
+            preferred at the annual National Guard Association of Florida
+            conference, or at St. Barbara&apos;s Ball if an awardee cannot attend.
           </p>
           <p>
             Recipients are engraved on the permanent trophy retained at Saint
