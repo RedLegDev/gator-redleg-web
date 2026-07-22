@@ -78,4 +78,4 @@ The Gator Redleg Award Board will convene and select the recipient in each categ
 
 ## A-9. Presentation of Award
 
-The Gator Redlegs Chapter will recognize the recipients during the annual National Guard Association of Florida (NGAFL) Conference.
+The Gator Redlegs Chapter prefers to present the awards during the annual National Guard Association of Florida (NGAFL) Conference. If an awardee is unable to attend NGAFL, the Chapter may present the award at the annual St. Barbara's Ball.
