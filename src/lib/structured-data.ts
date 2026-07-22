@@ -25,9 +25,9 @@ export const organizationSchema: Record<string, unknown> = {
   alternateName: "Gator Redlegs",
   url: SITE,
   logo: LOGO,
-  image: `${SITE}/og-image.png`,
+  image: `${SITE}/og-image.jpg`,
   description:
-    "A 501(c)(3) non-profit professional association serving Florida's Field Artillery Soldiers, veterans, and their families in support of the 116th Field Artillery Regiment.",
+    "A 501(c)(3) non-profit professional association serving Florida's Field Artillery Soldiers, veterans, and families in support of the 116th Field Artillery Regiment.",
   taxID: "82-4625785",
   nonprofitStatus: "Nonprofit501c3",
   email: "president@gatorredleg.org",
@@ -92,7 +92,7 @@ export const stBarbarasBallEventSchema: Record<string, unknown> = {
   eventStatus: "https://schema.org/EventScheduled",
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
   url: `${SITE}/chapter-activities/st-barbaras-ball`,
-  image: `${SITE}/og-image.png`,
+  image: `${SITE}/og-image.jpg`,
   location: {
     "@type": "Place",
     name: "Winter Haven Armory",
