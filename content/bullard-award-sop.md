@@ -68,11 +68,9 @@ The nomination packet must reach the President of the Gator Redleg Chapter of th
 
 - **b.** Narrative justification and comments, not to exceed two typed pages, using a 10-point or 12-point font.
 
-- **c.** An official photograph in accordance with AR 640-30.
+- **c.** Commander's certification that the Soldier meets the standards of AR 600-9 and has passed an official Army Fitness Test (AFT) administered per established unit schedules.
 
-- **d.** Commander's certification that the Soldier meets the standards of AR 600-9 and has passed an official Army Physical Fitness Test administered per established unit schedules.
-
-- **e.** Soldier Record Brief (SRB); previously referred to as Officer Record Brief (ORB) or Enlisted Record Brief (ERB)
+- **d.** Soldier Record Brief (SRB); previously referred to as Officer Record Brief (ORB) or Enlisted Record Brief (ERB)
 
 ## A-8. Selection
 
