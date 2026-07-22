@@ -4,25 +4,29 @@ This document is a compilation of Standing Operating Procedures (SOP) for the Ga
 
 ## Information Management
 
-### Google Sites
+### Website
 
-The Chapter currently uses Google Sites as our main public facing website. Google’s publishing tools are fairly powerful and can be learned reasonably easily. This means multiple people can be empowered to make their own updates without a single-person bottleneck. [https://www.gatorredleg.org/](https://www.gatorredleg.org/)
+The Chapter’s public website is [gatorredleg.org](https://www.gatorredleg.org/), rebuilt in 2026 as a hand-coded Next.js site deployed to Cloudflare Workers (`RedLegDev/gator-redleg-web`). Site content and assets live in the git repository; pushes to `main` auto-deploy. The Web Architect (or Chapter President) owns updates. Member-facing governance docs — Chapter SOP, Bylaws, Bullard Award SOP, Charitable Action Playbook, and the 501(c)(3) letter — are published on the site rather than kept only in Basecamp or Google Drive.
 
-### Qgiv
+### Payments and Store
 
-Qgiv is the Chapter’s primary means for collecting money over the internet. It has good tools for building forms, keeping records and running reports. We have used it very successfully to collect event registrations, donations and sponsorships. We’ve even used it to do limited merchandise sales, but the Chapter may want to consider looking into alternatives for a dedicated swag store. The Chapter has a single account with multiple authorized users. [https://www.qgiv.com/](https://www.qgiv.com/)
+Chapter payments run through Stripe on the chapter store at [store.gatorredleg.org](https://store.gatorredleg.org/) (donations live; event ticketing and other checkouts are consolidating here). Qgiv is being retired and should not be used for new forms. The Treasurer retains the books and ledger; online transactions feed the chapter’s transaction tracking (Stein / Google Sheets).
+
+### Basecamp
+
+Basecamp is the board collaboration hub — todos, messages, Docs & Files, and day-to-day Executive Committee coordination. The Gator Redleg Chapter project is the working surface for board business. Public member documents should be published to the website once finalized; Basecamp remains the draft/working space for the board.
+
+### Email and Newsletter
+
+The chapter mailing list and newsletters run on listmonk at [mail.redleg.dev](https://mail.redleg.dev) (from address `Chapter President <president@gatorredleg.org>`). Listmonk is the local system of record for newsletter subscribers and should be reconciled at least annually against the USFAA national membership roster. Sending from a `.mil` address is unreliable (spam filters); use the chapter domain. Meeting announcements and mass email go through listmonk, not personal inboxes.
 
 ### Google Drive
 
-The Chapter currently uses Google Drive as our primary record archive. It is also where the site files are kept, and provides the ability to use Google Forms for voting and surveys. Although there are limitations when accessing Google Drive from government networks, it has been generally convenient for most members. *Currently it is personally hosted by Jeremey Davis. This may need to be migrated at some point in the future. Access is limited to chapter officers and authorized volunteers — request the current link from the Secretary.*
-
-### Mailchimp
-
-We currently maintain our mailing list in MailChimp. This provides the ability to send formatted email newsletters and get feedback on open rates, click rates, provide the ability to people to opt out of the mailing lists, and identify who is or isn’t getting our messages. It has a slight learning curve and we’ve seen that sending “from” a .mil address can cause messages to get caught in spam filters. The Chapter has a shared account called “GatorRedleg.” [https://mailchimp.com/](https://mailchimp.com/)
+Google Drive remains useful as an archive for historical files, Google Forms (elections, surveys, award votes), and materials that are not yet (or need not be) on the website. It is **not** the public site and should not be the only home for documents members need. Access is limited to chapter officers and authorized volunteers — request the current link from the Secretary. Older Drive folders may still be personally hosted by past volunteers; migrate ownership when practical.
 
 ### Facebook
 
-We maintain a social media presence using Facebook. This is useful both for building engagement and as an alternative way to get information out regarding events, registrations, membership drives, etc. This is a shared Page with multiple admins. Facebook posts can be promoted to page subscribers and their friends for as little as $5 per post. *The current admin is James Boggs, with Nate Adams, Jeremey Davis and Josh Page as editors.*  [https://www.facebook.com/GatorRedleg](https://www.facebook.com/GatorRedleg)
+We maintain a social media presence using Facebook for engagement and as another channel for events, registrations, and membership drives. This is a shared Page with multiple admins; posts can be promoted for a small cost. Keep at least one current board member (or designated Social Media Moderator) as an admin. Ask the board for the current admin roster rather than relying on names in this SOP. [https://www.facebook.com/GatorRedleg](https://www.facebook.com/GatorRedleg)
 
 ### Postal Services
 
@@ -40,7 +44,7 @@ The Chapter Vision and Mission describe the goals the Chapter activities should 
 
 One of the first tasks of the newly elected Executive Committee is to plan the calendar for the year. Although this should be decided upon and published early, this is something we have not done a good job of formalizing. It is probably good to approach this with the same discipline as the Yearly Training Calendar. Identifying dates for major events early facilitates planning, securing venues, and soliciting sponsorships.
 
-The major events for the year are the Softball Tournament, the Golf Tournament, the Redleg Social, the Saint Barbara’s Ball and a 5K race. The Golf Tournament and Softball Tournament are charity fundraisers. The Redleg Social is a less-formal, low cost, all-ranks event the Friday before the ball that provides an opportunity to keep in touch with the Chapter without necessarily attending the formal ball. The Ball is our capstone event for the year and we solicit sponsorships (in exchange for advertising and promotions) to defray the cost of the event to our membership. The 5K is something we’ve discussed often but has not happened (yet). Typically the Softball Tournament is in the Spring, while the Saint Barbara’s Celebration Weekend (Golf Tournament, Redleg Social and Ball) take place in NOV or DEC.
+The major events for the year are the charity **golf tournament (spring)**, the **Kenny Fike Memorial softball tournament (fall)**, the **5K Fun Run**, the **Redleg Social**, and the **Saint Barbara’s Ball** (the premier / capstone event, generally in November or December). The golf and softball tournaments are charity fundraisers. The Redleg Social is a less-formal, low-cost, all-ranks event — typically the Friday before the Ball — that provides an opportunity to keep in touch with the Chapter without necessarily attending the formal celebration. The Ball (or Dining Out, depending on the year’s format) is our capstone event; we solicit sponsorships (in exchange for advertising and promotions) to defray the cost to our membership. The 5K Fun Run is the chapter’s newest recurring event. Publish dates early on [gatorredleg.org](https://www.gatorredleg.org/) and via the chapter email list.
 
 ### Budget
 
@@ -58,7 +62,7 @@ The Vice President is responsible for stepping in whenever the President needs h
 
 ### Secretary
 
-The Secretary is primarily responsible for keeping and publishing the meeting minutes, sending out a monthly meeting notification and sending out any other event notifications as needed. The Secretary should also maintain contact information for chapter members and chapter officers. Mailchimp is the local system of record for this info and it should be updated at least annually from the membership roster at USFAA national.
+The Secretary is primarily responsible for keeping and publishing the meeting minutes, sending out a monthly meeting notification and sending out any other event notifications as needed. The Secretary should also maintain contact information for chapter members and chapter officers. listmonk is the local system of record for the chapter mailing list and should be updated at least annually from the membership roster at USFAA national.
 
 ### Treasurer
 
@@ -74,7 +78,7 @@ Although the event coordinator is the single point of contact responsible for th
 
 ### Softball Coordinator
 
-The softball coordinator is responsible for coordinating the Annual Kenny Fike Memorial Charity Softball Tournament. This includes securing the venue, recruiting teams, raising donations, scheduling and running the event, and coordinating for volunteers to sell swag and refreshments.
+The softball coordinator is responsible for coordinating the Annual Kenny Fike Memorial Charity Softball Tournament (fall). This includes securing the venue, recruiting teams, raising donations, scheduling and running the event, and coordinating for volunteers to sell swag and refreshments.
 
 ### St. Barbara’s Event Coordinator
 
@@ -122,11 +126,11 @@ $5 up-charge for Late Registration
 
 ### Golf Event Coordinator
 
-The Golf Event Coordinator is responsible for coordinating the annual charity golf tournament. This includes securing the venue, recruiting teams, raising donations, scheduling and running the event and coordinating for volunteers to sell swag and refreshments.
+The Golf Event Coordinator is responsible for coordinating the annual charity golf tournament (spring). This includes securing the venue, recruiting teams, raising donations, scheduling and running the event and coordinating for volunteers to sell swag and refreshments.
 
 ### 5K Coordinator
 
-The coordinator needs to secure a race route, ensure route safety, procure a means for tracking and publishing race times, recruit sponsors and coordinate for volunteers to run the event.
+The 5K coordinator is responsible for the chapter’s 5K Fun Run. Duties include securing a race route, ensuring route safety, procuring a means for tracking and publishing race times, recruiting sponsors, and coordinating volunteers to run the event.
 
 ## Additional Duties
 
@@ -136,7 +140,7 @@ This informal position is primarily responsible for ensuring alcohol is not abus
 
 ### Web Architect
 
-The Web Architect is someone who is digitally savvy and has primary responsibility for the Chapter website. Additionally, they should be someone who can assist and mentor other Chapter members in using technology and advocate for new and better ways of advancing the Chapter mission.
+The Web Architect is someone who is digitally savvy and has primary responsibility for the Chapter website (currently the Next.js site in `gator-redleg-web`). Additionally, they should be someone who can assist and mentor other Chapter members in using technology and advocate for new and better ways of advancing the Chapter mission.
 
 ### Fundraising Chair
 
@@ -144,7 +148,7 @@ The Fundraising Chair primarily assists in soliciting and recognizing donors and
 
 ### Quartermaster
 
-The Quartermaster keeps track of the inventory of the Chapter merchandise, identifies when to order items for resupply, and coordinates for sales activities at Chapter and other Guard events. We’ve run successful merchandise tables at the Redleg Social during Saint Barbara’s Weekend, at the Ball itself, at the Softball tournament and during the National Guard Association of Florida conference. We’ve also been able to market “swag” online using Qgiv. When a resupply is necessary, it works best when the Quartermaster is able to come to the Executive Committee with a proposal of what to purchase along with a dollar amount requested for approval.
+The Quartermaster keeps track of the inventory of the Chapter merchandise, identifies when to order items for resupply, and coordinates for sales activities at Chapter and other Guard events. We’ve run successful merchandise tables at the Redleg Social during Saint Barbara’s Weekend, at the Ball itself, at the Softball tournament and during the National Guard Association of Florida conference. Online merchandise and related payments go through the chapter store ([store.gatorredleg.org](https://store.gatorredleg.org/)). When a resupply is necessary, it works best when the Quartermaster is able to come to the Executive Committee with a proposal of what to purchase along with a dollar amount requested for approval.
 
 ### Editor in Chief (Newsletter)
 
