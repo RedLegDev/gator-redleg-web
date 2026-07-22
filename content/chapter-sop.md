@@ -82,29 +82,29 @@ The softball coordinator is responsible for coordinating the Annual Kenny Fike M
 
 ### St. Barbara’s Event Coordinator
 
-The St. Barbara’s event coordinator is responsible for coordinating the annual Redleg Social and Saint Barbara’s Ball and by default should be the AGR S1 from the hosting Battalion. Their duties include securing the venue, publishing the script, ensuring a guest speaker, soliciting sponsorships, scheduling and running the event, and coordinating for volunteers to sell swag. The hosting Battalion Commander should assist the coordinator in recruiting a high-profile and engaging guest speaker. The “host” for Saint Barbara’s is passed back and forth between 2nd and 3rd Battalion, with the respective Battalion providing the coordinator for the year and with the Battalion Commander serving as the President of the Mess. We’ve also included a silent auction as a fundraiser during the Redleg Social. There is typically a member discount for tickets to this event. The Chapter usually provides tickets for the Guest Speaker and their guest and has covered the hotel room (and sometimes the plane ticket) depending on the finances of the Chapter. A Chapter Grant from the USFAA can offset the travel costs for the Guest speaker. The USFAA also has a list of potential Guest speakers. Event announcements are sent via email as well as posted to Facebook. During the event we need volunteers to man the swag table on Friday and Saturday, as well as man the registration table in the lobby on Saturday and/or Friday. Rehearsal is scheduled for the Saturday afternoon of the event and there may be a [Branch Management](https://drive.google.com/open?id=1t8YJzgkjFG8IAXTQdMsR7081I-oF98Wp) meeting on Saturday morning.
+The St. Barbara’s event coordinator is responsible for the chapter’s premier annual celebration — historically a formal Ball, and in some years a Dining Out or similar format — plus the Redleg Social that typically precedes it. Current-year details (venue, date, ticketing, dress) live on the [St. Barbara’s Ball page](/chapter-activities/st-barbaras-ball); treat that page as the member-facing source of truth for the active year.
 
-**Typical Timeline:**
+**Roles (durable).** The coordinator is the single point of contact for planning: securing the venue, publishing the script, ensuring a guest speaker when used, soliciting sponsorships, scheduling and running the event, and coordinating volunteers (registration, swag table, and similar). The Executive Committee approves major expenditures. A silent auction or raffle during the Social/weekend is a common fundraiser. Event announcements go out via the chapter email list and Facebook.
 
-JAN - Secure venue and establish date; identify room block
+**President of the Mess / host.** Traditionally the “host” rotates between 2nd and 3rd Battalion: the hosting Battalion provides the coordinator (often the AGR S1) and the Battalion Commander serves as President of the Mess, helping recruit a high-profile guest speaker. That rotation remains useful doctrine when both battalions have capacity. When a battalion is mobilized or volunteer depth is thin, the Chapter may run the event with chapter-appointed leads and adjust host/President-of-the-Mess arrangements — confirm the year’s approach with the Executive Committee early.
 
-JUN - Announce “Save the Date”, Solicit for Sponsors
+**Format variants.**
 
-AUG - Announce Early-bird Registration (Early-bird discount)
+- **Traditional hotel Ball.** Hotel or banquet venue, room block for out-of-town guests, plated or buffet meal service, lobby registration, and often hotel support for a guest speaker. Higher ticket prices historically offset venue and catering.
+- **Dining Out / armory (or similar).** Lower-overhead format (e.g. an armory or similar military venue), often with a networking Social the evening before. Ticket prices can be kept much lower when venue cost is minimal. Bar and catering choices should match the venue and the fact that many attendees drive. Guest-speaker travel/hotel may be unnecessary or scaled back.
 
-SEP - Secure Guest Speaker / Submit for USFAA Chapter Grant
+The Chapter usually provides tickets for the Guest Speaker and their guest when a speaker is used. A USFAA Chapter Grant can offset speaker travel when needed; USFAA also maintains a list of potential speakers.
 
-OCT - Announce General Registration
+**Planning timeline (generic).** Adjust for format — hotel-only items are marked.
 
-NOV - Announce Late Registration (Increased Fee), Order Meal Tokens, Finalize Script
+- **JAN–FEB** — Lock format, venue, and date. *(Hotel Ball: start the room block.)*
+- **JUN** — Announce Save the Date; begin sponsor outreach.
+- **AUG** — Open early registration / early-bird pricing if used; confirm catering and bar plan.
+- **SEP** — Secure guest speaker if used; submit USFAA Chapter Grant if needed.
+- **OCT** — General registration; finalize volunteer assignments and script outline.
+- **NOV–event week** — Late registration if used; finalize script and seating; rehearsal as needed. *(Hotel Ball: meal tokens / banquet counts as the venue requires.)*
 
-**Metrics**
-
-$5 discount for members
-
-$5 discount for Early Bird
-
-$5 up-charge for Late Registration
+**Historical hotel-Ball metrics** (attendance and base ticket price for prior hotel/banquet years — not a target for Dining Out economics):
 
 | Attendance / Year | Social | Ball | Base Price |
 | :---- | :---: | :---: | :---: |
@@ -120,9 +120,11 @@ $5 up-charge for Late Registration
 | 2016 | - | ?? | ?? |
 | 2015 | - | ?? | $50 |
 
-* 20 guests from promotion ceremony
+\* 20 guests from promotion ceremony
 
-** Couples discount - $150 for 2
+\*\* Couples discount - $150 for 2
+
+Hotel-Ball pricing often used small member / early-bird discounts and a late-registration up-charge; set the year’s fee schedule when the format and budget are locked.
 
 ### Golf Event Coordinator
 
@@ -208,7 +210,7 @@ The criteria for this new award is available on the [USFAA website](https://asse
 
 ### Major General Kennedy C. Bullard Award
 
-The Bullard Award is an award specific to the Gator Redlegs and was instituted during our centennial in 2017. It is an annual opportunity to recognize our high-potential junior officers and NCOs in order to better retain our future leaders. It is also an opportunity for public recognition of the Field Artillery community during the annual National Guard Association of Florida conference. [The Bullard Award page](/bullard-award) carries the full Standing Operating Procedures. The name and unit of the awardees get engraved on a plaque on the trophy that resides at State Headquarters in Saint Augustine. Each awardee has traditionally been presented with a take-home award in the form of a framed print of "[Assault at Red Beach - Morotai Island](/bullard-award#red-beach-heading)" with an engraved plaque of their name and unit.
+The Bullard Award is an award specific to the Gator Redlegs and was instituted during our centennial in 2017. It is an annual opportunity to recognize our high-potential junior officers and NCOs in order to better retain our future leaders. Presentation is preferred at the annual National Guard Association of Florida (NGAFL) conference; if an awardee cannot attend NGAFL, the Chapter may present the award at St. Barbara’s Ball. [The Bullard Award page](/bullard-award) carries the full Standing Operating Procedures. The name and unit of the awardees get engraved on a plaque on the trophy that resides at State Headquarters in Saint Augustine. Each awardee has traditionally been presented with a take-home award in the form of a framed print of "[Assault at Red Beach - Morotai Island](/bullard-award#red-beach-heading)" with an engraved plaque of their name and unit.
 
 Format for the State Trophy:
 
