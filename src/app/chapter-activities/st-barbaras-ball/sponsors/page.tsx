@@ -4,6 +4,7 @@ import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
 import { EMBEDS } from "@/lib/embeds";
+import { TAX_EXEMPTION_PDF } from "@/lib/nav";
 
 export const metadata: Metadata = {
   title: "Sponsors",
@@ -169,7 +170,16 @@ export default function SponsorsPage() {
             <p>
               Gator Redlegs is a registered 501(c)(3) nonprofit organization
               (EIN 82-4625785). Sponsorships may be tax-deductible as permitted
-              by law.
+              by law.{" "}
+              <a
+                href={TAX_EXEMPTION_PDF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-redleg underline underline-offset-2 hover:text-redleg-dark"
+              >
+                IRS determination letter
+              </a>
+              .
             </p>
           </div>
         </div>

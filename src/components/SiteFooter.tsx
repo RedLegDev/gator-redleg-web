@@ -1,6 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import { NAV, FACEBOOK_URL, BASECAMP_URL, ZOOM_PATH } from "@/lib/nav";
+import {
+  NAV,
+  FACEBOOK_URL,
+  BASECAMP_URL,
+  ZOOM_PATH,
+  TAX_EXEMPTION_PDF,
+} from "@/lib/nav";
 import { Container } from "@/components/Container";
 
 const LOGO = "/lovable-uploads/c4320cdb-23e3-429d-bdeb-cc34787d252c.png";
@@ -32,7 +38,14 @@ export function SiteFooter() {
               Artillery Regiment.
             </p>
             <p className="mt-4 font-label text-xs uppercase tracking-widest text-gold">
-              501(c)(3) Non-Profit · EIN 82-4625785
+              <a
+                href={TAX_EXEMPTION_PDF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-white"
+              >
+                501(c)(3) Non-Profit · EIN 82-4625785
+              </a>
             </p>
           </div>
 

@@ -25,6 +25,7 @@ export const FACEBOOK_URL =
 export const BASECAMP_URL = "https://3.basecamp.com";
 export const CHARITABLE_PLAYBOOK_URL =
   "https://public.3.basecamp.com/p/YbEuXeM3TAKJnusdghRspEvs";
+export const TAX_EXEMPTION_PDF = "/docs/gator-redleg-501c3-tax-exemption.pdf";
 export const ZOOM_PATH = "/zoom";
 
 export const NAV: NavGroup[] = [
@@ -46,6 +47,7 @@ export const NAV: NavGroup[] = [
       { label: "Chapter Bylaws", href: "/chapter-bylaws" },
       { label: "Chapter SOP", href: "/chapter-sop" },
       { label: "Bullard Award", href: "/bullard-award" },
+      { label: "501(c)(3) Letter", href: TAX_EXEMPTION_PDF, external: true },
       { label: "Regimental Coin", href: "/regimental-coin" },
     ],
   },

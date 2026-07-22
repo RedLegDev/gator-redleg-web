@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { Prose } from "@/components/Prose";
+import { TAX_EXEMPTION_PDF } from "@/lib/nav";
 
 export const metadata: Metadata = {
   title: "Fundraising",
@@ -50,7 +51,11 @@ export default function FundraisingPage() {
             Artillery by maintaining its best traditions and perpetuating the
             memory and history of our fallen. As a non-profit, we support
             Soldiers through family scholarships and contributions to charities
-            serving the veteran community.
+            serving the veteran community.{" "}
+            <a href={TAX_EXEMPTION_PDF} target="_blank" rel="noopener noreferrer">
+              IRS determination letter
+            </a>{" "}
+            (EIN 82-4625785).
           </p>
           <p>
             Recent support to Redlegs (2023–2024): the chapter has provided

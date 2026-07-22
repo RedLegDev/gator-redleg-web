@@ -3,6 +3,7 @@ import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { EmbedSlot } from "@/components/EmbedSlot";
 import { EMBEDS, CHARITIES } from "@/lib/embeds";
+import { TAX_EXEMPTION_PDF } from "@/lib/nav";
 
 export const metadata: Metadata = {
   title: "Support",
@@ -24,9 +25,18 @@ export default function SupportPage() {
             Make a Donation
           </h2>
           <p className="mt-3 leading-relaxed text-artillery-light">
-            Consider making a one-time donation through the link
-            below. As a registered 501(c)(3), all donations to the Gator Redlegs
-            are tax deductible.
+            Consider making a one-time donation through the link below. As a
+            registered 501(c)(3), all donations to the Gator Redlegs are tax
+            deductible.{" "}
+            <a
+              href={TAX_EXEMPTION_PDF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-redleg underline underline-offset-2 hover:text-redleg-dark"
+            >
+              Download our IRS determination letter
+            </a>{" "}
+            (EIN 82-4625785).
           </p>
           <EmbedSlot
             href={EMBEDS.donate}
