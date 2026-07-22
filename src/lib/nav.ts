@@ -43,6 +43,7 @@ export const NAV: NavGroup[] = [
     href: "/chapter-vision",
     children: [
       { label: "Chapter Vision", href: "/chapter-vision" },
+      { label: "Chapter Bylaws", href: "/chapter-bylaws" },
       { label: "Chapter SOP", href: "/chapter-sop" },
       { label: "Regimental Coin", href: "/regimental-coin" },
     ],

@@ -34,6 +34,7 @@ const ROUTES: Array<{ path: string; priority: number }> = [
   { path: "/membership", priority: 0.8 },
   { path: "/volunteering", priority: 0.6 },
   { path: "/chapter-vision", priority: 0.6 },
+  { path: "/chapter-bylaws", priority: 0.6 },
   { path: "/chapter-sop", priority: 0.6 },
   { path: "/contact", priority: 0.6 },
 ];
