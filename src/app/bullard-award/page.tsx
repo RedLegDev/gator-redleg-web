@@ -1,5 +1,3 @@
-import fs from "node:fs";
-import path from "node:path";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { PageHero } from "@/components/PageHero";
@@ -7,6 +5,7 @@ import { Container } from "@/components/Container";
 import { Prose } from "@/components/Prose";
 import { MarkdownProse, markdownToc } from "@/components/MarkdownProse";
 import { AzimuthRule } from "@/components/AzimuthRule";
+import { BULLARD_AWARD_SOP } from "@/lib/chapter-docs";
 
 export const metadata: Metadata = {
   title: "MG Kennedy C. Bullard Award",
@@ -16,15 +15,8 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-static";
 
-function loadSop(): string {
-  return fs.readFileSync(
-    path.join(process.cwd(), "content/bullard-award-sop.md"),
-    "utf8"
-  );
-}
-
 export default function BullardAwardPage() {
-  const sop = loadSop();
+  const sop = BULLARD_AWARD_SOP;
   const toc = markdownToc(sop);
 
   return (

@@ -1,9 +1,8 @@
-import fs from "node:fs";
-import path from "node:path";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { MarkdownProse, markdownToc } from "@/components/MarkdownProse";
+import { CHAPTER_BYLAWS } from "@/lib/chapter-docs";
 
 export const metadata: Metadata = {
   title: "Chapter Bylaws",
@@ -13,15 +12,8 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-static";
 
-function loadBylaws(): string {
-  return fs.readFileSync(
-    path.join(process.cwd(), "content/chapter-bylaws.md"),
-    "utf8"
-  );
-}
-
 export default function ChapterBylawsPage() {
-  const markdown = loadBylaws();
+  const markdown = CHAPTER_BYLAWS;
   const toc = markdownToc(markdown);
 
   return (

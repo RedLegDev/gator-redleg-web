@@ -1,9 +1,8 @@
-import fs from "node:fs";
-import path from "node:path";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { MarkdownProse, markdownToc } from "@/components/MarkdownProse";
+import { CHAPTER_SOP } from "@/lib/chapter-docs";
 
 export const metadata: Metadata = {
   title: "Chapter SOP",
@@ -13,15 +12,8 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-static";
 
-function loadSop(): string {
-  return fs.readFileSync(
-    path.join(process.cwd(), "content/chapter-sop.md"),
-    "utf8"
-  );
-}
-
 export default function ChapterSopPage() {
-  const markdown = loadSop();
+  const markdown = CHAPTER_SOP;
   const toc = markdownToc(markdown);
 
   return (

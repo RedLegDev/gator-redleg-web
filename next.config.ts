@@ -4,6 +4,24 @@ const nextConfig: NextConfig = {
   // Static PNG assets are pre-sized; skip the image optimizer so the site
   // deploys cleanly to Cloudflare Workers without an image route.
   images: { unoptimized: true },
+  // Bundle chapter markdown into the Worker. `fs.readFileSync` works in
+  // `next dev` / Node builds but fails at runtime on Cloudflare Workers —
+  // OpenNext still invokes these routes as SSR/RSC even when marked static.
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.md$/,
+      type: "asset/source",
+    });
+    return config;
+  },
+  turbopack: {
+    rules: {
+      "*.md": {
+        loaders: ["raw-loader"],
+        as: "*.js",
+      },
+    },
+  },
   async redirects() {
     return [
       {
