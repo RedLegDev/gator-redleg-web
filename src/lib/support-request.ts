@@ -1,7 +1,7 @@
 import { CHARITABLE_PLAYBOOK_URL } from "@/lib/nav";
 
 // Shared, server-safe support-request data + email rendering.
-// The React form imports PROGRAM_GROUPS for its <select>; the API route
+// The React form imports PROGRAM_GROUPS for the program picker; the API route
 // imports optionLabel/buildEmailHtml/buildSubject to compose the email.
 
 export type SupportRequestData = {
@@ -14,42 +14,177 @@ export type SupportRequestData = {
   description: string;
 };
 
-export const PROGRAM_GROUPS = [
+export type SupportProgram = {
+  value: string;
+  /** Short name, e.g. "Shake and Bake" */
+  name: string;
+  /** One-line purpose shown on the card title row */
+  summary: string;
+  /** What the program covers */
+  description: string;
+  /** Funding tiers or cost notes; empty for open-ended options */
+  tiers: string[];
+  /** Hard limits / eligibility requirements the requester must meet */
+  restrictions: string[];
+};
+
+export type SupportProgramGroup = {
+  label: string;
+  options: SupportProgram[];
+};
+
+export const PROGRAM_GROUPS: SupportProgramGroup[] = [
   {
     label: "Unit Support Programs",
     options: [
-      ["shake-and-bake", "Shake and Bake — Unit Financial Support ($250–$1,000)"],
-      ["coordinated-illumination", "Coordinated Illumination — Membership/Marketing Events ($100–$200)"],
-      ["sead", "SEAD — Unit/Chapter Fundraising (Silent Auctions)"],
+      {
+        value: "shake-and-bake",
+        name: "Shake and Bake",
+        summary: "Unit financial support",
+        description:
+          "Units identify a specific need (events, shirts, morale items) and the Chapter matches that request. The Regimental crest is added to funded items where possible.",
+        tiers: [
+          "$250 — Small unit event or morale item",
+          "$500 — Medium-sized unit event",
+          "$1,000 — Major event with 200+ attendees",
+          "Specific line-item match (unit still matches the cost)",
+        ],
+        restrictions: [
+          "Final amount is set by Executive Board vote",
+          "Amounts are guidelines, not guarantees",
+        ],
+      },
+      {
+        value: "coordinated-illumination",
+        name: "Coordinated Illumination",
+        summary: "Membership / marketing events",
+        description:
+          "Chapter support for unit events where we can run a membership table and attract future donors or members — Family Days, Employer Days, recruiting events.",
+        tiers: [
+          "$100 — Membership goal of 5–10 USFAA members + family/employer targets",
+          "$200 — Membership goal of 8–12 USFAA members + family/employer targets",
+        ],
+        restrictions: [
+          "Request must include a concrete membership goal",
+          "Must include specific targets for family or employer participation",
+        ],
+      },
+      {
+        value: "sead",
+        name: "SEAD",
+        summary: "Unit / Chapter fundraising",
+        description:
+          "Chapter donates silent-auction items for unit holiday parties and similar fundraisers. Proceeds are split between the Chapter and the unit.",
+        tiers: [],
+        restrictions: [
+          "Chapter provides auction items; the unit runs the auction",
+          "Proceeds are divided between Chapter and unit",
+          "Scope decided case-by-case by the Executive Board",
+        ],
+      },
     ],
   },
   {
     label: "Individual Support Programs",
     options: [
-      ["quick-smoke", "Quick Smoke — Immediate Financial Support ($250–$1,000)"],
-      ["fire-mission", "Fire Mission — Soldier/NCO of Year Gifts (up to $150)"],
-      ["end-of-mission", "End of Mission — Regimental Coins (ETS/PCS)"],
+      {
+        value: "quick-smoke",
+        name: "Quick Smoke",
+        summary: "Immediate financial hardship support",
+        description:
+          "Short-notice assistance for bills, travel, or other justifiable expenses. Board approval required.",
+        tiers: [
+          "$250 — Short-term hardship (no FL NG Foundation request required)",
+          "$500 — Short-term hardship (no FL NG Foundation request required)",
+          "$750 — Prolonged hardship (FL NG Foundation request required first)",
+          "$1,000 — Significant/enduring hardship (FL NG Foundation request required first)",
+        ],
+        restrictions: [
+          "Requests over $500 require a prior Florida National Guard Foundation application",
+          "Final amount is set by Executive Board vote",
+        ],
+      },
+      {
+        value: "fire-mission",
+        name: "Fire Mission",
+        summary: "Soldier / NCO of the Year gifts",
+        description:
+          "Financial support for recognition gifts for battalion Soldier or NCO of the Year recipients.",
+        tiers: ["Up to $150 per recipient"],
+        restrictions: [
+          "Capped at $150 per recipient",
+          "Must fall within established recognition guidelines",
+          "Executive Board votes on each request",
+        ],
+      },
+      {
+        value: "end-of-mission",
+        name: "End of Mission",
+        summary: "Regimental coins (ETS / PCS)",
+        description:
+          "Regimental coins as parting gifts for E-5 and below who are ETSing or PCSing outside the regiment.",
+        tiers: ["$15 per coin"],
+        restrictions: [
+          "E-5 and below only",
+          "ETS or PCS outside the regiment",
+          "See the Regimental Coin page for ordering details",
+        ],
+      },
     ],
   },
   {
     label: "Other",
     options: [
-      ["scholarship", "Scholarship Request"],
-      ["other", "Other (Not covered by existing programs)"],
+      {
+        value: "scholarship",
+        name: "Scholarship Request",
+        summary: "Educational support",
+        description:
+          "Scholarship or education-related assistance not covered by another program. Describe the need and any existing awards in your request.",
+        tiers: [],
+        restrictions: [
+          "Considered case-by-case",
+          "Subject to available funds and Executive Board vote",
+        ],
+      },
+      {
+        value: "other",
+        name: "Other",
+        summary: "Not covered by existing programs",
+        description:
+          "Use this when your need does not fit a named program. Be specific about purpose, amount, and timeline so the board can evaluate it.",
+        tiers: [],
+        restrictions: [
+          "Not a substitute for programs with clearer eligibility when one applies",
+          "Subject to available funds and Executive Board vote",
+        ],
+      },
     ],
   },
-] as const;
+];
 
-export function optionLabel(value: string): string {
+export function findProgram(value: string): SupportProgram | undefined {
   for (const g of PROGRAM_GROUPS) {
-    const found = g.options.find(([v]) => v === value);
-    if (found) return found[1];
+    const found = g.options.find((o) => o.value === value);
+    if (found) return found;
   }
-  return value;
+  return undefined;
+}
+
+/** Human-readable label for emails / summaries. */
+export function optionLabel(value: string): string {
+  const program = findProgram(value);
+  if (!program) return value;
+  return `${program.name} — ${program.summary}`;
+}
+
+export function isValidProgram(value: string): boolean {
+  return Boolean(findProgram(value));
 }
 
 export function buildSubject(data: SupportRequestData): string {
-  const programName = optionLabel(data.requestType).split(" — ")[0];
+  const program = findProgram(data.requestType);
+  const programName = program?.name ?? data.requestType;
   return `Support Request: ${programName} - ${data.requesterName}`;
 }
 

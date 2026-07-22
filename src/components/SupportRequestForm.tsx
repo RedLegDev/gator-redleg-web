@@ -2,154 +2,127 @@
 
 import { useState } from "react";
 import { CHARITABLE_PLAYBOOK_PATH } from "@/lib/nav";
-import { PROGRAM_GROUPS } from "@/lib/support-request";
+import { cn } from "@/lib/cn";
+import {
+  PROGRAM_GROUPS,
+  type SupportProgram,
+} from "@/lib/support-request";
 
 const SUPPORT_REQUEST_ENDPOINT = "/api/support-request";
 const CONTACT_EMAIL = "president@gatorredleg.org";
 
-type Guidance = { title: string; body: React.ReactNode };
-
-const PROGRAM_GUIDANCE: Record<string, Guidance> = {
-  "shake-and-bake": {
-    title: "Shake and Bake — Unit Financial Support",
-    body: (
-      <>
-        <p>
-          Units can identify specific needs (e.g., unit events, party shirts,
-          morale items) and the Chapter will match that request.
-        </p>
-        <p className="mt-2 font-semibold">Funding Tiers:</p>
-        <ul>
-          <li>$250 — Small unit event or morale item request</li>
-          <li>$500 — Medium-sized unit event</li>
-          <li>$1,000 — Major event with more than 200 attendees</li>
-          <li>Specific line item match (unit must still match the cost)</li>
-        </ul>
-        <p className="mt-2">
-          The Regimental crest will be added to funded items where possible so
-          Soldiers know the Chapter supported them.
-        </p>
-      </>
-    ),
-  },
-  "coordinated-illumination": {
-    title: "Coordinated Illumination — Membership/Marketing Events",
-    body: (
-      <>
-        <p>
-          Request Chapter support for unit events where we can run a membership
-          table and attract future donors/members.
-        </p>
-        <p className="mt-2 font-semibold">Funding Tiers:</p>
-        <ul>
-          <li>
-            $100 — Must include a membership goal of 5–10 USFAA members and
-            specific targets for family/employer participation
-          </li>
-          <li>
-            $200 — Must include a membership goal of 8–12 USFAA members and
-            specific targets for family/employer participation
-          </li>
-        </ul>
-        <p className="mt-2">
-          Examples: Unit Family Days, Employer Days, recruiting events.
-        </p>
-      </>
-    ),
-  },
-  sead: {
-    title: "SEAD — Unit/Chapter Fundraising",
-    body: (
-      <>
-        <p>
-          Units commonly hold silent auctions during holiday parties. The SEAD
-          program allows the Chapter to donate items for auction, with proceeds
-          split between the Chapter and the unit.
-        </p>
-        <p className="mt-2">
-          How it works: Chapter provides auction items, unit runs the auction,
-          proceeds are divided.
-        </p>
-      </>
-    ),
-  },
-  "quick-smoke": {
-    title: "Quick Smoke — Immediate Financial Support",
-    body: (
-      <>
-        <p>
-          Provides immediate assistance for service members needing support for
-          bills, travel costs, or other justifiable expenses.
-        </p>
-        <p className="mt-2 font-semibold">Funding Tiers:</p>
-        <ul>
-          <li>$250 — Short-term hardship (no FL NG Foundation support required)</li>
-          <li>$500 — Short-term hardship (no FL NG Foundation support required)</li>
-          <li>
-            $750 — Prolonged hardship (must have requested FL NG Foundation
-            support)
-          </li>
-          <li>
-            $1,000 — Significant/enduring hardship (must have requested FL NG
-            Foundation support)
-          </li>
-        </ul>
-        <p className="mt-2">
-          For requests over $500, the applicant must have already requested
-          support from the Florida National Guard Foundation.
-        </p>
-      </>
-    ),
-  },
-  "fire-mission": {
-    title: "Fire Mission — Recognition & Awards",
-    body: (
-      <>
-        <p>
-          Financial support for gifts recognizing Soldier or NCO of the Year
-          from the battalion.
-        </p>
-        <p className="mt-2">Support cap: requests are capped at $150 per recipient.</p>
-        <p className="mt-2">
-          Requests must fall within established guidelines and will be voted on
-          by the Executive Board.
-        </p>
-      </>
-    ),
-  },
-  "end-of-mission": {
-    title: "End of Mission — Regimental Coin Initiative",
-    body: (
-      <>
-        <p>
-          The Chapter provides Regimental Coins as parting gifts to E-5s and
-          below who are ETSing or PCSing outside the regiment.
-        </p>
-        <p className="mt-2">Cost: $15 per coin.</p>
-        <p className="mt-2">
-          Serves as a token of recognition for those who leave without formal
-          acknowledgment. See the{" "}
-          <a href="/regimental-coin" className="font-semibold text-redleg underline">
-            Regimental Coin page
-          </a>{" "}
-          for ordering information.
-        </p>
-      </>
-    ),
-  },
-};
-
 const inputClass =
   "w-full rounded border-2 border-black/15 px-3 py-2.5 text-sm transition-colors focus:border-redleg focus:outline-none focus:ring-2 focus:ring-redleg/20";
 const labelClass = "mb-1.5 block text-sm font-semibold text-artillery";
+
+function ProgramCard({
+  program,
+  selected,
+  onSelect,
+}: {
+  program: SupportProgram;
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  const inputId = `program-${program.value}`;
+
+  return (
+    <label
+      htmlFor={inputId}
+      className={cn(
+        "block cursor-pointer rounded border-2 bg-white p-4 transition-all",
+        selected
+          ? "border-redleg shadow-[0_0_0_1px_var(--color-redleg)]"
+          : "border-black/10 hover:border-black/25"
+      )}
+    >
+      <div className="flex gap-3">
+        <input
+          id={inputId}
+          type="radio"
+          name="requestType"
+          value={program.value}
+          required
+          checked={selected}
+          onChange={onSelect}
+          className="mt-1 h-4 w-4 shrink-0 accent-redleg"
+        />
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <span className="font-heading text-base font-semibold uppercase tracking-[0.08em] text-artillery">
+              {program.name}
+            </span>
+            <span className="text-sm text-artillery-muted">
+              {program.summary}
+            </span>
+          </div>
+
+          <p className="mt-2 text-sm leading-relaxed text-artillery-light">
+            {program.description}
+          </p>
+
+          {program.tiers.length > 0 && (
+            <div className="mt-3">
+              <p className="font-label text-[0.65rem] uppercase tracking-[0.18em] text-gold-dark">
+                Guidelines / funding
+              </p>
+              <ul className="mt-1.5 space-y-1 text-sm text-artillery-light">
+                {program.tiers.map((tier) => (
+                  <li key={tier} className="flex gap-2">
+                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-redleg" />
+                    <span>{tier}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {program.restrictions.length > 0 && (
+            <div
+              className={cn(
+                "mt-3 rounded border-l-4 p-3 text-sm",
+                selected
+                  ? "border-gold bg-amber-50/80 text-artillery-light"
+                  : "border-black/15 bg-neutral-50 text-artillery-light"
+              )}
+            >
+              <p className="font-label text-[0.65rem] uppercase tracking-[0.18em] text-redleg">
+                Restrictions
+              </p>
+              <ul className="mt-1.5 space-y-1">
+                {program.restrictions.map((rule) => (
+                  <li key={rule} className="flex gap-2">
+                    <span aria-hidden className="shrink-0 font-semibold text-redleg">
+                      ·
+                    </span>
+                    <span>{rule}</span>
+                  </li>
+                ))}
+              </ul>
+              {program.value === "end-of-mission" && (
+                <p className="mt-2">
+                  <a
+                    href="/regimental-coin"
+                    className="font-semibold text-redleg underline"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Regimental Coin page
+                  </a>
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </label>
+  );
+}
 
 export function SupportRequestForm() {
   const [requestType, setRequestType] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">(
     "idle"
   );
-
-  const guidance = PROGRAM_GUIDANCE[requestType];
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -274,49 +247,40 @@ export function SupportRequestForm() {
         </p>
       </div>
 
-      <div>
-        <label htmlFor="requestType" className={labelClass}>
+      <fieldset className="space-y-4">
+        <legend className={labelClass}>
           Support Program <span className="text-redleg">*</span>
-        </label>
-        <select
-          id="requestType"
-          name="requestType"
-          required
-          className={inputClass}
-          value={requestType}
-          onChange={(e) => setRequestType(e.target.value)}
-        >
-          <option value="">Select support program...</option>
-          {PROGRAM_GROUPS.map((g) => (
-            <optgroup key={g.label} label={g.label}>
-              {g.options.map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </optgroup>
-          ))}
-        </select>
-        <p className="mt-1 text-xs text-artillery-muted">
-          See our{" "}
+        </legend>
+        <p className="text-sm text-artillery-muted">
+          Pick the program that fits. Guidelines and restrictions are listed on
+          each option — full detail is in the{" "}
           <a
             href={CHARITABLE_PLAYBOOK_PATH}
-            className="text-redleg underline"
+            className="font-semibold text-redleg underline"
           >
             Charitable Action Playbook
-          </a>{" "}
-          for details.
+          </a>
+          .
         </p>
-      </div>
 
-      {guidance && (
-        <div className="rounded border-l-4 border-gold bg-amber-50/60 p-4 text-sm text-artillery-light [&_li]:ml-5 [&_li]:list-disc [&_ul]:mt-1">
-          <h3 className="font-display text-base font-semibold text-redleg">
-            {guidance.title}
-          </h3>
-          <div className="mt-2 space-y-1">{guidance.body}</div>
-        </div>
-      )}
+        {PROGRAM_GROUPS.map((group) => (
+          <div key={group.label} className="space-y-2.5">
+            <p className="font-label text-xs uppercase tracking-[0.2em] text-redleg">
+              {group.label}
+            </p>
+            <div className="space-y-2.5">
+              {group.options.map((program) => (
+                <ProgramCard
+                  key={program.value}
+                  program={program}
+                  selected={requestType === program.value}
+                  onSelect={() => setRequestType(program.value)}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </fieldset>
 
       <div>
         <label htmlFor="amount" className={labelClass}>

@@ -19,7 +19,7 @@ export default function RequestForSupportPage() {
         subtitle="Soldiers, units, and families can request support through the chapter's charitable programs."
       />
       <Container className="py-16">
-        <div className="max-w-2xl">
+        <div className="max-w-3xl">
           <div className="rounded border-l-4 border-gold bg-amber-50/60 p-6">
             <h2 className="font-display text-lg font-semibold uppercase tracking-wide text-redleg">
               Never Leave a Fallen Comrade
@@ -27,14 +27,15 @@ export default function RequestForSupportPage() {
             <p className="mt-2 text-sm leading-relaxed text-artillery-light">
               The Gator Redleg Chapter stands ready to support Florida&apos;s
               Field Artillery Soldiers, veterans, and their families through our
-              established support programs. New to our programs? Review our{" "}
+              established support programs. Compare programs below, then submit a
+              request. Full policy lives in the{" "}
               <a
                 href={CHARITABLE_PLAYBOOK_PATH}
                 className="font-semibold text-redleg underline"
               >
                 Charitable Action Playbook
-              </a>{" "}
-              to understand available support options and typical funding levels.
+              </a>
+              .
             </p>
           </div>
 

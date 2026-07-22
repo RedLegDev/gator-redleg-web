@@ -3,7 +3,7 @@ import {
   buildEmailHtml,
   buildEmailText,
   buildSubject,
-  optionLabel,
+  isValidProgram,
   type SupportRequestData,
 } from "@/lib/support-request";
 import { BOARD_CC } from "@/lib/email";
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  if (!optionLabel(data.requestType)) {
+  if (!isValidProgram(data.requestType)) {
     return Response.json({ error: "Unknown support program." }, { status: 400 });
   }
 
