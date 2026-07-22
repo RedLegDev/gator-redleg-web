@@ -14,7 +14,7 @@ Qgiv is the Chapter’s primary means for collecting money over the internet. It
 
 ### Google Drive
 
-The Chapter currently uses Google Drive as our primary record archive. It is also where the site files are kept, and provides the ability to use Google Forms for voting and surveys. Although there are limitations when accessing Google Drive from government networks, it has been generally convenient for most members. *Currently it is personally hosted by Jeremey Davis. This may need to be migrated at some point in the future. [https://drive.google.com/drive/folders/0B05fk1rGaJzcfk5mUmVZTUVpM3BlZTVfX0hvWkpOVGt3N0dMQ29uS3gzNGd1TndqMElrX0U?resourcekey=0-63DEreVY_-x9-IP6gVhoCw&usp=sharing](https://drive.google.com/drive/folders/0B05fk1rGaJzcfk5mUmVZTUVpM3BlZTVfX0hvWkpOVGt3N0dMQ29uS3gzNGd1TndqMElrX0U?resourcekey=0-63DEreVY_-x9-IP6gVhoCw&usp=sharing)*
+The Chapter currently uses Google Drive as our primary record archive. It is also where the site files are kept, and provides the ability to use Google Forms for voting and surveys. Although there are limitations when accessing Google Drive from government networks, it has been generally convenient for most members. *Currently it is personally hosted by Jeremey Davis. This may need to be migrated at some point in the future. Access is limited to chapter officers and authorized volunteers — request the current link from the Secretary.*
 
 ### Mailchimp
 
