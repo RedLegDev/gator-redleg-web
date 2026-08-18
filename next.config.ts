@@ -24,13 +24,6 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      {
-        // Chapter Zoom room — mirrors the Cloudflare redirect rule.
-        source: "/zoom",
-        destination:
-          "https://us06web.zoom.us/j/84328962777?pwd=g9adf6I2mg3MC5mSalR5aa1dUAQEmZ.1",
-        permanent: false,
-      },
       // URL parity: live home is /home; we serve it at /.
       { source: "/home", destination: "/", permanent: true },
       // URL parity: correct the misspelled "activites" base, preserving inbound links.

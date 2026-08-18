@@ -7,7 +7,8 @@ const BASE = "https://www.gatorredleg.org";
 /**
  * Static route inventory for the sitemap. Kept as an explicit list (rather
  * than crawling the filesystem) so it works under the Cloudflare static
- * export. `/zoom` is a redirect and is intentionally omitted.
+ * export. `/zoom` carries meeting credentials and is noindexed, so it is
+ * intentionally omitted here too.
  *
  * priority tiers: home 1.0 · top-level sections 0.8 · leaf pages 0.6
  */
