@@ -39,11 +39,30 @@ export const BULLARD_AWARD_RECIPIENTS: BullardAwardClass[] = [
         category: "officer",
         categoryLabel: "Officer of the Year",
         name: "1LT Mason Saldana",
+        unit: "2-116 FA",
       },
       {
         category: "nco",
         categoryLabel: "NCO of the Year",
         name: "SSG Samuel Szeltner",
+        unit: "2-116 FA",
+      },
+    ],
+  },
+  {
+    year: 2024,
+    recipients: [
+      {
+        category: "officer",
+        categoryLabel: "Officer of the Year",
+        name: "1LT Merrill Lefan",
+        unit: "2-116 FA",
+      },
+      {
+        category: "nco",
+        categoryLabel: "NCO of the Year",
+        name: "SSG Garrett Ifland",
+        unit: "2-116 FA",
       },
     ],
   },
