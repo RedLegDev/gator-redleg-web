@@ -5,6 +5,8 @@ import { Container } from "@/components/Container";
 import { Prose } from "@/components/Prose";
 import { MarkdownProse, markdownToc } from "@/components/MarkdownProse";
 import { AzimuthRule } from "@/components/AzimuthRule";
+import { BullardAwardRecipients } from "@/components/BullardAwardRecipients";
+import { BULLARD_AWARD_RECIPIENTS } from "@/lib/bullard-award";
 import { BULLARD_AWARD_SOP } from "@/lib/chapter-docs";
 
 export const metadata: Metadata = {
@@ -44,6 +46,8 @@ export default function BullardAwardPage() {
             award.
           </p>
         </Prose>
+
+        <BullardAwardRecipients classes={BULLARD_AWARD_RECIPIENTS} />
 
         <section className="mt-14" aria-labelledby="red-beach-heading">
           <h2
