@@ -62,10 +62,10 @@ export default function BullardAwardPage() {
 
           <figure className="mt-6 overflow-hidden rounded border border-artillery-light/15 bg-artillery/[0.02]">
             <Image
-              src="/photos/assault-at-red-beach-morotai.jpg"
+              src="/IMG_1329.jpg"
               alt="Assault at Red Beach: Morotai Island — oil painting by Jackson Walker depicting the 116th Field Artillery landing in 1944"
-              width={850}
-              height={672}
+              width={3420}
+              height={1874}
               className="h-auto w-full"
               priority
             />

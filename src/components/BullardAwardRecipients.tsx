@@ -36,15 +36,7 @@ function AwardClass({ awardClass }: { awardClass: BullardAwardClass }) {
 
   return (
     <div className="overflow-hidden rounded border border-artillery-light/15 bg-artillery text-white shadow-[0_12px_40px_rgba(20,20,20,0.12)]">
-      <div className="flex items-end justify-between gap-4 border-b border-gold/25 bg-gradient-to-r from-redleg/20 via-transparent to-transparent px-6 py-5 sm:px-8">
-        <div>
-          <p className="font-label text-xs uppercase tracking-[0.24em] text-gold">
-            Recipients
-          </p>
-          <p className="mt-1 text-sm text-white/70">
-            Engraved on the chapter trophy at Saint Francis Barracks
-          </p>
-        </div>
+      <div className="flex items-center justify-end border-b border-gold/25 bg-gradient-to-r from-redleg/20 via-transparent to-transparent px-6 py-4 sm:px-8">
         <p className="font-display text-4xl font-bold leading-none tracking-wide text-gold sm:text-5xl">
           {awardClass.year}
         </p>
