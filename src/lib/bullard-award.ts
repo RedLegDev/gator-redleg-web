@@ -104,7 +104,7 @@ export const BULLARD_AWARD_RECIPIENTS: BullardAwardClass[] = [
       {
         category: "officer",
         categoryLabel: "Officer of the Year",
-        name: "1LT Alexandar Collini",
+        name: "1LT Alexander Collini",
         unit: "3-116 FA",
       },
       {
