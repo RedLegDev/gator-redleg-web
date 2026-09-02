@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   title: "St. Barbara's Ball",
   description:
     "St. Barbara's Ball 2026 — a Gator Redleg Dining Out on Saturday, December 12, 2026 at the Winter Haven Armory.",
+  openGraph: {
+    images: [
+      {
+        url: "/photos/save-the-date-2026.jpg",
+        width: 1200,
+        height: 1680,
+        alt: "Save the Date — St. Barbara's Reception & Ball, Saturday, December 12, 2026, Winter Haven National Guard Armory, hosted by the Gator Redlegs.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/photos/save-the-date-2026.jpg"],
+  },
 };
 
 const DETAILS = [
@@ -34,6 +48,17 @@ export default function StBarbarasBallPage() {
       />
       <Container className="py-16">
         <div className="max-w-3xl">
+          <figure className="mx-auto max-w-sm sm:float-right sm:ml-8 sm:mb-6 sm:max-w-sm">
+            <Image
+              src="/photos/save-the-date-2026.jpg"
+              alt="Save the Date — St. Barbara's Reception & Ball, honoring the Soldiers of Florida's Army National Guard Field Artillery, Saturday, December 12, 2026, Winter Haven National Guard Armory, hosted by the Gator Redlegs. Dress code: dress blues and cocktail."
+              width={1200}
+              height={1680}
+              priority
+              className="h-auto w-full rounded shadow-lg"
+            />
+          </figure>
+
           <p className="text-lg leading-relaxed text-artillery-light">
             Mark your calendars. This December the Gator Redleg Chapter gathers
             to honor Saint Barbara and celebrate the Field Artillery. This year
