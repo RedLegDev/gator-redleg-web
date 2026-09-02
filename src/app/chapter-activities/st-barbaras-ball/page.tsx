@@ -30,7 +30,10 @@ const DETAILS = [
   ["Networking Social", "Friday, December 11, 2026 (evening)"],
   ["Dining Out", "Saturday, December 12, 2026"],
   ["Where", "Winter Haven Armory · Winter Haven, FL"],
-  ["Dress", "Cocktail attire; Soldiers in uniform"],
+  [
+    "Dress",
+    "Cocktail attire; Soldiers in ASU, AGSU, or Army Mess Dress",
+  ],
   [
     "Tickets & Tables",
     "Registration opens late summer — individual seats and full tables of eight.",
@@ -51,7 +54,7 @@ export default function StBarbarasBallPage() {
           <figure className="mx-auto max-w-sm sm:float-right sm:ml-8 sm:mb-6 sm:max-w-sm">
             <Image
               src="/photos/save-the-date-2026.jpg"
-              alt="Save the Date — St. Barbara's Reception & Ball, honoring the Soldiers of Florida's Army National Guard Field Artillery, Saturday, December 12, 2026, Winter Haven National Guard Armory, hosted by the Gator Redlegs. Dress code: dress blues and cocktail."
+              alt="Save the Date — St. Barbara's Reception & Ball, honoring the Soldiers of Florida's Army National Guard Field Artillery, Saturday, December 12, 2026, Winter Haven National Guard Armory, hosted by the Gator Redlegs."
               width={1200}
               height={1680}
               priority
