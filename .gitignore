@@ -41,6 +41,9 @@ yarn-error.log*
 /.wrangler/
 cloudflare-env.d.ts
 
+# basecamp import scratch (generated JSON/SQL)
+/scripts/basecamp-export/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
