@@ -71,9 +71,17 @@ function exportBasecamp() {
 }
 
 function loadJson(file) {
-  const raw = fs.readFileSync(path.join(EXPORT_DIR, file), "utf8");
+  const filePath = path.join(EXPORT_DIR, file);
+  if (!fs.existsSync(filePath)) return [];
+  const raw = fs.readFileSync(filePath, "utf8");
   const parsed = JSON.parse(raw);
-  return parsed.data ?? parsed;
+  if (Array.isArray(parsed)) return parsed;
+  if (Array.isArray(parsed.data)) return parsed.data;
+  if (parsed.ok === false) {
+    console.warn(`Skipping ${file}: ${parsed.error ?? "export failed"}`);
+    return [];
+  }
+  return [];
 }
 
 function buildImportSql() {
@@ -157,7 +165,10 @@ function stripHtml(html) {
 
 const { export: doExport, dryRun, commit, remote } = parseArgs();
 
-if (doExport) exportBasecamp();
+if (doExport) {
+  exportBasecamp();
+  if (!dryRun && !commit) process.exit(0);
+}
 
 if (!fs.existsSync(EXPORT_DIR)) {
   console.error("No export dir. Run with --export first.");
