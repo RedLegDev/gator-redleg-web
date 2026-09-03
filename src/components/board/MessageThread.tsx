@@ -3,21 +3,34 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BoardMarkdown } from "./BoardMarkdown";
-import type { CommentWithAuthor, MessageWithMeta } from "@/lib/board/types";
+import {
+  BoardAttachmentList,
+  BoardAttachmentPicker,
+} from "./BoardAttachments";
+import type { AttachmentMeta, CommentWithAuthor, MessageWithMeta } from "@/lib/board/types";
 import { formatBoardTimestamp } from "@/lib/board/format";
+
+type PendingAttachment = AttachmentMeta & { url: string };
 
 export function MessageThread({
   message,
   comments: initialComments,
+  messageAttachments,
+  commentAttachments,
   canPin,
 }: {
   message: MessageWithMeta;
   comments: CommentWithAuthor[];
+  messageAttachments: AttachmentMeta[];
+  commentAttachments: Record<string, AttachmentMeta[]>;
   canPin: boolean;
 }) {
   const router = useRouter();
   const [comments, setComments] = useState(initialComments);
+  const [commentAttachmentsState, setCommentAttachmentsState] =
+    useState(commentAttachments);
   const [bodyMd, setBodyMd] = useState("");
+  const [attachments, setAttachments] = useState<PendingAttachment[]>([]);
   const [pinned, setPinned] = useState(message.pinned === 1);
   const [saving, setSaving] = useState(false);
 
@@ -28,14 +41,27 @@ export function MessageThread({
     const res = await fetch(`/api/board/messages/${message.id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ bodyMd }),
+      body: JSON.stringify({
+        bodyMd,
+        attachmentIds: attachments.map((a) => a.id),
+      }),
     });
     const json = (await res.json()) as {
       data?: CommentWithAuthor & { author_name?: string };
     };
     if (res.ok && json.data) {
       setComments((c) => [...c, json.data!]);
+      setCommentAttachmentsState((prev) => ({
+        ...prev,
+        [json.data!.id]: attachments.map(({ id, filename, content_type, size_bytes }) => ({
+          id,
+          filename,
+          content_type,
+          size_bytes,
+        })),
+      }));
       setBodyMd("");
+      setAttachments([]);
       router.refresh();
     }
     setSaving(false);
@@ -83,6 +109,7 @@ export function MessageThread({
         </div>
         <div className="mt-4 border-t border-neutral-100 pt-4">
           <BoardMarkdown content={message.body_md} />
+          <BoardAttachmentList attachments={messageAttachments} />
         </div>
       </article>
 
@@ -100,6 +127,7 @@ export function MessageThread({
             </p>
             <div className="mt-2">
               <BoardMarkdown content={c.body_md} />
+              <BoardAttachmentList attachments={commentAttachmentsState[c.id] ?? []} />
             </div>
           </div>
         ))}
@@ -109,6 +137,11 @@ export function MessageThread({
             placeholder="Add a comment…"
             value={bodyMd}
             onChange={(e) => setBodyMd(e.target.value)}
+          />
+          <BoardAttachmentPicker
+            value={attachments}
+            onChange={setAttachments}
+            disabled={saving}
           />
           <button
             type="submit"

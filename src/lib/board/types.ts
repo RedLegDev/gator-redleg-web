@@ -67,3 +67,20 @@ export type TaskListWithCounts = TaskListRow & {
 export type CommentWithAuthor = CommentRow & {
   author_name: string;
 };
+
+export type AttachmentRow = {
+  id: string;
+  parent_type: "message" | "comment" | null;
+  parent_id: string | null;
+  uploader_id: string;
+  filename: string;
+  content_type: string;
+  size_bytes: number;
+  r2_key: string;
+  created_at: number;
+};
+
+export type AttachmentMeta = Pick<
+  AttachmentRow,
+  "id" | "filename" | "content_type" | "size_bytes"
+>;

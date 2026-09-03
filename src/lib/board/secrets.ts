@@ -25,3 +25,7 @@ export function secret(name: BoardSecretName): string | undefined {
 export function getDb(): D1Database {
   return getCloudflareContext().env.DB;
 }
+
+export function getAttachmentsBucket(): R2Bucket {
+  return getCloudflareContext().env.ATTACHMENTS;
+}

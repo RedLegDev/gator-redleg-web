@@ -1,9 +1,9 @@
 import {
   createMessage,
-  getMemberById,
   listMessages,
   recordActivity,
 } from "@/lib/board/db";
+import { linkAttachments } from "@/lib/board/attachments";
 import { boardLink, notifyBoard } from "@/lib/board/notify";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
@@ -24,9 +24,13 @@ export async function POST(request: Request) {
   const body = (await request.json().catch(() => ({}))) as {
     subject?: string;
     bodyMd?: string;
+    attachmentIds?: string[];
   };
   const subject = String(body.subject ?? "").trim();
   const bodyMd = String(body.bodyMd ?? "").trim();
+  const attachmentIds = Array.isArray(body.attachmentIds)
+    ? body.attachmentIds.map(String)
+    : [];
   if (!subject || !bodyMd) {
     return Response.json(
       { ok: false, error: "subject and bodyMd required" },
@@ -36,6 +40,19 @@ export async function POST(request: Request) {
 
   const db = getDb();
   const message = await createMessage(db, subject, bodyMd, auth.id);
+  const linked = await linkAttachments(
+    db,
+    attachmentIds,
+    "message",
+    message.id,
+    auth.id
+  );
+  if (!linked) {
+    return Response.json(
+      { ok: false, error: "Invalid attachments" },
+      { status: 400 }
+    );
+  }
   await recordActivity(
     db,
     auth.id,

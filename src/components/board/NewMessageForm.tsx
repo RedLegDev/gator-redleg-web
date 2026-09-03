@@ -2,14 +2,21 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {
+  BoardAttachmentPicker,
+} from "./BoardAttachments";
+import type { AttachmentMeta } from "@/lib/board/types";
 
 const inputClass =
   "w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-redleg focus:outline-none focus:ring-2 focus:ring-redleg/30";
+
+type PendingAttachment = AttachmentMeta & { url: string };
 
 export function NewMessageForm() {
   const router = useRouter();
   const [subject, setSubject] = useState("");
   const [bodyMd, setBodyMd] = useState("");
+  const [attachments, setAttachments] = useState<PendingAttachment[]>([]);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -21,7 +28,11 @@ export function NewMessageForm() {
       const res = await fetch("/api/board/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subject, bodyMd }),
+        body: JSON.stringify({
+          subject,
+          bodyMd,
+          attachmentIds: attachments.map((a) => a.id),
+        }),
       });
       const json = (await res.json()) as { ok?: boolean; data?: { id: string } };
       if (!res.ok || !json.data?.id) throw new Error("failed");
@@ -62,6 +73,11 @@ export function NewMessageForm() {
           required
         />
       </label>
+      <BoardAttachmentPicker
+        value={attachments}
+        onChange={setAttachments}
+        disabled={saving}
+      />
       <button
         type="submit"
         disabled={saving}
