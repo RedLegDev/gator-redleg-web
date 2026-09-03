@@ -40,4 +40,15 @@ Health check (needs D1 in dev): http://localhost:3021/api/board/health
 ```bash
 npx wrangler secret put BOARD_SESSION_SECRET
 npx wrangler secret put BOARD_ALLOWLIST
+npx wrangler secret put BOARD_PRESIDENT_ALLOWLIST
+```
+
+President allowlist emails get `role=president` (pin messages). Comma-separated, same format as `BOARD_ALLOWLIST`.
+
+## Basecamp import
+
+```bash
+npm run board:import -- --export
+npm run board:import -- --dry-run
+npm run board:import -- --commit --remote
 ```
