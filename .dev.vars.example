@@ -1,0 +1,3 @@
+BOARD_SESSION_SECRET=dev-only-change-me-32chars-min!!
+BOARD_ALLOWLIST=matt@redleg.dev
+BOARD_PRESIDENT_ALLOWLIST=matt@redleg.dev

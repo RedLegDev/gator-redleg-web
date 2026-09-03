@@ -14,6 +14,21 @@
     { "pattern": "gatorredleg.org", "custom_domain": true },
     { "pattern": "www.gatorredleg.org", "custom_domain": true }
   ],
+  // Board hub — messages, tasks, magic-link auth. Apply with:
+  //   npx wrangler d1 migrations apply gator-board --local|--remote
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "gator-board",
+      "database_id": "ff4b4f12-7552-40f4-a6fe-596a12fe0b75"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "ATTACHMENTS",
+      "bucket_name": "gator-board-attachments"
+    }
+  ],
   // Cloudflare Email Sending — gatorredleg.org is onboarded in the Red Leg Dev
   // account. `remote: true` proxies sends to the real service during local dev.
   "send_email": [{ "name": "SEND_EMAIL", "remote": true }],
