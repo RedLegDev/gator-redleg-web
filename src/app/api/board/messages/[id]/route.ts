@@ -5,6 +5,7 @@ import {
   recordActivity,
   setMessagePinned,
 } from "@/lib/board/db";
+import { boardLink, notifyBoard } from "@/lib/board/notify";
 import { getDb } from "@/lib/board/secrets";
 import { isPresident, requireMemberApi } from "@/lib/board/session";
 
@@ -68,6 +69,15 @@ export async function POST(request: Request, { params }: Params) {
     id,
     message.subject
   );
+
+  const link = boardLink(`/board/messages/${id}`);
+  await notifyBoard({
+    subject: `[Board] Re: ${message.subject}`,
+    text: `${auth.name} commented on: ${message.subject}\n\n${link}`,
+    html: `<p><strong>${auth.name}</strong> commented on: ${message.subject}</p><p><a href="${link}">View thread</a></p>`,
+    excludeEmail: auth.email,
+  }).catch(() => {});
+
   return Response.json(
     {
       ok: true,
