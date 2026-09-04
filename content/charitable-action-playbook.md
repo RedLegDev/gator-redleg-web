@@ -2,9 +2,11 @@
 
 The purpose of this document is to provide clarity and establish standards for the support that the Gator Redleg Chapter can offer to our members and fellow service members. Our intent is to give back during times of need as well as during celebratory events such as unit morale functions and family days. This playbook serves as a guideline to expedite decision-making for the Executive Board when voting on support for events. It will outline what we can and will support, and to what extent, while remaining within the limits of our contribution budget and financial realities at the time assistance is requested.
 
+Submit requests through the chapter website at [/support/request-for-support](/support/request-for-support). The Executive Board reviews and votes on each request.
+
 > **Disclaimer:** All amounts and descriptions in this document are intended to serve as suggestions and are not commitments or requirements. Final decisions regarding financial support and commitments will be determined by a vote of the Executive Board. We strive to be responsible and respectful stewards of the funds entrusted to our Chapter.
 
-_Last updated: February 2025._
+_Last updated: September 2026._
 
 ## End of Mission — Honoring Those Who Serve
 

@@ -1,6 +1,6 @@
 ## A-1. Purpose
 
-To foster pride in our Artillery heritage, during the 116th Regiment's Centennial Anniversary in 2017, the Gator Redleg Chapter chartered an award named after our Regiment's oldest living Commander and former State Adjutant General, Major General (Ret) Kennedy C. Bullard. The Major General Kennedy C. Bullard Award was established to recognize junior leaders for outstanding contributions to the Florida Army National Guard Artillery Community.
+To foster pride in our Artillery heritage, during the 116th Regiment's Centennial Anniversary in 2017, the Gator Redleg Chapter chartered an award named after the Regiment's then-oldest living Commander and former State Adjutant General, Major General (Ret) Kennedy C. Bullard. The Major General Kennedy C. Bullard Award was established to recognize junior leaders for outstanding contributions to the Florida Army National Guard Artillery Community.
 
 - **a.** MG (Ret) Bullard exemplifies numerous leadership traits. The leadership theme that flowed throughout his career was taking care of Soldiers. Individuals who served with him indicated his leadership performance was routinely characterized by tenacity, bravery, competence, humility, commitment, confidence, loyalty, and a family oriented leadership philosophy.
 
@@ -19,7 +19,7 @@ During his time as a Florida National Guardsman, MG (Ret) Bullard participated i
 1. One to an Artillery officer, in the grade of Lieutenant or Captain; and
 2. One to an Artillery NCO, in the grade of Corporal through Staff Sergeant.
 
-- **b.** The recipients will receive mounted certificates and their identification data will be engraved on plates mounted on the permanent award retained at Saint Francis Barracks, Saint Augustine, FL.
+- **b.** Recipients are engraved on plates mounted on the permanent trophy retained at Saint Francis Barracks, Saint Augustine, FL, and receive a framed print of *Assault at Red Beach — Morotai Island* (with engraved plaque) as their take-home award.
 
 - **c.** Nominations accepted from Commanders who occupy command positions authorized in the grade of Lieutenant Colonel or higher.
 
