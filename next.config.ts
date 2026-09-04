@@ -24,13 +24,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // Canonical host: apex → www so session cookies stay consistent.
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "gatorredleg.org" }],
-        destination: "https://www.gatorredleg.org/:path*",
-        permanent: true,
-      },
+      // Do NOT put apex→www here. OpenNext on Workers mis-handles
+      // `/:path*` + absolute destination (literal "/:path*" / self-308 loops).
+      // Apex→www belongs in Cloudflare Redirect Rules if needed; session
+      // cookies already use Domain=.gatorredleg.org so both hosts work.
       // URL parity: live home is /home; we serve it at /.
       { source: "/home", destination: "/", permanent: true },
       // URL parity: correct the misspelled "activites" base, preserving inbound links.
