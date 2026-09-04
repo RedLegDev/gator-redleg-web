@@ -8,6 +8,7 @@ import {
 import { countMessages, listMessages } from "@/lib/board/db";
 import { formatBoardTimestamp } from "@/lib/board/format";
 import { getDb } from "@/lib/board/secrets";
+import { cn } from "@/lib/cn";
 import {
   boardButtonPrimaryClass,
   boardListLinkClass,
@@ -31,14 +32,16 @@ export default async function BoardMessagesPage({ searchParams }: Props) {
         description={
           showArchived
             ? "Hidden from the main board. Unarchive a thread to put it back."
-            : "Chapter-wide threads for exec coordination, announcements, and discussion."
+            : "Chapter-wide threads for executive coordination, announcements, and discussion."
         }
       >
         <div className="flex flex-wrap items-center gap-3">
           {archivedCount > 0 && (
             <Link
-              href={showArchived ? "/board/messages" : "/board/messages?archived=1"}
-              className="text-sm font-semibold text-neutral-500 underline-offset-2 hover:underline"
+              href={
+                showArchived ? "/board/messages" : "/board/messages?archived=1"
+              }
+              className="text-sm font-medium text-neutral-500 underline-offset-2 transition-colors hover:text-artillery hover:underline"
               aria-pressed={showArchived}
             >
               {showArchived
@@ -62,7 +65,10 @@ export default async function BoardMessagesPage({ searchParams }: Props) {
                 Back to active
               </Link>
             ) : (
-              <Link href="/board/messages/new" className={boardButtonPrimaryClass}>
+              <Link
+                href="/board/messages/new"
+                className={boardButtonPrimaryClass}
+              >
                 Post the first message
               </Link>
             )
@@ -71,37 +77,63 @@ export default async function BoardMessagesPage({ searchParams }: Props) {
           {showArchived ? "No archived messages." : "No messages yet."}
         </BoardEmptyState>
       ) : (
-        <ul className={`divide-y divide-neutral-100 ${boardPanelClass}`}>
+        <ul className={cn("divide-y divide-neutral-100", boardPanelClass)}>
           {messages.map((m) => {
             const isArchived = m.status === "archived";
+            const isPinned = m.pinned === 1 && !isArchived;
             return (
               <li key={m.id}>
                 <Link
                   href={`/board/messages/${m.id}`}
-                  className={`${boardListLinkClass} px-4 py-4 lg:px-6 lg:py-5 ${
-                    isArchived ? "opacity-70" : ""
-                  }`}
+                  className={cn(
+                    boardListLinkClass,
+                    "relative px-5 py-4 sm:px-6 sm:py-5",
+                    isArchived && "opacity-70"
+                  )}
                 >
-                  <div className="flex flex-wrap items-center gap-2">
-                    {m.pinned === 1 && !isArchived && (
-                      <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-artillery">
-                        Pinned
-                      </span>
-                    )}
-                    {isArchived && (
-                      <span className="rounded-full bg-neutral-200/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-neutral-600">
-                        Archived
-                      </span>
-                    )}
-                    <span className="font-medium text-artillery lg:text-lg">
-                      {m.subject}
-                    </span>
+                  {isPinned && (
+                    <span
+                      className="absolute inset-y-3 left-0 w-0.5 rounded-full bg-gold"
+                      aria-hidden
+                    />
+                  )}
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        {isPinned && (
+                          <span className="font-heading text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-gold-dark">
+                            Pinned
+                          </span>
+                        )}
+                        {isArchived && (
+                          <span className="font-heading text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-neutral-500">
+                            Archived
+                          </span>
+                        )}
+                      </div>
+                      <p
+                        className={cn(
+                          "font-medium leading-snug text-artillery sm:text-lg",
+                          isPinned || isArchived ? "mt-1" : ""
+                        )}
+                      >
+                        {m.subject}
+                      </p>
+                      <p className="mt-1.5 text-sm text-neutral-500">
+                        {m.author_name}
+                        <span className="mx-1.5 text-neutral-300">·</span>
+                        {formatBoardTimestamp(m.updated_at)}
+                      </p>
+                    </div>
+                    <div className="shrink-0 pt-0.5 text-right">
+                      <p className="font-heading text-xs font-semibold uppercase tracking-[0.12em] text-neutral-400">
+                        {m.comment_count}
+                      </p>
+                      <p className="mt-0.5 text-[11px] text-neutral-400">
+                        {m.comment_count === 1 ? "reply" : "replies"}
+                      </p>
+                    </div>
                   </div>
-                  <p className="mt-1.5 text-sm text-neutral-500">
-                    {m.author_name} · {formatBoardTimestamp(m.updated_at)} ·{" "}
-                    {m.comment_count} comment
-                    {m.comment_count === 1 ? "" : "s"}
-                  </p>
                 </Link>
               </li>
             );

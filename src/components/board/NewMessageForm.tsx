@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import {
-  BoardAttachmentPicker,
-} from "./BoardAttachments";
+import { BoardAttachmentPicker } from "./BoardAttachments";
 import type { AttachmentMeta } from "@/lib/board/types";
-import { boardInputClass, boardButtonPrimaryClass } from "@/lib/board/ui";
-
-const inputClass = boardInputClass;
+import {
+  boardInputClass,
+  boardButtonPrimaryClass,
+  boardPanelClass,
+} from "@/lib/board/ui";
 
 type PendingAttachment = AttachmentMeta & { url: string };
 
@@ -47,32 +47,39 @@ export function NewMessageForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form
+      onSubmit={onSubmit}
+      className={`mx-auto max-w-3xl space-y-5 p-5 sm:p-7 lg:p-8 ${boardPanelClass}`}
+    >
       {error && (
-        <p className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+        <p
+          className="rounded-lg border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm text-red-800"
+          role="alert"
+        >
           {error}
         </p>
       )}
       <label className="block">
-        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-600">
+        <span className="mb-1.5 block font-heading text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
           Subject
         </span>
         <input
-          className={inputClass}
+          className={boardInputClass}
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
+          placeholder="Brief, clear subject line"
           required
         />
       </label>
       <label className="block">
-        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-600">
-          Message (Markdown)
+        <span className="mb-1.5 block font-heading text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
+          Message
         </span>
         <textarea
-          className={`${inputClass} min-h-48 font-mono`}
+          className={`${boardInputClass} min-h-52`}
           value={bodyMd}
           onChange={(e) => setBodyMd(e.target.value)}
-          placeholder="Markdown supported. @Name or @email to mention someone."
+          placeholder="Markdown supported. Use @Name or @email to mention someone."
           required
         />
       </label>
@@ -96,13 +103,15 @@ export function NewMessageForm() {
           </span>
         </span>
       </label>
-      <button
-        type="submit"
-        disabled={saving}
-        className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
-      >
-        {saving ? "Posting…" : "Post message"}
-      </button>
+      <div className="flex justify-end border-t border-neutral-100 pt-5">
+        <button
+          type="submit"
+          disabled={saving}
+          className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
+        >
+          {saving ? "Posting…" : "Post message"}
+        </button>
+      </div>
     </form>
   );
 }

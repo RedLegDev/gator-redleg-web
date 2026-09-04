@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BoardAvatar } from "./BoardChrome";
 import { BoardMarkdown } from "./BoardMarkdown";
 import {
   BoardAttachmentList,
@@ -14,16 +15,38 @@ import type {
   MessageWithMeta,
 } from "@/lib/board/types";
 import { formatBoardTimestamp } from "@/lib/board/format";
+import { cn } from "@/lib/cn";
 import {
   boardInputClass,
   boardButtonPrimaryClass,
   boardButtonSecondaryClass,
-  boardInsetPanelClass,
   boardPanelClass,
 } from "@/lib/board/ui";
 
 type PendingAttachment = AttachmentMeta & { url: string };
 type ComposerMode = "comment" | "respond";
+
+function MetaChip({
+  children,
+  tone = "neutral",
+}: {
+  children: React.ReactNode;
+  tone?: "neutral" | "gold" | "redleg" | "artillery";
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded px-2 py-0.5 font-heading text-[0.65rem] font-semibold uppercase tracking-[0.14em]",
+        tone === "gold" && "bg-gold/15 text-artillery",
+        tone === "redleg" && "bg-redleg/10 text-redleg",
+        tone === "artillery" && "bg-artillery/10 text-artillery",
+        tone === "neutral" && "bg-neutral-100 text-neutral-600"
+      )}
+    >
+      {children}
+    </span>
+  );
+}
 
 export function MessageThread({
   message,
@@ -61,6 +84,7 @@ export function MessageThread({
   );
 
   const isEmailThread = Boolean(inbound);
+  const replyCount = comments.length;
 
   async function submitComment(e: React.FormEvent) {
     e.preventDefault();
@@ -151,7 +175,6 @@ export function MessageThread({
       setArchived(next);
       if (next) {
         setPinned(false);
-        // Leave the thread so it disappears from the default (active) list
         router.push("/board/messages");
         return;
       }
@@ -160,223 +183,305 @@ export function MessageThread({
   }
 
   return (
-    <div className="space-y-8">
-      <article className={`p-4 shadow-sm sm:p-6 lg:p-8 ${boardPanelClass}`}>
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            {pinned && !archived && (
-              <span className="mb-2 inline-block rounded bg-gold/20 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-artillery">
-                Pinned
-              </span>
-            )}
-            {archived && (
-              <span className="mb-2 mr-2 inline-block rounded bg-neutral-200/80 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-neutral-600">
-                Archived
-              </span>
-            )}
-            {isEmailThread && (
-              <span className="mb-2 mr-2 inline-block rounded bg-redleg/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-redleg">
-                Inbound email
-              </span>
-            )}
-            <h2 className="font-display text-xl font-semibold text-artillery sm:text-2xl lg:text-3xl">
-              {message.subject}
-            </h2>
-            <p className="mt-1 text-sm text-neutral-500">
-              {message.author_name} ·{" "}
-              {formatBoardTimestamp(message.created_at)}
-            </p>
-            {inbound && (
-              <p className="mt-1 text-sm text-neutral-500">
-                From {inbound.from_address}
-                {inbound.to_address ? ` → ${inbound.to_address}` : ""}
-              </p>
-            )}
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            {canPin && !archived && (
+    <div className="mx-auto max-w-3xl space-y-8 lg:space-y-10">
+      {/* Original post */}
+      <article className={cn("relative overflow-hidden", boardPanelClass)}>
+        {pinned && !archived && (
+          <span
+            className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-gold via-gold to-redleg"
+            aria-hidden
+          />
+        )}
+
+        <header className="border-b border-neutral-100 px-5 py-5 sm:px-7 sm:py-6 lg:px-8 lg:py-7">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="min-w-0 flex-1 space-y-3">
+              {(pinned || archived || isEmailThread) && (
+                <div className="flex flex-wrap gap-1.5">
+                  {pinned && !archived && <MetaChip tone="gold">Pinned</MetaChip>}
+                  {archived && <MetaChip>Archived</MetaChip>}
+                  {isEmailThread && (
+                    <MetaChip tone="redleg">Inbound email</MetaChip>
+                  )}
+                </div>
+              )}
+              <h1 className="font-display text-2xl font-semibold leading-snug tracking-tight text-artillery sm:text-3xl">
+                {message.subject}
+              </h1>
+              <div className="flex items-start gap-3">
+                <BoardAvatar name={message.author_name} size="sm" />
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-artillery">
+                    {message.author_name}
+                  </p>
+                  <p className="mt-0.5 text-xs text-neutral-500">
+                    {formatBoardTimestamp(message.created_at)}
+                  </p>
+                  {inbound && (
+                    <p className="mt-1.5 text-xs leading-relaxed text-neutral-500">
+                      <span className="font-medium text-neutral-600">From</span>{" "}
+                      {inbound.from_address}
+                      {inbound.to_address ? (
+                        <>
+                          {" "}
+                          <span className="text-neutral-400">→</span>{" "}
+                          {inbound.to_address}
+                        </>
+                      ) : null}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex shrink-0 flex-wrap items-center gap-2">
+              {canPin && !archived && (
+                <button
+                  type="button"
+                  onClick={togglePin}
+                  className={boardButtonSecondaryClass}
+                >
+                  {pinned ? "Unpin" : "Pin"}
+                </button>
+              )}
               <button
                 type="button"
-                onClick={togglePin}
-                className="text-xs font-semibold uppercase tracking-wide text-redleg hover:underline"
+                onClick={toggleArchive}
+                className={boardButtonSecondaryClass}
               >
-                {pinned ? "Unpin" : "Pin"}
+                {archived ? "Unarchive" : "Archive"}
               </button>
-            )}
-            <button
-              type="button"
-              onClick={toggleArchive}
-              className="text-xs font-semibold uppercase tracking-wide text-neutral-500 hover:text-artillery hover:underline"
-            >
-              {archived ? "Unarchive" : "Archive"}
-            </button>
+            </div>
           </div>
-        </div>
-        <div className="mt-4 border-t border-neutral-100 pt-4">
+        </header>
+
+        <div className="px-5 py-5 sm:px-7 sm:py-6 lg:px-8 lg:py-7">
           <BoardMarkdown content={message.body_md} />
           <BoardAttachmentList attachments={messageAttachments} />
         </div>
       </article>
 
+      {/* Discussion */}
       <section className="space-y-4">
-        <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-neutral-600">
-          Thread ({comments.length})
-        </h3>
-        {comments.map((c) => (
-          <div key={c.id} className={`p-4 lg:p-5 ${boardInsetPanelClass}`}>
-            <div className="flex flex-wrap items-center gap-2">
-              {c.email_reply ? (
-                <span className="rounded bg-artillery/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-artillery">
-                  Sent reply
-                </span>
-              ) : (
-                <span className="rounded bg-neutral-200/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-neutral-600">
-                  Internal
-                </span>
-              )}
-              <p className="text-xs text-neutral-500">
-                {c.author_name} · {formatBoardTimestamp(c.created_at)}
-                {c.email_reply
-                  ? ` · to ${c.email_reply.to_address}`
-                  : ""}
-              </p>
-            </div>
-            <div className="mt-2">
-              <BoardMarkdown content={c.body_md} />
-              <BoardAttachmentList
-                attachments={commentAttachmentsState[c.id] ?? []}
-              />
-            </div>
-          </div>
-        ))}
+        <div className="flex items-baseline justify-between gap-3 border-b border-neutral-200/80 pb-3">
+          <h2 className="font-heading text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500">
+            Discussion
+          </h2>
+          <p className="text-xs text-neutral-400">
+            {replyCount === 0
+              ? "No replies yet"
+              : `${replyCount} ${replyCount === 1 ? "reply" : "replies"}`}
+          </p>
+        </div>
 
-        <div className={`space-y-3 p-4 lg:p-6 ${boardInsetPanelClass}`}>
+        {comments.length > 0 && (
+          <ul className="space-y-3">
+            {comments.map((c) => {
+              const isOutbound = Boolean(c.email_reply);
+              return (
+                <li
+                  key={c.id}
+                  className={cn(
+                    "rounded-xl border bg-white px-4 py-4 sm:px-5 sm:py-5",
+                    isOutbound
+                      ? "border-artillery/15 shadow-sm"
+                      : "border-neutral-200/90"
+                  )}
+                >
+                  <div className="flex gap-3">
+                    <BoardAvatar
+                      name={c.author_name}
+                      size="sm"
+                      tone={isOutbound ? "brand" : "neutral"}
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="text-sm font-medium text-artillery">
+                          {c.author_name}
+                        </p>
+                        <MetaChip tone={isOutbound ? "artillery" : "neutral"}>
+                          {isOutbound ? "Sent reply" : "Internal"}
+                        </MetaChip>
+                      </div>
+                      <p className="mt-0.5 text-xs text-neutral-500">
+                        {formatBoardTimestamp(c.created_at)}
+                        {c.email_reply
+                          ? ` · to ${c.email_reply.to_address}`
+                          : ""}
+                      </p>
+                      <div className="mt-3">
+                        <BoardMarkdown content={c.body_md} />
+                        <BoardAttachmentList
+                          attachments={commentAttachmentsState[c.id] ?? []}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        {/* Composer */}
+        <div className={cn("overflow-hidden", boardPanelClass)}>
           {isEmailThread && (
-            <div className="flex gap-2">
+            <div
+              className="grid grid-cols-2 border-b border-neutral-200 bg-neutral-50/80"
+              role="tablist"
+              aria-label="Reply type"
+            >
               <button
                 type="button"
+                role="tab"
+                aria-selected={mode === "comment"}
                 onClick={() => {
                   setMode("comment");
                   setError(null);
                 }}
-                className={
+                className={cn(
+                  "px-4 py-3 font-heading text-xs font-semibold uppercase tracking-[0.16em] transition-colors",
                   mode === "comment"
-                    ? boardButtonPrimaryClass
-                    : boardButtonSecondaryClass
-                }
+                    ? "border-b-2 border-redleg bg-white text-artillery"
+                    : "text-neutral-500 hover:text-artillery"
+                )}
               >
                 Internal comment
               </button>
               <button
                 type="button"
+                role="tab"
+                aria-selected={mode === "respond"}
                 onClick={() => {
                   setMode("respond");
                   setAttachments([]);
                   setError(null);
                 }}
-                className={
+                className={cn(
+                  "px-4 py-3 font-heading text-xs font-semibold uppercase tracking-[0.16em] transition-colors",
                   mode === "respond"
-                    ? boardButtonPrimaryClass
-                    : boardButtonSecondaryClass
-                }
+                    ? "border-b-2 border-redleg bg-white text-artillery"
+                    : "text-neutral-500 hover:text-artillery"
+                )}
               >
-                Respond
+                Respond by email
               </button>
             </div>
           )}
 
-          {mode === "respond" && inbound ? (
-            <form onSubmit={submitRespond} className="space-y-3">
-              <p className="text-sm text-neutral-600">
-                Sends email to <strong>{inbound.from_address}</strong>. Replies
-                return to <strong>board@gatorredleg.org</strong> and post here.
-              </p>
-              {sendFromAddresses.length > 0 && (
+          <div className="space-y-4 p-5 sm:p-6 lg:p-7">
+            {mode === "respond" && inbound ? (
+              <form onSubmit={submitRespond} className="space-y-4">
+                <p className="rounded-lg border border-neutral-200 bg-neutral-50 px-3.5 py-3 text-sm leading-relaxed text-neutral-600">
+                  Sends email to{" "}
+                  <span className="font-medium text-artillery">
+                    {inbound.from_address}
+                  </span>
+                  . Their reply returns to board@gatorredleg.org and posts here.
+                </p>
+                {sendFromAddresses.length > 0 && (
+                  <label className="block">
+                    <span className="mb-1.5 block font-heading text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                      Send as
+                    </span>
+                    <select
+                      className={boardInputClass}
+                      value={fromAddress}
+                      onChange={(e) => setFromAddress(e.target.value)}
+                    >
+                      {sendFromAddresses.map((addr) => (
+                        <option key={addr} value={addr}>
+                          {addr}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
                 <label className="block">
                   <span className="mb-1.5 block font-heading text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                    Send as
+                    Reply
                   </span>
-                  <select
-                    className={boardInputClass}
-                    value={fromAddress}
-                    onChange={(e) => setFromAddress(e.target.value)}
-                  >
-                    {sendFromAddresses.map((addr) => (
-                      <option key={addr} value={addr}>
-                        {addr}
-                      </option>
-                    ))}
-                  </select>
+                  <textarea
+                    className={`${boardInputClass} min-h-32`}
+                    placeholder="Write the reply that will be emailed…"
+                    value={bodyMd}
+                    onChange={(e) => setBodyMd(e.target.value)}
+                  />
                 </label>
-              )}
-              <textarea
-                className={`${boardInputClass} min-h-28`}
-                placeholder="Write the reply that will be emailed…"
-                value={bodyMd}
-                onChange={(e) => setBodyMd(e.target.value)}
-              />
-              {error && (
-                <p className="text-sm text-redleg" role="alert">
-                  {error}
-                </p>
-              )}
-              <button
-                type="submit"
-                disabled={saving}
-                className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
-              >
-                {saving ? "Sending…" : "Send reply"}
-              </button>
-            </form>
-          ) : (
-            <form onSubmit={submitComment} className="space-y-3">
-              {isEmailThread && (
-                <p className="text-sm text-neutral-600">
-                  Board-only — the external sender will not see this.
-                </p>
-              )}
-              <textarea
-                className={`${boardInputClass} min-h-24`}
-                placeholder={
-                  isEmailThread ? "Add an internal comment…" : "Add a comment…"
-                }
-                value={bodyMd}
-                onChange={(e) => setBodyMd(e.target.value)}
-              />
-              <BoardAttachmentPicker
-                value={attachments}
-                onChange={setAttachments}
-                disabled={saving}
-              />
-              <label className="flex items-start gap-2.5 text-sm text-neutral-700">
-                <input
-                  type="checkbox"
-                  checked={notifyAll}
-                  onChange={(e) => setNotifyAll(e.target.checked)}
-                  disabled={saving}
-                  className="mt-0.5 h-4 w-4 accent-redleg"
-                />
-                <span>
-                  Notify all active members by email
-                  <span className="mt-0.5 block text-xs text-neutral-500">
-                    @mentions are always emailed, even if this is off.
+                {error && (
+                  <p className="text-sm text-redleg" role="alert">
+                    {error}
+                  </p>
+                )}
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    disabled={saving}
+                    className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
+                  >
+                    {saving ? "Sending…" : "Send reply"}
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={submitComment} className="space-y-4">
+                {isEmailThread && (
+                  <p className="text-sm leading-relaxed text-neutral-500">
+                    Board-only note — the external sender will not see this.
+                  </p>
+                )}
+                <label className="block">
+                  <span className="mb-1.5 block font-heading text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                    {isEmailThread ? "Internal comment" : "Comment"}
                   </span>
-                </span>
-              </label>
-              {error && (
-                <p className="text-sm text-redleg" role="alert">
-                  {error}
-                </p>
-              )}
-              <button
-                type="submit"
-                disabled={saving}
-                className={`${boardButtonPrimaryClass} w-full bg-artillery hover:bg-neutral-800 sm:w-auto`}
-              >
-                {saving ? "Saving…" : "Comment"}
-              </button>
-            </form>
-          )}
+                  <textarea
+                    className={`${boardInputClass} min-h-28`}
+                    placeholder={
+                      isEmailThread
+                        ? "Add an internal comment…"
+                        : "Add a comment… Use @Name or @email to mention someone."
+                    }
+                    value={bodyMd}
+                    onChange={(e) => setBodyMd(e.target.value)}
+                  />
+                </label>
+                <BoardAttachmentPicker
+                  value={attachments}
+                  onChange={setAttachments}
+                  disabled={saving}
+                />
+                <label className="flex items-start gap-2.5 text-sm text-neutral-700">
+                  <input
+                    type="checkbox"
+                    checked={notifyAll}
+                    onChange={(e) => setNotifyAll(e.target.checked)}
+                    disabled={saving}
+                    className="mt-0.5 h-4 w-4 accent-redleg"
+                  />
+                  <span>
+                    Notify all active members by email
+                    <span className="mt-0.5 block text-xs text-neutral-500">
+                      @mentions are always emailed, even if this is off.
+                    </span>
+                  </span>
+                </label>
+                {error && (
+                  <p className="text-sm text-redleg" role="alert">
+                    {error}
+                  </p>
+                )}
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    disabled={saving}
+                    className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
+                  >
+                    {saving ? "Posting…" : "Post comment"}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
       </section>
     </div>

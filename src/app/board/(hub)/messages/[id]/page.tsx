@@ -41,9 +41,10 @@ export default async function BoardMessagePage({ params }: Props) {
             ? "/board/messages?archived=1"
             : "/board/messages"
         }
-        className="mb-6 inline-flex text-sm text-neutral-500 transition-colors hover:text-redleg lg:mb-8"
+        className="mb-5 inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500 transition-colors hover:text-redleg lg:mb-7"
       >
-        {message.status === "archived" ? "← Archived messages" : "← All messages"}
+        <span aria-hidden>←</span>
+        {message.status === "archived" ? "Archived messages" : "Message board"}
       </Link>
       <MessageThread
         message={message}

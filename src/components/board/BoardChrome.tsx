@@ -84,7 +84,7 @@ export function BoardPublicSiteLink({ className }: { className?: string }) {
   );
 }
 
-function memberInitials(name: string): string {
+export function boardInitials(name: string): string {
   return name
     .split(/\s+/)
     .filter(Boolean)
@@ -94,15 +94,35 @@ function memberInitials(name: string): string {
     .toUpperCase();
 }
 
+export function BoardAvatar({
+  name,
+  size = "md",
+  tone = "brand",
+}: {
+  name: string;
+  size?: "sm" | "md";
+  tone?: "brand" | "neutral";
+}) {
+  return (
+    <div
+      className={cn(
+        "flex shrink-0 items-center justify-center rounded-full font-heading font-bold text-white",
+        size === "sm" ? "h-8 w-8 text-[0.65rem]" : "h-11 w-11 text-sm",
+        tone === "brand"
+          ? "bg-gradient-to-br from-redleg to-redleg-dark shadow-inner"
+          : "bg-artillery-light"
+      )}
+      aria-hidden
+    >
+      {boardInitials(name)}
+    </div>
+  );
+}
+
 export function BoardMemberBadge({ name }: { name: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-redleg to-redleg-dark font-heading text-sm font-bold text-white shadow-inner"
-        aria-hidden
-      >
-        {memberInitials(name)}
-      </div>
+      <BoardAvatar name={name} />
       <p className="min-w-0 truncate font-medium text-white">{name}</p>
     </div>
   );
