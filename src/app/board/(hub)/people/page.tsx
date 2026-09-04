@@ -14,7 +14,7 @@ export default async function BoardPeoplePage() {
     <div>
       <BoardPageHeader
         title="People"
-        description="Manage who can access the board hub with magic-link sign-in."
+        description="Manage who can access the board hub with one-time email code sign-in."
       />
       <BoardPeoplePanel members={members} currentMemberId={member.id} />
     </div>

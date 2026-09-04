@@ -1,9 +1,11 @@
 /**
- * Magic-link tokens and board session cookies.
+ * OTP login codes and board session cookies.
  * WebCrypto only — runs on Cloudflare Workers.
  */
 
 export const SESSION_COOKIE = "rl_board";
+export const OTP_LENGTH = 6;
+export const OTP_TTL_SECONDS = 15 * 60;
 
 const enc = new TextEncoder();
 
@@ -19,12 +21,28 @@ function hex(buf: ArrayBuffer): string {
     .join("");
 }
 
-export function generateLoginToken(): string {
-  return b64url(crypto.getRandomValues(new Uint8Array(32)));
+/** Six-digit numeric code (000000–999999), crypto-random. */
+export function generateOtpCode(): string {
+  const buf = crypto.getRandomValues(new Uint32Array(1));
+  const n = buf[0]! % 1_000_000;
+  return String(n).padStart(OTP_LENGTH, "0");
+}
+
+export function normalizeOtpCode(raw: string): string {
+  return raw.replace(/\D/g, "").slice(0, OTP_LENGTH);
+}
+
+/** Bind code to email so hashes are not reusable across accounts. */
+export function otpStorageKey(email: string, code: string): string {
+  return `${email.trim().toLowerCase()}:${normalizeOtpCode(code)}`;
 }
 
 export async function hashToken(token: string): Promise<string> {
   return hex(await crypto.subtle.digest("SHA-256", enc.encode(token)));
+}
+
+export async function hashOtp(email: string, code: string): Promise<string> {
+  return hashToken(otpStorageKey(email, code));
 }
 
 export function parseAllowlist(raw: string | undefined): string[] {

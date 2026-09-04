@@ -1,6 +1,7 @@
 import type {
   CommentRow,
   CommentWithAuthor,
+  InboundEmailMeta,
   MessageRow,
   MessageWithMeta,
   TaskListRow,
@@ -58,6 +59,21 @@ export async function insertLoginToken(
     .run();
 }
 
+/** Invalidate unused OTPs for this email before issuing a new one. */
+export async function invalidateOpenLoginTokens(
+  db: D1Database,
+  email: string,
+  at: number
+): Promise<void> {
+  await db
+    .prepare(
+      `UPDATE login_tokens SET used_at = ?2
+        WHERE email = ?1 AND used_at IS NULL`
+    )
+    .bind(email.trim().toLowerCase(), at)
+    .run();
+}
+
 export async function consumeLoginToken(
   db: D1Database,
   tokenHash: string,
@@ -77,6 +93,34 @@ export async function consumeLoginToken(
     .bind(tokenHash)
     .first<{ email: string }>();
   return row?.email ?? null;
+}
+
+export async function recordOtpAttempt(
+  db: D1Database,
+  email: string,
+  at: number
+): Promise<void> {
+  await db
+    .prepare(
+      `INSERT INTO login_otp_attempts (id, email, attempted_at) VALUES (?1, ?2, ?3)`
+    )
+    .bind(newId(), email.trim().toLowerCase(), at)
+    .run();
+}
+
+export async function countRecentOtpAttempts(
+  db: D1Database,
+  email: string,
+  sinceSec: number
+): Promise<number> {
+  const row = await db
+    .prepare(
+      `SELECT COUNT(*) AS n FROM login_otp_attempts
+        WHERE email = ?1 AND attempted_at >= ?2`
+    )
+    .bind(email.trim().toLowerCase(), sinceSec)
+    .first<{ n: number }>();
+  return row?.n ?? 0;
 }
 
 export async function recordActivity(
@@ -183,18 +227,101 @@ export async function listComments(
   parentType: "message" | "task",
   parentId: string
 ): Promise<CommentWithAuthor[]> {
+  type CommentQueryRow = Omit<CommentWithAuthor, "email_reply"> & {
+    reply_to_address: string | null;
+    reply_from_address: string | null;
+    reply_subject: string | null;
+  };
+
   const { results } = await db
     .prepare(
       `SELECT c.id, c.parent_type, c.parent_id, c.author_id, c.body_md,
-              c.created_at, c.updated_at, m.name AS author_name
+              c.created_at, c.updated_at, m.name AS author_name,
+              o.to_address AS reply_to_address,
+              o.from_address AS reply_from_address,
+              o.subject AS reply_subject
        FROM comments c
        JOIN members m ON m.id = c.author_id
+       LEFT JOIN outbound_email_replies o ON o.comment_id = c.id
        WHERE c.parent_type = ?1 AND c.parent_id = ?2
        ORDER BY c.created_at ASC`
     )
     .bind(parentType, parentId)
-    .all<CommentWithAuthor>();
-  return results ?? [];
+    .all<CommentQueryRow>();
+
+  return (results ?? []).map((row) => {
+    const {
+      reply_to_address,
+      reply_from_address,
+      reply_subject,
+      ...comment
+    } = row;
+    if (reply_to_address && reply_from_address && reply_subject) {
+      return {
+        ...comment,
+        email_reply: {
+          to_address: reply_to_address,
+          from_address: reply_from_address,
+          subject: reply_subject,
+        },
+      };
+    }
+    return comment;
+  });
+}
+
+export async function getInboundEmailByMessageId(
+  db: D1Database,
+  messageId: string
+): Promise<InboundEmailMeta | null> {
+  return db
+    .prepare(
+      `SELECT id, from_address, to_address, COALESCE(subject, '') AS subject
+       FROM inbound_emails
+       WHERE board_message_id = ?1
+       ORDER BY received_at DESC
+       LIMIT 1`
+    )
+    .bind(messageId)
+    .first<InboundEmailMeta>();
+}
+
+export async function recordOutboundEmailReply(
+  db: D1Database,
+  args: {
+    inboundEmailId: string;
+    messageId: string;
+    commentId: string;
+    toAddress: string;
+    fromAddress: string;
+    subject: string;
+    bodyText: string;
+    sentBy: string;
+  }
+): Promise<string> {
+  const id = newId();
+  const ts = nowSec();
+  await db
+    .prepare(
+      `INSERT INTO outbound_email_replies
+         (id, inbound_email_id, message_id, comment_id, to_address, from_address,
+          subject, body_text, sent_by, sent_at)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)`
+    )
+    .bind(
+      id,
+      args.inboundEmailId,
+      args.messageId,
+      args.commentId,
+      args.toAddress,
+      args.fromAddress,
+      args.subject,
+      args.bodyText,
+      args.sentBy,
+      ts
+    )
+    .run();
+  return id;
 }
 
 export async function addComment(

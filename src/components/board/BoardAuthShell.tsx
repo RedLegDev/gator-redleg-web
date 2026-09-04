@@ -81,7 +81,7 @@ export function BoardAuthShell({
               Vestigia Nulla Retrorsum
             </p>
             <p className="max-w-xs text-sm text-white/45">
-              Executive board and members at large — magic-link access only.
+              Executive board and members at large — one-time code sign-in.
             </p>
             <Link
               href="/"

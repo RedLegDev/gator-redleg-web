@@ -1,21 +1,27 @@
 import {
-  generateLoginToken,
-  hashToken,
+  generateOtpCode,
+  hashOtp,
+  OTP_TTL_SECONDS,
 } from "@/lib/board/auth";
-import { canMemberLogin, countRecentLoginRequests, insertLoginToken } from "@/lib/board/db";
-import { BOARD_EMAIL_FROM, buildMagicLinkEmail } from "@/lib/board/email";
+import {
+  canMemberLogin,
+  countRecentLoginRequests,
+  insertLoginToken,
+  invalidateOpenLoginTokens,
+} from "@/lib/board/db";
+import { BOARD_EMAIL_FROM, buildOtpEmail } from "@/lib/board/email";
 import { secret, getDb } from "@/lib/board/secrets";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export const dynamic = "force-dynamic";
 
-const TOKEN_TTL_SECONDS = 15 * 60;
 const LOGIN_RATE_LIMIT = 3;
 const LOGIN_RATE_WINDOW_SEC = 15 * 60;
 
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => ({}))) as { email?: string };
   const email = String(body.email ?? "").trim().toLowerCase();
+  // Always-ok response — do not reveal whether the email is on the roster.
   const ok = Response.json({ ok: true });
   if (!email) return ok;
 
@@ -36,23 +42,18 @@ export async function POST(request: Request) {
   );
   if (recent >= LOGIN_RATE_LIMIT) return ok;
 
-  const { env } = getCloudflareContext();
-  const token = generateLoginToken();
+  const code = generateOtpCode();
+  await invalidateOpenLoginTokens(db, email, now);
   await insertLoginToken(
     db,
-    await hashToken(token),
+    await hashOtp(email, code),
     email,
-    now + TOKEN_TTL_SECONDS,
+    now + OTP_TTL_SECONDS,
     now
   );
 
-  const origin = new URL(request.url).origin;
-  const baseUrl = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
-    ? origin
-    : "https://www.gatorredleg.org";
-  const link = `${baseUrl}/board/verify?token=${encodeURIComponent(token)}`;
-  const mail = buildMagicLinkEmail(link);
-
+  const mail = buildOtpEmail(code);
+  const { env } = getCloudflareContext();
   await env.SEND_EMAIL.send({
     from: BOARD_EMAIL_FROM,
     to: email,

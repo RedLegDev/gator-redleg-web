@@ -20,17 +20,17 @@ Build the board hub as **`/board/*` routes in `gator-redleg-web`** with:
 | Compute | Cloudflare Workers via `@opennextjs/cloudflare` | Same as public site; one deploy pipeline |
 | Database | D1 (`gator-board`) | Relational fit for threads, tasks, assignments; proven in store |
 | Attachments | R2 (`gator-board-attachments`) | Message images; optional P2 |
-| Auth | Magic-link + HMAC cookie (`rl_board`) | Port from store; roster in D1 `members` |
+| Auth | Email OTP + HMAC cookie (`rl_board`) | 6-digit code; roster in D1 `members` |
 | Auth boundary | Per-route `requireMember()` | Match store — no middleware |
-| Outbound email | `SEND_EMAIL` on site worker | Already works; notifications, magic links |
+| Outbound email | `SEND_EMAIL` on site worker | Already works; OTP, notifications |
 | Inbound email | **SaaSMail webhook** (after #12) | Do not add `email()` handler to site worker |
 | Real-time chat | **Not in v1** | Message comments + email notifications suffice |
 
 ## Route structure
 
 ```
-/board/login              POST email → magic link
-/board/verify             token → session cookie
+/board/login              POST email → OTP email; enter code on same page
+/board/verify             legacy magic-link URL → redirects to login
 /board                      dashboard (activity feed — post-MVP #33)
 /board/messages             list (pinned first)
 /board/messages/new         compose
@@ -45,7 +45,8 @@ Build the board hub as **`/board/*` routes in `gator-redleg-web`** with:
 ### Foundation (`0001_board_hub.sql`)
 
 - `members` — allowlist + profile (email, name, role)
-- `login_tokens` — magic-link hashes (port store pattern)
+- `login_tokens` — hashed OTP storage (email-bound)
+- `login_otp_attempts` — failed verify throttle
 - `comments` — polymorphic (`parent_type`: `message` | `task`)
 - `activity` — denormalized feed for dashboard
 - `notification_prefs` — per-member email toggles
@@ -66,7 +67,7 @@ Build the board hub as **`/board/*` routes in `gator-redleg-web`** with:
 OUTBOUND (now)
   gator-redleg-web SEND_EMAIL
     → noreply@ / board@ → members
-    → magic links, @mentions, assignment alerts
+    → OTP codes, @mentions, assignment alerts
 
 INBOUND (after #12)
   Internet → CF Email Routing → saasmail-redleg
@@ -113,7 +114,7 @@ Active members, roles, and revoke are stored in D1. Any active member can manage
 ### Negative
 
 - D1 + auth adds dynamic routes — `force-dynamic` on `/board/*`
-- `.mil` email deliverability remains unreliable for magic links — allow personal emails
+- `.mil` email deliverability remains unreliable — OTP still better than links; allow personal emails
 - DMARC `p=reject` on gatorredleg.org — test before notification blast
 - Inbound email automation blocked until #12 lands
 

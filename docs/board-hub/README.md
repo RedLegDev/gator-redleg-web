@@ -27,6 +27,9 @@ PORT=3021 npm run dev
 
 Sign in: http://localhost:3021/board/login
 
+Auth is email OTP (6-digit code), not magic links. `POST /api/board/login`
+sends the code; `POST /api/board/verify` with `{ email, code }` sets the session cookie.
+
 Health check (needs D1 in dev): http://localhost:3021/api/board/health
 
 ## Cloudflare resources
@@ -93,6 +96,26 @@ npm run email:test       # terminal 2
 ```
 
 Legacy HTTP webhook (optional): `POST /api/board/inbound-email` with `BOARD_INBOUND_WEBHOOK_SECRET`.
+
+### Comment vs Respond (outbound reply)
+
+Email-origin threads (`inbound_emails` linked to a message) get two composers:
+
+| Action | Visibility | Behavior |
+|--------|------------|----------|
+| **Internal comment** | Board only | Existing comment flow |
+| **Respond** | External + board | `SEND_EMAIL` to the original `from_address`, then a “Sent reply” entry on the thread |
+
+**v1 identities** (`src/lib/board/email.ts`):
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| From | `board@gatorredleg.org` | Must be allowed on Cloudflare Email Sending for the domain |
+| Reply-To | Inbound `to_address`, else `board@gatorredleg.org` | So further replies hit Email Routing → Worker → board |
+
+Apply migration `0009_outbound_email_replies.sql` before relying on Respond in prod (`npm run db:migrate:remote`).
+
+Multi-identity send-as is tracked separately (GitHub #40).
 
 ## Webhooks
 

@@ -76,7 +76,7 @@ export function BoardPeoplePanel({
   return (
     <div className="space-y-8">
       <p className="text-sm text-neutral-600">
-        Board access is managed here. Active members can sign in with a magic link.
+        Board access is managed here. Active members can sign in with a one-time email code.
         Revoked members cannot log in but their past posts and tasks remain.
       </p>
 
