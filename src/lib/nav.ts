@@ -22,8 +22,7 @@ export type NavGroup = {
 
 export const FACEBOOK_URL =
   "https://m.facebook.com/pages/Gator-Redleg-Chapter-of-US-Field-Artillery-Association/159706074074450";
-export const BASECAMP_URL = "https://3.basecamp.com";
-/** On-site path for nav and in-app links. */
+/** Absolute URL for outbound email and external references. */
 export const CHARITABLE_PLAYBOOK_PATH =
   "/support/charitable-action-playbook";
 /** Absolute URL for outbound email and external references. */

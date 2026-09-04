@@ -1,3 +1,2 @@
 // Shared routing for chapter form emails.
-
-export const BOARD_CC = "save-CaacJzMWhKMV@app.basecamp.com";
+// Basecamp incoming-email CC retired with board hub cutover (#32).

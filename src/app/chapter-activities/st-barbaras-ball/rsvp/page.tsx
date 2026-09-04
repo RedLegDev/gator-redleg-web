@@ -20,10 +20,15 @@ export default function RsvpPage() {
             Armory. Tickets will be available as individual seats and full tables
             of eight, so round up your section and sit together.
           </p>
+          <p className="mt-4 text-base leading-relaxed text-artillery-light">
+            Registration is staged on the chapter store. Pricing is still being
+            confirmed — you can open the form now; purchase opens when the
+            chapter publishes final ticket prices.
+          </p>
           <EmbedSlot
             href={EMBEDS.ballRsvp}
-            label="Registration opens late summer"
-            note="Ticketing isn't open yet. Check back late summer, or follow us on Facebook for the announcement."
+            label="Open registration form"
+            note="Ticketing isn't open yet. Check back soon, or follow us on Facebook for the announcement."
           />
         </div>
       </Container>

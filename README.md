@@ -16,7 +16,7 @@ Repo: `RedLegDev/gator-redleg-web`
 - **Fonts:** Cinzel (display), Oswald (labels/nav), Inter (body)
 - **Cloudflare Workers** via `@opennextjs/cloudflare` (`wrangler.jsonc`)
 - **Email:** Cloudflare Email Sending (`SEND_EMAIL` binding) for contact +
-  support-request forms → `president@gatorredleg.org` (CC board Basecamp inbox)
+  support-request forms → `president@gatorredleg.org`
 - **Payments / store:** link-out to [store.gatorredleg.org](https://store.gatorredleg.org)
   (Stripe) — donations live; ball ticketing opens later
 - **Newsletter:** on-site signup → chapter listmonk
@@ -99,7 +99,7 @@ Custom domains: `gatorredleg.org` and `www.gatorredleg.org` (DNS on Cloudflare).
 - Chapter Vision, Bylaws (`/chapter-bylaws`), SOP (`/chapter-sop`), Bullard
   Award (`/bullard-award`), 501(c)(3) letter PDF
 - History pages, chapter activities, fundraising / volunteering copy
-- Charitable Action Playbook → public Basecamp doc
+- Charitable Action Playbook → on-site `/support/charitable-action-playbook`
 
 ## Still open / seasonal
 

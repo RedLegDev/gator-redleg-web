@@ -3,7 +3,6 @@ import Image from "next/image";
 import {
   NAV,
   FACEBOOK_URL,
-  BASECAMP_URL,
   BOARD_HUB_PATH,
   ZOOM_PATH,
   TAX_EXEMPTION_PDF,
@@ -111,14 +110,6 @@ export function SiteFooter() {
             <Link href={BOARD_HUB_PATH} className="transition-colors hover:text-gold">
               Board Hub
             </Link>
-            <a
-              href={BASECAMP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-gold"
-            >
-              Basecamp (legacy)
-            </a>
             <Link href={ZOOM_PATH} className="transition-colors hover:text-gold">
               Zoom
             </Link>

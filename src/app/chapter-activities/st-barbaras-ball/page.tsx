@@ -36,7 +36,7 @@ const DETAILS = [
   ],
   [
     "Tickets & Tables",
-    "Registration opens late summer — individual seats and full tables of eight.",
+    "Registration form is live on the chapter store; final pricing publishes when the chapter confirms ticket rates. Individual seats and tables of eight.",
   ],
 ];
 

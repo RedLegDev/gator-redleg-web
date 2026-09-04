@@ -6,8 +6,9 @@
  */
 
 export const EMBEDS = {
-  // St. Barbara's Ball — 2026 ticketing not open yet (opens late summer).
-  ballRsvp: null as string | null,
+  // Store registration (event still draft/provisional — link is fine; no "Buy" copy).
+  ballRsvp:
+    "https://store.gatorredleg.org/events/st-barbaras-ball-2026/register" as string | null,
 
   // Support
   donate: "https://store.gatorredleg.org/donate" as string | null,

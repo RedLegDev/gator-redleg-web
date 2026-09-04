@@ -6,15 +6,15 @@ This document is a compilation of Standing Operating Procedures (SOP) for the Ga
 
 ### Website
 
-The Chapter’s public website is [gatorredleg.org](https://www.gatorredleg.org/), rebuilt in 2026 as a hand-coded Next.js site deployed to Cloudflare Workers (`RedLegDev/gator-redleg-web`). Site content and assets live in the git repository; pushes to `main` auto-deploy. The Web Architect (or Chapter President) owns updates. Member-facing governance docs — Chapter SOP, Bylaws, Bullard Award SOP, Charitable Action Playbook, and the 501(c)(3) letter — are published on the site rather than kept only in Basecamp or Google Drive.
+The Chapter’s public website is [gatorredleg.org](https://www.gatorredleg.org/), rebuilt in 2026 as a hand-coded Next.js site deployed to Cloudflare Workers (`RedLegDev/gator-redleg-web`). Site content and assets live in the git repository; pushes to `main` auto-deploy. The Web Architect (or Chapter President) owns updates. Member-facing governance docs — Chapter SOP, Bylaws, Bullard Award SOP, Charitable Action Playbook, and the 501(c)(3) letter — are published on the site rather than kept only in Google Drive or private drafts.
 
 ### Payments and Store
 
 Chapter payments run through Stripe on the chapter store at [store.gatorredleg.org](https://store.gatorredleg.org/) (donations live; event ticketing and other checkouts are consolidating here). Qgiv is being retired and should not be used for new forms. The Treasurer retains the books and ledger; online transactions feed the chapter’s transaction tracking (Stein / Google Sheets).
 
-### Basecamp
+### Board Hub
 
-Basecamp is the board collaboration hub — todos, messages, Docs & Files, and day-to-day Executive Committee coordination. The Gator Redleg Chapter project is the working surface for board business. Public member documents should be published to the website once finalized; Basecamp remains the draft/working space for the board.
+Board coordination (messages, tasks, inbound chapter email) lives on the website at [gatorredleg.org/board](https://www.gatorredleg.org/board) — one-time email code sign-in for the executive roster. Public member documents should be published to the website once finalized; the board hub is the working surface for Executive Committee business. Basecamp is retired for day-to-day use (archive export / subscription cancel tracked separately).
 
 ### Email and Newsletter
 

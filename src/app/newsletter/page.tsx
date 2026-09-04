@@ -3,7 +3,7 @@ import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
-import { BASECAMP_URL } from "@/lib/nav";
+import { BOARD_HUB_PATH } from "@/lib/nav";
 
 export const metadata: Metadata = {
   title: "Newsletter",
@@ -30,8 +30,8 @@ export default function NewsletterPage() {
           </div>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <Button href={BASECAMP_URL} variant="secondary">
-              Basecamp
+            <Button href={BOARD_HUB_PATH} variant="secondary">
+              Board Hub
             </Button>
             <Button href="/zoom" variant="secondary">
               Zoom Link
