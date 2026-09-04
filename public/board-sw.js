@@ -15,8 +15,8 @@ self.addEventListener("push", (event) => {
     self.registration.showNotification(title, {
       body,
       data: { url },
-      icon: "/icon.png",
-      badge: "/icon.png",
+      icon: "/og-image.png",
+      badge: "/og-image.png",
     })
   );
 });
