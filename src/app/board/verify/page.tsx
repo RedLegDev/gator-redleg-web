@@ -1,5 +1,12 @@
-import { Container } from "@/components/Container";
+import Link from "next/link";
+import { BoardAuthShell } from "@/components/board/BoardAuthShell";
 import { VerifySignInForm } from "@/components/board/VerifySignInForm";
+import { boardButtonSecondaryClass } from "@/lib/board/ui";
+
+export const metadata = {
+  title: "Confirm board sign-in",
+  robots: { index: false, follow: false },
+};
 
 export default async function BoardVerifyPage({
   searchParams,
@@ -7,28 +14,39 @@ export default async function BoardVerifyPage({
   searchParams: Promise<{ token?: string }>;
 }) {
   const { token } = await searchParams;
+
   if (!token) {
     return (
-      <Container className="py-16">
-        <p className="text-center text-neutral-600">Missing sign-in token.</p>
-      </Container>
+      <BoardAuthShell
+        title="Chapter Board"
+        description="That sign-in link is missing a token. Request a fresh link from the login page."
+      >
+        <div className="space-y-5">
+          <div>
+            <p className="font-display text-xl font-semibold text-artillery">
+              Link incomplete
+            </p>
+            <p className="mt-1.5 text-sm text-neutral-600">
+              Open the full link from your email, or request a new one.
+            </p>
+          </div>
+          <Link
+            href="/board/login"
+            className={`${boardButtonSecondaryClass} w-full`}
+          >
+            Back to sign-in
+          </Link>
+        </div>
+      </BoardAuthShell>
     );
   }
 
   return (
-    <Container className="py-16">
-      <div className="mx-auto max-w-md rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
-        <h1 className="font-display text-xl font-semibold text-artillery">
-          Confirm sign-in
-        </h1>
-        <p className="mt-2 text-sm text-neutral-600">
-          Click below to finish signing in. This step prevents email security
-          scanners from consuming your one-time link before you do.
-        </p>
-        <div className="mt-6">
-          <VerifySignInForm token={token} />
-        </div>
-      </div>
-    </Container>
+    <BoardAuthShell
+      title="Chapter Board"
+      description="One more click to open the board hub on this device."
+    >
+      <VerifySignInForm token={token} />
+    </BoardAuthShell>
   );
 }

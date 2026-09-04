@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/lib/cn";
-import { boardInputClass } from "@/lib/board/ui";
-
-const inputClass = boardInputClass;
+import {
+  boardButtonPrimaryClass,
+  boardInputClass,
+} from "@/lib/board/ui";
 
 export function BoardLoginForm({ error }: { error?: boolean }) {
   const [email, setEmail] = useState("");
@@ -30,57 +30,97 @@ export function BoardLoginForm({ error }: { error?: boolean }) {
 
   if (state === "sent") {
     return (
-      <div className="rounded-lg border border-gold/40 bg-gold/10 p-6 text-sm text-artillery">
-        <p className="font-heading font-semibold uppercase tracking-wide">
-          Check your inbox
+      <div className="space-y-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/15 text-artillery">
+          <span className="font-display text-lg font-semibold" aria-hidden>
+            ✓
+          </span>
+        </div>
+        <div>
+          <p className="font-display text-xl font-semibold text-artillery">
+            Check your inbox
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+            If <strong className="text-artillery">{email}</strong> is on the
+            active roster, a one-time sign-in link is on its way. It expires in
+            15 minutes.
+          </p>
+        </div>
+        <p className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2.5 text-sm text-neutral-600">
+          Using a <span className="font-medium text-artillery">.mil</span>{" "}
+          address? Military filters often delay or drop magic links — try a
+          personal email on file with the chapter.
         </p>
-        <p className="mt-2">
-          If <strong>{email}</strong> is an active board member, a sign-in link
-          is on its way. Links expire in 15 minutes.
-        </p>
-        <p className="mt-2 text-neutral-600">
-          Using a <code className="text-xs">.mil</code> address? If nothing
-          arrives, try a personal email on file with the chapter.
-        </p>
+        <button
+          type="button"
+          onClick={() => {
+            setState("idle");
+            setEmail("");
+          }}
+          className="text-sm font-semibold text-redleg hover:underline"
+        >
+          Use a different email
+        </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-5">
+      <div>
+        <p className="font-display text-xl font-semibold text-artillery sm:text-2xl">
+          Sign in
+        </p>
+        <p className="mt-1.5 text-sm leading-relaxed text-neutral-600">
+          Enter the email on the board roster. We’ll send a magic link — no
+          password.
+        </p>
+      </div>
+
       {error && (
-        <p className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
-          That sign-in link was invalid or expired. Request a new one.
+        <p
+          className="rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-800"
+          role="alert"
+        >
+          That sign-in link was invalid or expired. Request a new one below.
         </p>
       )}
       {state === "error" && (
-        <p className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
-          Something went wrong. Try again.
+        <p
+          className="rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-800"
+          role="alert"
+        >
+          Something went wrong. Try again in a moment.
         </p>
       )}
+
       <label className="block">
-        <span className="mb-1 block font-heading text-xs font-semibold uppercase tracking-wide text-neutral-600">
-          Email
+        <span className="mb-1.5 block font-heading text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
+          Email address
         </span>
         <input
           type="email"
           required
           autoComplete="email"
-          className={inputClass}
+          autoFocus
+          className={boardInputClass}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
         />
       </label>
+
       <button
         type="submit"
         disabled={state === "sending"}
-        className={cn(
-          "w-full min-h-11 rounded bg-redleg px-4 py-3 text-base font-display font-semibold uppercase tracking-wide text-white transition-colors hover:bg-redleg-dark disabled:opacity-60 md:text-sm"
-        )}
+        className={`${boardButtonPrimaryClass} w-full`}
       >
-        {state === "sending" ? "Sending…" : "Email me a sign-in link"}
+        {state === "sending" ? "Sending link…" : "Email me a sign-in link"}
       </button>
+
+      <p className="text-center text-xs leading-relaxed text-neutral-500">
+        Links work once. Open the email on this device when you can.
+      </p>
     </form>
   );
 }
