@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { activityHref, activityLabel } from "@/lib/board/activity";
+import { BoardSectionTitle } from "@/components/board/BoardChrome";
 import { boardParallelRunActive } from "@/lib/board/flags";
 import {
   boardStats,
@@ -11,6 +12,11 @@ import {
 } from "@/lib/board/db";
 import { formatBoardTimestamp } from "@/lib/board/format";
 import { getDb } from "@/lib/board/secrets";
+import {
+  boardAccentBar,
+  boardPanelClass,
+  boardStatCardClass,
+} from "@/lib/board/ui";
 
 export default async function BoardDashboardPage() {
   const db = getDb();
@@ -31,105 +37,120 @@ export default async function BoardDashboardPage() {
   );
 
   return (
-    <div className="space-y-8">
-      {boardParallelRunActive() && (
-        <div className="rounded-lg border border-gold/50 bg-gold/10 px-4 py-3 text-sm text-artillery">
-          <p className="font-heading font-semibold uppercase tracking-wide">
-            Basecamp parallel run
+    <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-10 xl:gap-12">
+      <div className="space-y-8 lg:col-span-2">
+        <div>
+          <p className="font-heading text-xs font-semibold uppercase tracking-[0.25em] text-gold-dark">
+            Dashboard
           </p>
-          <p className="mt-1">
-            Use this board hub for new messages and tasks. Basecamp project 30371149
-            stays read-only for reference during the transition.
+          <h2 className="mt-2 font-display text-3xl font-semibold tracking-tight text-artillery xl:text-4xl">
+            Welcome back
+          </h2>
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-neutral-600 lg:text-base">
+            Executive board coordination — messages and tasks. Mention teammates
+            with{" "}
+            <code className="rounded bg-neutral-100 px-1.5 py-0.5 text-xs">
+              @Name
+            </code>{" "}
+            or{" "}
+            <code className="rounded bg-neutral-100 px-1.5 py-0.5 text-xs">
+              @email
+            </code>{" "}
+            in posts and comments.
           </p>
         </div>
-      )}
 
-      <p className="text-neutral-600">
-        Executive board coordination — messages and tasks. Mention teammates with{" "}
-        <code className="rounded bg-neutral-100 px-1 text-xs">@Name</code> or{" "}
-        <code className="rounded bg-neutral-100 px-1 text-xs">@email</code> in posts
-        and comments.
-      </p>
+        {boardParallelRunActive() && (
+          <div className="rounded-xl border border-gold/40 bg-gradient-to-r from-gold/15 to-gold/5 px-5 py-4 text-sm text-artillery lg:px-6">
+            <p className="font-heading font-semibold uppercase tracking-wide text-gold-dark">
+              Basecamp parallel run
+            </p>
+            <p className="mt-1.5 leading-relaxed">
+              Use this board hub for new messages and tasks. Basecamp stays
+              read-only for reference during the transition.
+            </p>
+          </div>
+        )}
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Link
-          href="/board/messages"
-          className="rounded-lg border border-neutral-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
-        >
-          <p className="font-heading text-xs font-semibold uppercase tracking-wide text-redleg">
-            Messages
-          </p>
-          <p className="mt-2 font-display text-3xl font-semibold text-artillery">
-            {stats.messages}
-          </p>
-          <p className="mt-1 text-sm text-neutral-500">Active threads</p>
-        </Link>
-        <Link
-          href="/board/tasks"
-          className="rounded-lg border border-neutral-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
-        >
-          <p className="font-heading text-xs font-semibold uppercase tracking-wide text-redleg">
-            Open tasks
-          </p>
-          <p className="mt-2 font-display text-3xl font-semibold text-artillery">
-            {stats.openTasks}
-          </p>
-          <p className="mt-1 text-sm text-neutral-500">Across all lists</p>
-        </Link>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Link href="/board/messages" className={boardStatCardClass}>
+            <span className={boardAccentBar()} aria-hidden />
+            <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-redleg">
+              Messages
+            </p>
+            <p className="mt-3 font-display text-4xl font-semibold text-artillery">
+              {stats.messages}
+            </p>
+            <p className="mt-1 text-sm text-neutral-500">Active threads</p>
+          </Link>
+          <Link href="/board/tasks" className={boardStatCardClass}>
+            <span className={boardAccentBar()} aria-hidden />
+            <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-redleg">
+              Open tasks
+            </p>
+            <p className="mt-3 font-display text-4xl font-semibold text-artillery">
+              {stats.openTasks}
+            </p>
+            <p className="mt-1 text-sm text-neutral-500">Across all lists</p>
+          </Link>
+        </div>
+
+        {overdue.length > 0 && (
+          <section>
+            <BoardSectionTitle variant="danger">Overdue</BoardSectionTitle>
+            <ul className={`mt-4 space-y-2 ${boardPanelClass} overflow-hidden`}>
+              {overdue.map((t) => (
+                <li key={t.id} className="border-b border-neutral-100 last:border-0">
+                  <Link
+                    href={`/board/tasks/${t.list_id}`}
+                    className="block px-4 py-3.5 transition-colors hover:bg-red-50/60 lg:px-5"
+                  >
+                    <span className="block font-medium text-artillery">{t.title}</span>
+                    <span className="mt-1 block text-sm text-neutral-500 sm:inline sm:mt-0">
+                      {t.list_name} · due {t.due_date}
+                      {t.assignee_name ? ` · ${t.assignee_name}` : ""}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
 
-      {overdue.length > 0 && (
-        <section>
-          <h2 className="font-heading text-sm font-semibold uppercase tracking-wide text-redleg">
-            Overdue
-          </h2>
-          <ul className="mt-3 space-y-2">
-            {overdue.map((t) => (
-              <li key={t.id}>
-                <Link
-                  href={`/board/tasks/${t.list_id}`}
-                  className="block rounded border border-red-200 bg-red-50/50 px-3 py-3 text-sm hover:bg-red-50 sm:py-2"
-                >
-                  <span className="block font-medium text-artillery">{t.title}</span>
-                  <span className="mt-1 block text-neutral-500 sm:mt-0 sm:inline">
-                    {t.list_name} · due {t.due_date}
-                    {t.assignee_name ? ` · ${t.assignee_name}` : ""}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      <section>
-        <h2 className="font-heading text-sm font-semibold uppercase tracking-wide text-neutral-600">
-          Recent activity
-        </h2>
-        {activity.length === 0 ? (
-          <p className="mt-3 text-sm text-neutral-500">No activity yet.</p>
-        ) : (
-          <ul className="mt-3 divide-y divide-neutral-100 rounded-lg border border-neutral-200 bg-white">
-            {activity.map((row, i) => {
-              const href = activityLinks[i];
-              const label = activityLabel(row);
-              return (
-                <li key={row.id} className="px-4 py-3 text-sm">
-                  {href ? (
-                    <Link href={href} className="text-artillery hover:text-redleg">
-                      {label}
-                    </Link>
-                  ) : (
-                    <span className="text-artillery">{label}</span>
-                  )}
-                  <span className="mt-0.5 block text-xs text-neutral-500">
-                    {formatBoardTimestamp(row.created_at)}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+      <section className="lg:col-span-1">
+        <div className="lg:sticky lg:top-8">
+          <BoardSectionTitle>Recent activity</BoardSectionTitle>
+          {activity.length === 0 ? (
+            <p className="mt-4 text-sm text-neutral-500">No activity yet.</p>
+          ) : (
+            <ul className={`mt-4 divide-y divide-neutral-100 ${boardPanelClass}`}>
+              {activity.map((row, i) => {
+                const href = activityLinks[i];
+                const label = activityLabel(row);
+                return (
+                  <li key={row.id} className="px-4 py-3.5 lg:px-5">
+                    {href ? (
+                      <Link
+                        href={href}
+                        className="text-sm leading-snug text-artillery transition-colors hover:text-redleg"
+                      >
+                        {label}
+                      </Link>
+                    ) : (
+                      <span className="text-sm leading-snug text-artillery">
+                        {label}
+                      </span>
+                    )}
+                    <span className="mt-1 block text-xs text-neutral-400">
+                      {formatBoardTimestamp(row.created_at)}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
       </section>
     </div>
   );

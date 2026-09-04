@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TaskListPanel } from "@/components/board/TaskListPanel";
 import { getTaskList, listActiveMembers, listTasksInList } from "@/lib/board/db";
@@ -18,11 +19,19 @@ export default async function BoardTaskListPage({ params }: Props) {
   ]);
 
   return (
-    <TaskListPanel
+    <div>
+      <Link
+        href="/board/tasks"
+        className="mb-6 inline-flex text-sm text-neutral-500 transition-colors hover:text-redleg lg:mb-8"
+      >
+        ← All lists
+      </Link>
+      <TaskListPanel
       listId={listId}
       listName={list.name}
       tasks={tasks}
       members={members}
-    />
+      />
+    </div>
   );
 }

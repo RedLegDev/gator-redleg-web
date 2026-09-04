@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MessageThread } from "@/components/board/MessageThread";
 import { listThreadAttachments } from "@/lib/board/attachments";
@@ -23,12 +24,20 @@ export default async function BoardMessagePage({ params }: Props) {
   );
 
   return (
-    <MessageThread
+    <div>
+      <Link
+        href="/board/messages"
+        className="mb-6 inline-flex text-sm text-neutral-500 transition-colors hover:text-redleg lg:mb-8"
+      >
+        ← All messages
+      </Link>
+      <MessageThread
       message={message}
       comments={comments}
       messageAttachments={messageAttachments}
       commentAttachments={byCommentId}
       canPin
-    />
+      />
+    </div>
   );
 }

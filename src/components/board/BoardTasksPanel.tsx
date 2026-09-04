@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { TaskListWithCounts } from "@/lib/board/types";
 
-import { boardInputClass, boardButtonPrimaryClass } from "@/lib/board/ui";
+import { boardInputClass, boardButtonPrimaryClass, boardInsetPanelClass, boardPanelClass } from "@/lib/board/ui";
 
 export function BoardTasksPanel({
   lists: initialLists,
@@ -59,7 +59,7 @@ export function BoardTasksPanel({
 
       <form
         onSubmit={addList}
-        className="space-y-3 rounded-lg border border-neutral-200 bg-neutral-50 p-4"
+        className={`space-y-3 p-4 lg:p-6 ${boardInsetPanelClass}`}
       >
         <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-neutral-700">
           New to-do list
@@ -103,10 +103,10 @@ export function BoardTasksPanel({
           <li key={list.id}>
             <Link
               href={`/board/tasks/${list.id}`}
-              className="flex flex-col gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-3 hover:border-redleg/40 sm:flex-row sm:items-center sm:justify-between"
+              className={`${boardPanelClass} flex flex-col gap-2 px-4 py-4 transition-all hover:border-redleg/20 hover:shadow-md sm:flex-row sm:items-center sm:justify-between lg:px-6 lg:py-5`}
             >
               <div>
-                <span className="font-medium text-artillery">{list.name}</span>
+                <span className="font-medium text-artillery lg:text-lg">{list.name}</span>
                 {list.description && (
                   <p className="mt-0.5 text-sm text-neutral-500">{list.description}</p>
                 )}

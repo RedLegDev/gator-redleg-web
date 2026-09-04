@@ -4,7 +4,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Member, TaskWithMeta } from "@/lib/board/types";
 import { formatBoardTimestamp } from "@/lib/board/format";
-import { boardInputClass, boardButtonPrimaryClass } from "@/lib/board/ui";
+import {
+  boardInputClass,
+  boardButtonPrimaryClass,
+  boardInsetPanelClass,
+  boardPanelClass,
+} from "@/lib/board/ui";
 
 const inputClass = boardInputClass;
 
@@ -160,12 +165,19 @@ export function TaskListPanel({
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="font-display text-xl font-semibold text-artillery">{listName}</h2>
+    <div className="space-y-8">
+      <div className="border-b border-neutral-200/80 pb-6 lg:pb-8">
+        <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">
+          To-do list
+        </p>
+        <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-artillery lg:text-3xl">
+          {listName}
+        </h2>
+      </div>
 
       <form
         onSubmit={addTask}
-        className="flex flex-col gap-3 rounded-lg border border-neutral-200 bg-neutral-50 p-4"
+        className={`flex flex-col gap-3 p-4 lg:p-6 ${boardInsetPanelClass}`}
       >
         <label className="block w-full sm:min-w-[12rem] sm:flex-1">
           <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
@@ -292,7 +304,7 @@ function TaskGroup({
         {tasks.map((task) => (
           <li
             key={task.id}
-            className="rounded-lg border border-neutral-200 bg-white px-3 py-2"
+            className={`${boardPanelClass} px-3 py-3 lg:px-4 lg:py-4`}
           >
             {editTaskId === task.id ? (
               <div className="space-y-3">

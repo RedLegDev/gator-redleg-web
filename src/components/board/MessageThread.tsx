@@ -9,7 +9,12 @@ import {
 } from "./BoardAttachments";
 import type { AttachmentMeta, CommentWithAuthor, MessageWithMeta } from "@/lib/board/types";
 import { formatBoardTimestamp } from "@/lib/board/format";
-import { boardInputClass, boardButtonPrimaryClass } from "@/lib/board/ui";
+import {
+  boardInputClass,
+  boardButtonPrimaryClass,
+  boardInsetPanelClass,
+  boardPanelClass,
+} from "@/lib/board/ui";
 
 type PendingAttachment = AttachmentMeta & { url: string };
 
@@ -82,7 +87,7 @@ export function MessageThread({
 
   return (
     <div className="space-y-8">
-      <article className="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm sm:p-5">
+      <article className={`p-4 shadow-sm sm:p-6 lg:p-8 ${boardPanelClass}`}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             {pinned && (
@@ -90,7 +95,7 @@ export function MessageThread({
                 Pinned
               </span>
             )}
-            <h2 className="font-display text-lg font-semibold text-artillery sm:text-xl">
+            <h2 className="font-display text-xl font-semibold text-artillery sm:text-2xl lg:text-3xl">
               {message.subject}
             </h2>
             <p className="mt-1 text-sm text-neutral-500">
@@ -121,7 +126,7 @@ export function MessageThread({
         {comments.map((c) => (
           <div
             key={c.id}
-            className="rounded-lg border border-neutral-100 bg-neutral-50 p-4"
+            className={`p-4 lg:p-5 ${boardInsetPanelClass}`}
           >
             <p className="text-xs text-neutral-500">
               {c.author_name} · {formatBoardTimestamp(c.created_at)}
@@ -132,7 +137,7 @@ export function MessageThread({
             </div>
           </div>
         ))}
-        <form onSubmit={addComment} className="space-y-2">
+        <form onSubmit={addComment} className={`space-y-3 p-4 lg:p-6 ${boardInsetPanelClass}`}>
           <textarea
             className={`${boardInputClass} min-h-24`}
             placeholder="Add a comment…"

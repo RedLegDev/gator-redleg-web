@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import { BoardPageHeader } from "@/components/board/BoardChrome";
 import { BoardPeoplePanel } from "@/components/board/BoardPeoplePanel";
 import { listAllMembers } from "@/lib/board/db";
 import { getDb } from "@/lib/board/secrets";
@@ -11,13 +12,11 @@ export default async function BoardPeoplePage() {
 
   return (
     <div>
-      <h2 className="font-display text-xl font-semibold text-artillery">People</h2>
-      <p className="mt-1 text-sm text-neutral-500">
-        Manage who can access the board hub.
-      </p>
-      <div className="mt-6">
-        <BoardPeoplePanel members={members} currentMemberId={member.id} />
-      </div>
+      <BoardPageHeader
+        title="People"
+        description="Manage who can access the board hub with magic-link sign-in."
+      />
+      <BoardPeoplePanel members={members} currentMemberId={member.id} />
     </div>
   );
 }

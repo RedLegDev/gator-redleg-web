@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Member } from "@/lib/board/types";
 
-import { boardInputClass, boardButtonPrimaryClass } from "@/lib/board/ui";
+import { boardInputClass, boardButtonPrimaryClass, boardInsetPanelClass, boardPanelClass } from "@/lib/board/ui";
 
 export function BoardPeoplePanel({
   members: initialMembers,
@@ -86,7 +86,7 @@ export function BoardPeoplePanel({
         </p>
       )}
 
-      <form onSubmit={addMember} className="space-y-3 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+      <form onSubmit={addMember} className={`space-y-3 p-4 lg:p-6 ${boardInsetPanelClass}`}>
         <h2 className="font-heading text-sm font-semibold uppercase tracking-wide text-neutral-700">
           Add member
         </h2>
@@ -129,7 +129,7 @@ export function BoardPeoplePanel({
         {members.map((m) => (
           <li
             key={m.id}
-            className={`rounded-lg border border-neutral-200 bg-white p-4 ${m.status === "revoked" ? "opacity-70" : ""}`}
+            className={`${boardPanelClass} p-4 lg:p-5 ${m.status === "revoked" ? "opacity-70" : ""}`}
           >
             <p className="font-medium text-artillery">{m.name}</p>
             <p className="mt-1 break-all font-mono text-xs text-neutral-600">{m.email}</p>
@@ -159,7 +159,7 @@ export function BoardPeoplePanel({
       </ul>
 
       {/* Desktop: table */}
-      <div className="hidden overflow-x-auto rounded-lg border border-neutral-200 md:block">
+      <div className={`hidden overflow-hidden md:block ${boardPanelClass}`}>
         <table className="min-w-full text-sm">
           <thead className="bg-neutral-50 text-left text-xs font-semibold uppercase tracking-wide text-neutral-600">
             <tr>
