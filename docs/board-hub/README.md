@@ -51,7 +51,7 @@ npx wrangler secret put BOARD_PRESIDENT_ALLOWLIST
 
 ## People admin
 
-Presidents manage roster at `/board/people` — add members, revoke access, promote president (demotes the previous president to officer).
+Any active board member can manage roster at `/board/people` — add members, revoke access, update roles. The president/officer/member labels are for the roster record, not permissions.
 
 ## Basecamp import
 

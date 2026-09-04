@@ -1,14 +1,12 @@
 export const dynamic = "force-dynamic";
 
-import { notFound } from "next/navigation";
 import { BoardPeoplePanel } from "@/components/board/BoardPeoplePanel";
 import { listAllMembers } from "@/lib/board/db";
 import { getDb } from "@/lib/board/secrets";
-import { isPresident, requireMember } from "@/lib/board/session";
+import { requireMember } from "@/lib/board/session";
 
 export default async function BoardPeoplePage() {
   const member = await requireMember();
-  if (!isPresident(member)) notFound();
   const members = await listAllMembers(getDb());
 
   return (

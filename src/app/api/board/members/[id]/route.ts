@@ -6,14 +6,14 @@ import {
 } from "@/lib/board/db";
 import type { MemberRole, MemberStatus } from "@/lib/board/types";
 import { getDb } from "@/lib/board/secrets";
-import { requirePresidentApi } from "@/lib/board/session";
+import { requireMemberApi } from "@/lib/board/session";
 
 export const dynamic = "force-dynamic";
 
 type Params = { params: Promise<{ id: string }> };
 
 export async function PATCH(request: Request, { params }: Params) {
-  const auth = await requirePresidentApi();
+  const auth = await requireMemberApi();
   if (auth instanceof Response) return auth;
 
   const { id } = await params;
@@ -54,9 +54,9 @@ export async function PATCH(request: Request, { params }: Params) {
     body.status !== "revoked"
   ) {
     const presidents = await countActivePresidents(db);
-    if (presidents <= 1) {
+    if (presidents <= 1 && existing.id !== auth.id) {
       return Response.json(
-        { ok: false, error: "Promote another president before demoting this one" },
+        { ok: false, error: "Assign another president before changing this one" },
         { status: 400 }
       );
     }
@@ -65,12 +65,13 @@ export async function PATCH(request: Request, { params }: Params) {
   if (
     existing.role === "president" &&
     existing.status === "active" &&
-    body.status === "revoked"
+    body.status === "revoked" &&
+    existing.id !== auth.id
   ) {
     const presidents = await countActivePresidents(db);
     if (presidents <= 1) {
       return Response.json(
-        { ok: false, error: "Promote another president before revoking this one" },
+        { ok: false, error: "Assign another president before revoking this one" },
         { status: 400 }
       );
     }

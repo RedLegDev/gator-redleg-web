@@ -5,12 +5,12 @@ import { MessageThread } from "@/components/board/MessageThread";
 import { listThreadAttachments } from "@/lib/board/attachments";
 import { getMessage, listComments } from "@/lib/board/db";
 import { getDb } from "@/lib/board/secrets";
-import { isPresident, requireMember } from "@/lib/board/session";
+import { requireMember } from "@/lib/board/session";
 
 type Props = { params: Promise<{ id: string }> };
 
 export default async function BoardMessagePage({ params }: Props) {
-  const member = await requireMember();
+  await requireMember();
   const { id } = await params;
   const db = getDb();
   const message = await getMessage(db, id);
@@ -28,7 +28,7 @@ export default async function BoardMessagePage({ params }: Props) {
       comments={comments}
       messageAttachments={messageAttachments}
       commentAttachments={byCommentId}
-      canPin={isPresident(member)}
+      canPin
     />
   );
 }

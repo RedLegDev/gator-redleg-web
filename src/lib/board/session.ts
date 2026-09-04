@@ -53,15 +53,7 @@ export async function requireMemberApi(): Promise<Member | Response> {
   return member;
 }
 
-export async function requirePresidentApi(): Promise<Member | Response> {
-  const auth = await requireMemberApi();
-  if (auth instanceof Response) return auth;
-  if (!isPresident(auth)) {
-    return Response.json({ ok: false, error: "Forbidden" }, { status: 403 });
-  }
-  return auth;
-}
-
+/** Display label only — board features are not gated on role. */
 export function isPresident(member: Member): boolean {
   return member.role === "president";
 }

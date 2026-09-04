@@ -89,7 +89,7 @@ INTERIM (before #12)
 | `BOARD_PRESIDENT_ALLOWLIST` | *(legacy)* President role during bootstrap |
 | `BOARD_INBOUND_WEBHOOK_SECRET` | Verify SaaSMail signatures (#31) |
 
-Active members, roles, and revoke are stored in D1. Presidents manage roster at `/board/people`.
+Active members, roles, and revoke are stored in D1. Any active member can manage roster at `/board/people`. Role labels (president/officer/member) are organizational metadata, not permission gates.
 
 ## Won't do in v1
 

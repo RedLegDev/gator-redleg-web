@@ -1,11 +1,10 @@
 import {
   createMember,
-  listActiveMembers,
   listAllMembers,
 } from "@/lib/board/db";
 import type { MemberRole } from "@/lib/board/types";
 import { getDb } from "@/lib/board/secrets";
-import { isPresident, requireMemberApi, requirePresidentApi } from "@/lib/board/session";
+import { requireMemberApi } from "@/lib/board/session";
 
 export const dynamic = "force-dynamic";
 
@@ -14,14 +13,12 @@ export async function GET() {
   if (auth instanceof Response) return auth;
 
   const db = getDb();
-  const members = isPresident(auth)
-    ? await listAllMembers(db)
-    : await listActiveMembers(db);
+  const members = await listAllMembers(db);
   return Response.json({ ok: true, data: members });
 }
 
 export async function POST(request: Request) {
-  const auth = await requirePresidentApi();
+  const auth = await requireMemberApi();
   if (auth instanceof Response) return auth;
 
   const body = (await request.json().catch(() => ({}))) as {

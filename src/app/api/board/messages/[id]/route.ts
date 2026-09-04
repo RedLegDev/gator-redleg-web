@@ -8,7 +8,7 @@ import {
 import { linkAttachments } from "@/lib/board/attachments";
 import { boardLink, notifyBoard } from "@/lib/board/notify";
 import { getDb } from "@/lib/board/secrets";
-import { isPresident, requireMemberApi } from "@/lib/board/session";
+import { requireMemberApi } from "@/lib/board/session";
 
 export const dynamic = "force-dynamic";
 
@@ -34,9 +34,6 @@ export async function PATCH(request: Request, { params }: Params) {
   const body = (await request.json().catch(() => ({}))) as { pinned?: boolean };
   if (typeof body.pinned !== "boolean") {
     return Response.json({ ok: false, error: "pinned boolean required" }, { status: 400 });
-  }
-  if (!isPresident(auth)) {
-    return Response.json({ ok: false, error: "Forbidden" }, { status: 403 });
   }
   const ok = await setMessagePinned(getDb(), id, body.pinned);
   if (!ok) {

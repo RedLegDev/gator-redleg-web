@@ -4,24 +4,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 
-const baseLinks = [
+const links = [
   { href: "/board", label: "Dashboard", exact: true },
   { href: "/board/messages", label: "Messages" },
   { href: "/board/tasks", label: "Tasks" },
   { href: "/board/me", label: "My Tasks" },
+  { href: "/board/people", label: "People" },
 ];
 
-export function BoardNav({
-  memberName,
-  isPresident,
-}: {
-  memberName: string;
-  isPresident?: boolean;
-}) {
+export function BoardNav({ memberName }: { memberName: string }) {
   const pathname = usePathname();
-  const links = isPresident
-    ? [...baseLinks, { href: "/board/people", label: "People" }]
-    : baseLinks;
 
   return (
     <aside className="border-b border-neutral-200 bg-neutral-50 lg:border-b-0 lg:border-r lg:min-h-[60vh] lg:w-56 lg:shrink-0">
