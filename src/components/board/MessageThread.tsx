@@ -149,7 +149,12 @@ export function MessageThread({
     });
     if (res.ok) {
       setArchived(next);
-      if (next) setPinned(false);
+      if (next) {
+        setPinned(false);
+        // Leave the thread so it disappears from the default (active) list
+        router.push("/board/messages");
+        return;
+      }
       router.refresh();
     }
   }

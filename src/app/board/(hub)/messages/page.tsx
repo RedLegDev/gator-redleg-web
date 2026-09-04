@@ -20,15 +20,19 @@ export default async function BoardMessagesPage({ searchParams }: Props) {
   const showArchived = (await searchParams).archived === "1";
   const db = getDb();
   const [messages, archivedCount] = await Promise.all([
-    listMessages(db, { status: showArchived ? "all" : "active" }),
+    listMessages(db, { status: showArchived ? "archived" : "active" }),
     countMessages(db, "archived"),
   ]);
 
   return (
     <div>
       <BoardPageHeader
-        title="Message Board"
-        description="Chapter-wide threads for exec coordination, announcements, and discussion."
+        title={showArchived ? "Archived messages" : "Message Board"}
+        description={
+          showArchived
+            ? "Hidden from the main board. Unarchive a thread to put it back."
+            : "Chapter-wide threads for exec coordination, announcements, and discussion."
+        }
       >
         <div className="flex flex-wrap items-center gap-3">
           {archivedCount > 0 && (
@@ -38,25 +42,33 @@ export default async function BoardMessagesPage({ searchParams }: Props) {
               aria-pressed={showArchived}
             >
               {showArchived
-                ? "Hide archived"
+                ? "Back to active"
                 : `Show archived (${archivedCount})`}
             </Link>
           )}
-          <Link href="/board/messages/new" className={boardButtonPrimaryClass}>
-            New message
-          </Link>
+          {!showArchived && (
+            <Link href="/board/messages/new" className={boardButtonPrimaryClass}>
+              New message
+            </Link>
+          )}
         </div>
       </BoardPageHeader>
 
       {messages.length === 0 ? (
         <BoardEmptyState
           action={
-            <Link href="/board/messages/new" className={boardButtonPrimaryClass}>
-              Post the first message
-            </Link>
+            showArchived ? (
+              <Link href="/board/messages" className={boardButtonPrimaryClass}>
+                Back to active
+              </Link>
+            ) : (
+              <Link href="/board/messages/new" className={boardButtonPrimaryClass}>
+                Post the first message
+              </Link>
+            )
           }
         >
-          No messages yet.
+          {showArchived ? "No archived messages." : "No messages yet."}
         </BoardEmptyState>
       ) : (
         <ul className={`divide-y divide-neutral-100 ${boardPanelClass}`}>
