@@ -40,7 +40,13 @@ export async function PATCH(request: Request, { params }: Params) {
     completed?: boolean;
   };
 
-  const ok = await updateTask(getDb(), id, {
+  const db = getDb();
+  const before = await getTask(db, id);
+  if (!before) {
+    return Response.json({ ok: false, error: "Not found" }, { status: 404 });
+  }
+
+  const ok = await updateTask(db, id, {
     title: body.title,
     descriptionMd: body.descriptionMd,
     assigneeId: body.assigneeId,
@@ -52,14 +58,16 @@ export async function PATCH(request: Request, { params }: Params) {
   if (!ok) {
     return Response.json({ ok: false, error: "Not found" }, { status: 404 });
   }
-  const task = await getTask(getDb(), id);
+  const task = await getTask(db, id);
 
   if (
+    body.assigneeId !== undefined &&
     body.assigneeId &&
     body.assigneeId !== auth.id &&
+    body.assigneeId !== before.assignee_id &&
     task?.assignee_id === body.assigneeId
   ) {
-    const assignee = await getMemberById(getDb(), body.assigneeId);
+    const assignee = await getMemberById(db, body.assigneeId);
     if (assignee) {
       const link = boardLink(`/board/tasks/${task.list_id}`);
       await notifyMember(assignee, {

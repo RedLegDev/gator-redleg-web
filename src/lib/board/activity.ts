@@ -4,6 +4,9 @@ export function activityHref(row: ActivityWithActor): string | null {
   if (row.object_type === "message") {
     return `/board/messages/${row.object_id}`;
   }
+  if (row.object_type === "task_list") {
+    return `/board/tasks/${row.object_id}`;
+  }
   return null;
 }
 

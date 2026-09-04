@@ -15,7 +15,6 @@ export {
   canMemberLogin,
   countActiveMembers,
   countActiveMembersExcept,
-  countActivePresidents,
   createMember,
   getActiveMemberByEmail,
   getMemberByEmail,
@@ -265,6 +264,37 @@ export async function getTaskList(
     )
     .bind(id)
     .first<TaskListRow>();
+}
+
+export async function createTaskList(
+  db: D1Database,
+  name: string,
+  description: string | null = null
+): Promise<TaskListRow> {
+  const id = newId();
+  const ts = nowSec();
+  const posRow = await db
+    .prepare(
+      `SELECT COALESCE(MAX(position), 0) + 1 AS next_pos FROM task_lists`
+    )
+    .first<{ next_pos: number }>();
+  const position = posRow?.next_pos ?? 1;
+
+  await db
+    .prepare(
+      `INSERT INTO task_lists (id, name, description, position, created_at)
+       VALUES (?1, ?2, ?3, ?4, ?5)`
+    )
+    .bind(id, name.trim(), description, position, ts)
+    .run();
+
+  return {
+    id,
+    name: name.trim(),
+    description,
+    position,
+    created_at: ts,
+  };
 }
 
 export async function listTasksInList(

@@ -52,8 +52,3 @@ export async function requireMemberApi(): Promise<Member | Response> {
   }
   return member;
 }
-
-/** Display label only — board features are not gated on role. */
-export function isPresident(member: Member): boolean {
-  return member.role === "president";
-}

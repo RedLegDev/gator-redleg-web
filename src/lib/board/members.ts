@@ -163,18 +163,14 @@ export async function upsertMember(
 export async function createMember(
   db: D1Database,
   email: string,
-  name: string,
-  role: MemberRole = "member"
+  name: string
 ): Promise<Member | "duplicate"> {
   const normalized = normalizeEmail(email);
   if (await getMemberByEmail(db, normalized)) return "duplicate";
-  if (role === "president") {
-    await demoteOtherPresidents(db, null);
-  }
   return upsertMember(db, {
     email: normalized,
     name,
-    role,
+    role: "member",
     status: "active",
   });
 }
@@ -182,55 +178,19 @@ export async function createMember(
 export async function updateMember(
   db: D1Database,
   id: string,
-  patch: { name?: string; role?: MemberRole; status?: MemberStatus }
+  patch: { name?: string; status?: MemberStatus }
 ): Promise<Member | null> {
   const existing = await getMemberById(db, id);
   if (!existing) return null;
 
   const name = patch.name?.trim() ?? existing.name;
-  const role = patch.role ?? existing.role;
   const status = patch.status ?? existing.status;
 
-  if (role === "president" && existing.role !== "president") {
-    await demoteOtherPresidents(db, id);
-  }
-
   await db
-    .prepare(`UPDATE members SET name = ?2, role = ?3, status = ?4 WHERE id = ?1`)
-    .bind(id, name, role, status)
+    .prepare(`UPDATE members SET name = ?2, status = ?3 WHERE id = ?1`)
+    .bind(id, name, status)
     .run();
-  return { ...existing, name, role, status };
-}
-
-async function demoteOtherPresidents(
-  db: D1Database,
-  exceptId: string | null
-): Promise<void> {
-  if (exceptId) {
-    await db
-      .prepare(
-        `UPDATE members SET role = 'officer'
-         WHERE role = 'president' AND id != ?1 AND status = 'active'`
-      )
-      .bind(exceptId)
-      .run();
-  } else {
-    await db
-      .prepare(
-        `UPDATE members SET role = 'officer' WHERE role = 'president' AND status = 'active'`
-      )
-      .run();
-  }
-}
-
-export async function countActivePresidents(db: D1Database): Promise<number> {
-  const row = await db
-    .prepare(
-      `SELECT COUNT(*) AS n FROM members
-       WHERE status = 'active' AND role = 'president'`
-    )
-    .first<{ n: number }>();
-  return row?.n ?? 0;
+  return { ...existing, name, status };
 }
 
 export async function countActiveMembersExcept(

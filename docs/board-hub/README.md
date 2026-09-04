@@ -51,7 +51,7 @@ npx wrangler secret put BOARD_PRESIDENT_ALLOWLIST
 
 ## People admin
 
-Any active board member can manage roster at `/board/people` — add members, revoke access, update roles. The president/officer/member labels are for the roster record, not permissions.
+Any active board member can manage roster at `/board/people` — add members, revoke access. All active members have the same permissions.
 
 ## Cron (due-soon reminders)
 

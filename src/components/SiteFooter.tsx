@@ -4,6 +4,7 @@ import {
   NAV,
   FACEBOOK_URL,
   BASECAMP_URL,
+  BOARD_HUB_PATH,
   ZOOM_PATH,
   TAX_EXEMPTION_PDF,
 } from "@/lib/nav";
@@ -107,7 +108,7 @@ export function SiteFooter() {
             >
               Store
             </a>
-            <Link href="/board/login" className="transition-colors hover:text-gold">
+            <Link href={BOARD_HUB_PATH} className="transition-colors hover:text-gold">
               Board Hub
             </Link>
             <a

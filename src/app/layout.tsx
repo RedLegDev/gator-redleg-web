@@ -4,7 +4,6 @@ import Script from "next/script";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { BoardParallelBanner } from "@/components/board/BoardParallelBanner";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationSchema } from "@/lib/structured-data";
 
@@ -89,7 +88,6 @@ export default function RootLayout({
       >
         <JsonLd data={organizationSchema} />
         <SiteHeader />
-        <BoardParallelBanner />
         <main>{children}</main>
         <SiteFooter />
         <Script

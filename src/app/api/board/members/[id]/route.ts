@@ -1,10 +1,9 @@
 import {
   countActiveMembersExcept,
-  countActivePresidents,
   getMemberById,
   updateMember,
 } from "@/lib/board/db";
-import type { MemberRole, MemberStatus } from "@/lib/board/types";
+import type { MemberStatus } from "@/lib/board/types";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
 
@@ -25,9 +24,16 @@ export async function PATCH(request: Request, { params }: Params) {
 
   const body = (await request.json().catch(() => ({}))) as {
     name?: string;
-    role?: MemberRole;
     status?: MemberStatus;
+    role?: unknown;
   };
+
+  if (body.role !== undefined) {
+    return Response.json(
+      { ok: false, error: "Role cannot be changed here" },
+      { status: 400 }
+    );
+  }
 
   if (body.status === "revoked" && existing.id === auth.id) {
     return Response.json(
@@ -41,37 +47,6 @@ export async function PATCH(request: Request, { params }: Params) {
     if (others === 0) {
       return Response.json(
         { ok: false, error: "Cannot revoke the last active member" },
-        { status: 400 }
-      );
-    }
-  }
-
-  if (
-    existing.role === "president" &&
-    existing.status === "active" &&
-    body.role &&
-    body.role !== "president" &&
-    body.status !== "revoked"
-  ) {
-    const presidents = await countActivePresidents(db);
-    if (presidents <= 1 && existing.id !== auth.id) {
-      return Response.json(
-        { ok: false, error: "Assign another president before changing this one" },
-        { status: 400 }
-      );
-    }
-  }
-
-  if (
-    existing.role === "president" &&
-    existing.status === "active" &&
-    body.status === "revoked" &&
-    existing.id !== auth.id
-  ) {
-    const presidents = await countActivePresidents(db);
-    if (presidents <= 1) {
-      return Response.json(
-        { ok: false, error: "Assign another president before revoking this one" },
         { status: 400 }
       );
     }
