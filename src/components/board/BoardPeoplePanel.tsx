@@ -2,11 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { Member, SendIdentity } from "@/lib/board/types";
+import type { Member } from "@/lib/board/types";
 import {
   boardInputClass,
   boardButtonPrimaryClass,
-  boardButtonSecondaryClass,
   boardInsetPanelClass,
   boardPanelClass,
 } from "@/lib/board/ui";
@@ -14,12 +13,9 @@ import {
 export function BoardPeoplePanel({
   members: initialMembers,
   currentMemberId,
-  isPresident,
 }: {
   members: Member[];
   currentMemberId: string;
-  /** President or officer — can assign chapter From addresses. */
-  isPresident: boolean;
 }) {
   const router = useRouter();
   const [members, setMembers] = useState(initialMembers);
@@ -28,34 +24,11 @@ export function BoardPeoplePanel({
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const [showRemoved, setShowRemoved] = useState(false);
-  const [emailOpenId, setEmailOpenId] = useState<string | null>(null);
-  const [identities, setIdentities] = useState<SendIdentity[]>([]);
-  const [identitiesLoading, setIdentitiesLoading] = useState(false);
-  const [newFrom, setNewFrom] = useState("");
 
   const removedCount = members.filter((m) => m.status === "revoked").length;
   const visibleMembers = showRemoved
     ? members
     : members.filter((m) => m.status !== "revoked");
-
-  async function loadIdentities(memberId: string) {
-    setIdentitiesLoading(true);
-    const res = await fetch(`/api/board/members/${memberId}/send-identities`);
-    const json = (await res.json()) as { data?: SendIdentity[] };
-    setIdentities(res.ok && json.data ? json.data : []);
-    setIdentitiesLoading(false);
-  }
-
-  async function toggleEmailPanel(memberId: string) {
-    if (emailOpenId === memberId) {
-      setEmailOpenId(null);
-      setNewFrom("");
-      return;
-    }
-    setEmailOpenId(memberId);
-    setNewFrom("");
-    await loadIdentities(memberId);
-  }
 
   async function addMember(e: React.FormEvent) {
     e.preventDefault();
@@ -104,43 +77,7 @@ export function BoardPeoplePanel({
       return;
     }
     setMembers((m) => m.map((x) => (x.id === id ? json.data! : x)));
-    if (status === "revoked" && emailOpenId === id) setEmailOpenId(null);
     router.refresh();
-  }
-
-  async function addIdentity(memberId: string) {
-    const fromAddress = newFrom.trim();
-    if (!fromAddress) return;
-    setError("");
-    const res = await fetch(`/api/board/members/${memberId}/send-identities`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        fromAddress,
-        isDefault: identities.length === 0,
-      }),
-    });
-    const json = (await res.json()) as { ok?: boolean; error?: string };
-    if (!res.ok) {
-      setError(json.error ?? "Could not add address.");
-      return;
-    }
-    setNewFrom("");
-    await loadIdentities(memberId);
-  }
-
-  async function removeIdentity(memberId: string, identityId: string) {
-    setError("");
-    const res = await fetch(
-      `/api/board/members/${memberId}/send-identities?identityId=${encodeURIComponent(identityId)}`,
-      { method: "DELETE" }
-    );
-    if (!res.ok) {
-      const json = (await res.json()) as { error?: string };
-      setError(json.error ?? "Could not remove address.");
-      return;
-    }
-    await loadIdentities(memberId);
   }
 
   return (
@@ -220,7 +157,6 @@ export function BoardPeoplePanel({
           {visibleMembers.map((m) => {
             const isSelf = m.id === currentMemberId;
             const removed = m.status === "revoked";
-            const emailOpen = emailOpenId === m.id;
 
             return (
               <li key={m.id} className={removed ? "bg-neutral-50/80" : undefined}>
@@ -250,16 +186,6 @@ export function BoardPeoplePanel({
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    {isPresident && !removed ? (
-                      <button
-                        type="button"
-                        className={`${boardButtonSecondaryClass} !min-h-10 !px-3 !text-xs`}
-                        onClick={() => void toggleEmailPanel(m.id)}
-                        aria-expanded={emailOpen}
-                      >
-                        {emailOpen ? "Done" : "Chapter email"}
-                      </button>
-                    ) : null}
                     {removed ? (
                       <button
                         type="button"
@@ -285,69 +211,6 @@ export function BoardPeoplePanel({
                     )}
                   </div>
                 </div>
-
-                {emailOpen && isPresident && !removed ? (
-                  <div className="border-t border-neutral-100 bg-neutral-50/60 px-4 py-4 lg:px-5">
-                    <p className="text-sm text-neutral-600">
-                      Optional. Lets them send chapter replies from a personal
-                      address (e.g. president@…). Everyone can already use
-                      board@.
-                    </p>
-                    {identitiesLoading ? (
-                      <p className="mt-3 text-sm text-neutral-500">Loading…</p>
-                    ) : (
-                      <ul className="mt-3 space-y-2">
-                        {identities.length === 0 ? (
-                          <li className="text-sm text-neutral-500">
-                            None yet — they send as board@.
-                          </li>
-                        ) : (
-                          identities.map((sid) => (
-                            <li
-                              key={sid.id}
-                              className="flex flex-wrap items-center justify-between gap-2 text-sm"
-                            >
-                              <span className="font-mono text-xs sm:text-sm">
-                                {sid.from_address}
-                              </span>
-                              <button
-                                type="button"
-                                className="text-xs font-semibold text-redleg hover:underline"
-                                onClick={() =>
-                                  void removeIdentity(m.id, sid.id)
-                                }
-                              >
-                                Remove
-                              </button>
-                            </li>
-                          ))
-                        )}
-                      </ul>
-                    )}
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      <input
-                        type="email"
-                        className={`${boardInputClass} max-w-sm`}
-                        placeholder="name@gatorredleg.org"
-                        value={newFrom}
-                        onChange={(e) => setNewFrom(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            void addIdentity(m.id);
-                          }
-                        }}
-                      />
-                      <button
-                        type="button"
-                        className={boardButtonPrimaryClass}
-                        onClick={() => void addIdentity(m.id)}
-                      >
-                        Add address
-                      </button>
-                    </div>
-                  </div>
-                ) : null}
               </li>
             );
           })}

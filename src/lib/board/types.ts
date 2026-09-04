@@ -94,6 +94,11 @@ export type SendIdentity = {
   created_at: number;
 };
 
+export type SendIdentityWithMember = SendIdentity & {
+  member_name: string;
+  member_email: string;
+};
+
 export type AttachmentRow = {
   id: string;
   parent_type: "message" | "comment" | null;

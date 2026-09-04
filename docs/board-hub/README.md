@@ -56,6 +56,8 @@ npx wrangler secret put BOARD_PRESIDENT_ALLOWLIST
 
 Any active board member can manage roster at `/board/people` — add members, revoke access. All active members have the same permissions.
 
+Officers and the president manage Respond From addresses at `/board/send-as` (linked from People). Everyone can already send as `board@`; role mailboxes (`president@`, `secretary@`, …) are assigned there.
+
 ## Cron (due-soon reminders)
 
 ```bash
@@ -129,7 +131,7 @@ Email-origin threads (`inbound_emails` linked to a message) get two composers:
 
 | Field | Value | Notes |
 |-------|-------|-------|
-| From | Member picker | Always includes `board@`; president assigns more `@gatorredleg.org` Froms in People |
+| From | Member picker | Always includes `board@`; officers assign more `@gatorredleg.org` Froms at `/board/send-as` |
 | Reply-To | `board@gatorredleg.org` | Locked — further replies hit Email Routing → Worker → board |
 
 Apply migrations `0009_outbound_email_replies.sql` and `0011_member_send_identities.sql` before relying on Respond / send-as in prod.

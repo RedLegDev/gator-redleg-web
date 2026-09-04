@@ -1,4 +1,4 @@
-import type { SendIdentity } from "./types";
+import type { SendIdentity, SendIdentityWithMember } from "./types";
 import { BOARD_INBOX_ADDRESS, BOARD_RESPOND_FROM } from "./email";
 import { newId, nowSec } from "./ids";
 
@@ -31,6 +31,23 @@ export async function listSendIdentitiesForMember(
     )
     .bind(memberId)
     .all<SendIdentity>();
+  return results ?? [];
+}
+
+/** All chapter From assignments for active members (admin / send-as page). */
+export async function listAllSendIdentities(
+  db: D1Database
+): Promise<SendIdentityWithMember[]> {
+  const { results } = await db
+    .prepare(
+      `SELECT s.id, s.member_id, s.from_address, s.is_default, s.created_at,
+              m.name AS member_name, m.email AS member_email
+       FROM member_send_identities s
+       JOIN members m ON m.id = s.member_id
+       WHERE m.status = 'active'
+       ORDER BY s.from_address ASC, m.name COLLATE NOCASE`
+    )
+    .all<SendIdentityWithMember>();
   return results ?? [];
 }
 
