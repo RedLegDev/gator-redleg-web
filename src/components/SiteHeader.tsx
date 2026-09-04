@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -13,10 +13,34 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
+  // Close the drawer after client-side navigation
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Keep page scroll locked so the drawer owns touch/wheel scrolling
+  useEffect(() => {
+    if (!open) return;
+    const { body, documentElement } = document;
+    const previousBodyOverflow = body.style.overflow;
+    const previousHtmlOverflow = documentElement.style.overflow;
+    body.style.overflow = "hidden";
+    documentElement.style.overflow = "hidden";
+    return () => {
+      body.style.overflow = previousBodyOverflow;
+      documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, [open]);
+
   return (
-    <header className="sticky top-0 z-50 bg-artillery text-white shadow-lg">
+    <header
+      className={cn(
+        "sticky top-0 z-50 bg-artillery text-white shadow-lg",
+        open && "flex max-h-dvh flex-col"
+      )}
+    >
       {/* Utility strip — chapter motto */}
-      <div className="border-b border-white/10 bg-black/40">
+      <div className="shrink-0 border-b border-white/10 bg-black/40">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-1.5 sm:px-8">
           <p className="font-label text-[0.68rem] uppercase tracking-[0.25em] text-gold">
             Vestigia Nulla Retrorsum
@@ -35,7 +59,7 @@ export function SiteHeader() {
       </div>
 
       {/* Main bar */}
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-3 sm:px-8">
+      <div className="mx-auto flex w-full max-w-6xl shrink-0 items-center justify-between px-5 py-3 sm:px-8">
         <Link href="/" className="flex items-center gap-3">
           <Image
             src={LOGO}
@@ -131,13 +155,13 @@ export function SiteHeader() {
         </button>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — capped to viewport so links below the fold scroll in-panel */}
       {open && (
         <nav
-          className="border-t border-white/10 bg-artillery-light lg:hidden"
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain border-t border-white/10 bg-artillery-light lg:hidden"
           aria-label="Primary mobile"
         >
-          <ul className="mx-auto max-w-6xl px-5 py-3 sm:px-8">
+          <ul className="mx-auto max-w-6xl px-5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-8">
             {NAV.map((group) => (
               <li key={group.href} className="border-b border-white/5 py-1">
                 <Link
