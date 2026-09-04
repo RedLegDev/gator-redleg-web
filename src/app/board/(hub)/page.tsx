@@ -3,7 +3,6 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { activityHref, activityLabel } from "@/lib/board/activity";
 import { BoardSectionTitle } from "@/components/board/BoardChrome";
-import { boardParallelRunActive } from "@/lib/board/flags";
 import {
   boardStats,
   getTask,
@@ -59,18 +58,6 @@ export default async function BoardDashboardPage() {
             in posts and comments.
           </p>
         </div>
-
-        {boardParallelRunActive() && (
-          <div className="rounded-xl border border-gold/40 bg-gradient-to-r from-gold/15 to-gold/5 px-5 py-4 text-sm text-artillery lg:px-6">
-            <p className="font-heading font-semibold uppercase tracking-wide text-gold-dark">
-              Basecamp parallel run
-            </p>
-            <p className="mt-1.5 leading-relaxed">
-              Use this board hub for new messages and tasks. Basecamp stays
-              read-only for reference during the transition.
-            </p>
-          </div>
-        )}
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Link href="/board/messages" className={boardStatCardClass}>

@@ -33,7 +33,6 @@
   // account. `remote: true` proxies sends to the real service during local dev.
   "send_email": [{ "name": "SEND_EMAIL", "remote": true }],
   "vars": {
-    "BOARD_PARALLEL_RUN": "true",
     "BOARD_INBOX_FORWARD": ""
   },
   "observability": {
