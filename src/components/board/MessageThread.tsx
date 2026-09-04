@@ -32,6 +32,8 @@ export function MessageThread({
   commentAttachments,
   canPin,
   inbound,
+  sendFromAddresses = [],
+  defaultFromAddress = "",
 }: {
   message: MessageWithMeta;
   comments: CommentWithAuthor[];
@@ -39,6 +41,8 @@ export function MessageThread({
   commentAttachments: Record<string, AttachmentMeta[]>;
   canPin: boolean;
   inbound: InboundEmailMeta | null;
+  sendFromAddresses?: string[];
+  defaultFromAddress?: string;
 }) {
   const router = useRouter();
   const [comments, setComments] = useState(initialComments);
@@ -50,6 +54,9 @@ export function MessageThread({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<ComposerMode>("comment");
+  const [fromAddress, setFromAddress] = useState(
+    defaultFromAddress || sendFromAddresses[0] || ""
+  );
 
   const isEmailThread = Boolean(inbound);
 
@@ -100,7 +107,7 @@ export function MessageThread({
     const res = await fetch(`/api/board/messages/${message.id}/respond`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ body: bodyMd }),
+      body: JSON.stringify({ body: bodyMd, fromAddress }),
     });
     const json = (await res.json()) as {
       data?: CommentWithAuthor;
@@ -245,8 +252,26 @@ export function MessageThread({
             <form onSubmit={submitRespond} className="space-y-3">
               <p className="text-sm text-neutral-600">
                 Sends email to <strong>{inbound.from_address}</strong>. Replies
-                return to the chapter inbox and post here.
+                return to <strong>board@gatorredleg.org</strong> and post here.
               </p>
+              {sendFromAddresses.length > 0 && (
+                <label className="block">
+                  <span className="mb-1.5 block font-heading text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                    Send as
+                  </span>
+                  <select
+                    className={boardInputClass}
+                    value={fromAddress}
+                    onChange={(e) => setFromAddress(e.target.value)}
+                  >
+                    {sendFromAddresses.map((addr) => (
+                      <option key={addr} value={addr}>
+                        {addr}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
               <textarea
                 className={`${boardInputClass} min-h-28`}
                 placeholder="Write the reply that will be emailed…"

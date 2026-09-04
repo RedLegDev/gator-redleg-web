@@ -106,16 +106,16 @@ Email-origin threads (`inbound_emails` linked to a message) get two composers:
 | **Internal comment** | Board only | Existing comment flow |
 | **Respond** | External + board | `SEND_EMAIL` to the original `from_address`, then a “Sent reply” entry on the thread |
 
-**v1 identities** (`src/lib/board/email.ts`):
+**v1 identities** (`src/lib/board/email.ts` + `member_send_identities`):
 
 | Field | Value | Notes |
 |-------|-------|-------|
-| From | `board@gatorredleg.org` | Must be allowed on Cloudflare Email Sending for the domain |
-| Reply-To | Inbound `to_address`, else `board@gatorredleg.org` | So further replies hit Email Routing → Worker → board |
+| From | Member picker | Always includes `board@`; president assigns more `@gatorredleg.org` Froms in People |
+| Reply-To | `board@gatorredleg.org` | Locked — further replies hit Email Routing → Worker → board |
 
-Apply migration `0009_outbound_email_replies.sql` before relying on Respond in prod (`npm run db:migrate:remote`).
+Apply migrations `0009_outbound_email_replies.sql` and `0011_member_send_identities.sql` before relying on Respond / send-as in prod.
 
-Multi-identity send-as is tracked separately (GitHub #40).
+Multi-identity send-as: GitHub #40.
 
 ## Webhooks
 

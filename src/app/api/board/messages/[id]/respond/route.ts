@@ -8,10 +8,13 @@ import {
 } from "@/lib/board/db";
 import {
   BOARD_INBOX_ADDRESS,
-  BOARD_RESPOND_FROM,
   buildOutboundReplyEmail,
   replySubject,
 } from "@/lib/board/email";
+import {
+  displayNameForFrom,
+  listAllowedFromAddresses,
+} from "@/lib/board/send-identities";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
 
@@ -24,7 +27,10 @@ export async function POST(request: Request, { params }: Params) {
   if (auth instanceof Response) return auth;
 
   const { id } = await params;
-  const body = (await request.json().catch(() => ({}))) as { body?: string };
+  const body = (await request.json().catch(() => ({}))) as {
+    body?: string;
+    fromAddress?: string;
+  };
   const bodyText = String(body.body ?? "").trim();
   if (!bodyText) {
     return Response.json({ ok: false, error: "body required" }, { status: 400 });
@@ -44,11 +50,25 @@ export async function POST(request: Request, { params }: Params) {
     );
   }
 
+  const { addresses, defaultAddress } = await listAllowedFromAddresses(
+    db,
+    auth.id
+  );
+  const fromAddress = String(body.fromAddress ?? defaultAddress)
+    .trim()
+    .toLowerCase();
+  if (!addresses.includes(fromAddress)) {
+    return Response.json(
+      { ok: false, error: "From address not allowed for your account" },
+      { status: 403 }
+    );
+  }
+
   const subject = replySubject(inbound.subject || message.subject);
-  const replyTo =
-    inbound.to_address && inbound.to_address.includes("@")
-      ? inbound.to_address
-      : BOARD_INBOX_ADDRESS;
+  const from = {
+    email: fromAddress,
+    name: displayNameForFrom(fromAddress, auth.name),
+  };
   const { text, html } = buildOutboundReplyEmail({
     body: bodyText,
     senderName: auth.name,
@@ -57,9 +77,10 @@ export async function POST(request: Request, { params }: Params) {
   try {
     const { env } = getCloudflareContext();
     await env.SEND_EMAIL.send({
-      from: BOARD_RESPOND_FROM,
+      from,
       to: inbound.from_address,
-      replyTo,
+      // Locked to shared intake so replies stay on the board (#40).
+      replyTo: BOARD_INBOX_ADDRESS,
       subject,
       text,
       html,
@@ -71,7 +92,10 @@ export async function POST(request: Request, { params }: Params) {
         : "unknown";
     console.error(`Board respond email failed: ${code}`, error);
     return Response.json(
-      { ok: false, error: "Unable to send reply. Nothing was posted to the thread." },
+      {
+        ok: false,
+        error: "Unable to send reply. Nothing was posted to the thread.",
+      },
       { status: 502 }
     );
   }
@@ -82,7 +106,7 @@ export async function POST(request: Request, { params }: Params) {
     messageId: id,
     commentId: comment.id,
     toAddress: inbound.from_address,
-    fromAddress: BOARD_RESPOND_FROM.email,
+    fromAddress,
     subject,
     bodyText,
     sentBy: auth.id,
@@ -104,7 +128,7 @@ export async function POST(request: Request, { params }: Params) {
         author_name: auth.name,
         email_reply: {
           to_address: inbound.from_address,
-          from_address: BOARD_RESPOND_FROM.email,
+          from_address: fromAddress,
           subject,
         },
       },

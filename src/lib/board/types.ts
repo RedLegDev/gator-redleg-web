@@ -84,6 +84,14 @@ export type InboundEmailMeta = {
   subject: string;
 };
 
+export type SendIdentity = {
+  id: string;
+  member_id: string;
+  from_address: string;
+  is_default: number;
+  created_at: number;
+};
+
 export type AttachmentRow = {
   id: string;
   parent_type: "message" | "comment" | null;

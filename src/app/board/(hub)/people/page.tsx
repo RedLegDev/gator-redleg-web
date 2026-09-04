@@ -16,7 +16,13 @@ export default async function BoardPeoplePage() {
         title="People"
         description="Manage who can access the board hub with one-time email code sign-in."
       />
-      <BoardPeoplePanel members={members} currentMemberId={member.id} />
+      <BoardPeoplePanel
+        members={members}
+        currentMemberId={member.id}
+        isPresident={
+          member.role === "president" || member.role === "officer"
+        }
+      />
     </div>
   );
 }

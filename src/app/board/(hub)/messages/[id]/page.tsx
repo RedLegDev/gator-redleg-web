@@ -9,20 +9,22 @@ import {
   getMessage,
   listComments,
 } from "@/lib/board/db";
+import { listAllowedFromAddresses } from "@/lib/board/send-identities";
 import { getDb } from "@/lib/board/secrets";
 import { requireMember } from "@/lib/board/session";
 
 type Props = { params: Promise<{ id: string }> };
 
 export default async function BoardMessagePage({ params }: Props) {
-  await requireMember();
+  const member = await requireMember();
   const { id } = await params;
   const db = getDb();
   const message = await getMessage(db, id);
   if (!message) notFound();
-  const [comments, inbound] = await Promise.all([
+  const [comments, inbound, fromOptions] = await Promise.all([
     listComments(db, "message", id),
     getInboundEmailByMessageId(db, id),
+    listAllowedFromAddresses(db, member.id),
   ]);
   const { message: messageAttachments, byCommentId } =
     await listThreadAttachments(
@@ -46,6 +48,8 @@ export default async function BoardMessagePage({ params }: Props) {
         commentAttachments={byCommentId}
         canPin
         inbound={inbound}
+        sendFromAddresses={fromOptions.addresses}
+        defaultFromAddress={fromOptions.defaultAddress}
       />
     </div>
   );
