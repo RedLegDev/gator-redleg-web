@@ -30,6 +30,12 @@ export function BoardPeoplePanel({
     Record<string, SendIdentity[]>
   >({});
   const [newFrom, setNewFrom] = useState<Record<string, string>>({});
+  const [showRevoked, setShowRevoked] = useState(false);
+
+  const revokedCount = members.filter((m) => m.status === "revoked").length;
+  const visibleMembers = showRevoked
+    ? members
+    : members.filter((m) => m.status !== "revoked");
 
   const loadIdentities = useCallback(async (memberId: string) => {
     const res = await fetch(`/api/board/members/${memberId}/send-identities`);
@@ -204,8 +210,26 @@ export function BoardPeoplePanel({
         </button>
       </form>
 
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-heading text-sm font-semibold uppercase tracking-wide text-neutral-700">
+          Roster
+        </h2>
+        {revokedCount > 0 && (
+          <button
+            type="button"
+            className="min-h-11 rounded px-3 text-sm font-semibold text-neutral-600 hover:bg-neutral-50"
+            onClick={() => setShowRevoked((v) => !v)}
+            aria-pressed={showRevoked}
+          >
+            {showRevoked
+              ? "Hide revoked"
+              : `Show revoked (${revokedCount})`}
+          </button>
+        )}
+      </div>
+
       <ul className="space-y-4">
-        {members.map((m) => (
+        {visibleMembers.map((m) => (
           <li
             key={m.id}
             className={`${boardPanelClass} p-4 lg:p-5 ${m.status === "revoked" ? "opacity-70" : ""}`}
