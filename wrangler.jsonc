@@ -3,7 +3,7 @@
   "name": "gator-redleg-web",
   // Red Leg Dev account — where gatorredleg.org and its Email Sending live.
   "account_id": "ab1da25c524f59bc61f776304bd88558",
-  "main": ".open-next/worker.js",
+  "main": "worker/index.ts",
   "compatibility_date": "2025-03-25",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
@@ -33,7 +33,8 @@
   // account. `remote: true` proxies sends to the real service during local dev.
   "send_email": [{ "name": "SEND_EMAIL", "remote": true }],
   "vars": {
-    "BOARD_PARALLEL_RUN": "true"
+    "BOARD_PARALLEL_RUN": "true",
+    "BOARD_INBOX_FORWARD": ""
   },
   "observability": {
     "enabled": false,

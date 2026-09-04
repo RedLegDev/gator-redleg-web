@@ -64,11 +64,40 @@ curl -X POST https://www.gatorredleg.org/api/board/cron/due-reminders \
   -H "Authorization: Bearer $BOARD_CRON_SECRET"
 ```
 
-## Webhooks (when configured)
+## Inbound email (Cloudflare Email Routing)
+
+The worker entrypoint is `worker/index.ts` — it wraps OpenNext `fetch` and adds an `email()` handler for chapter mail.
+
+**Flow:** MX → Email Routing rule → Worker `email()` → D1 archive (`inbound_emails`) + board message.
+
+Optional wrangler var to forward a copy after posting:
+
+```jsonc
+"vars": { "BOARD_INBOX_FORWARD": "you@example.com" }
+```
+
+### Cutover (when ready)
+
+1. Apply migration `0008_inbound_emails.sql` to remote D1
+2. Deploy worker
+3. Cloudflare dashboard → **Email Service → Routing** → create rule(s) → **Send to Worker** → `gator-redleg-web`
+4. Start with one address (e.g. `president@gatorredleg.org`), verify board post, then expand
+5. Remove `BOARD_CC` from contact/support forms once routing is live
+
+### Local smoke test
+
+```bash
+npm run db:migrate:local
+npm run preview          # terminal 1
+npm run email:test       # terminal 2
+```
+
+Legacy HTTP webhook (optional): `POST /api/board/inbound-email` with `BOARD_INBOUND_WEBHOOK_SECRET`.
+
+## Webhooks
 
 | Route | Secret | Purpose |
 |-------|--------|---------|
-| `POST /api/board/inbound-email` | `BOARD_INBOUND_WEBHOOK_SECRET` | SaaSMail → board message (#12) |
 | `POST /api/board/internal/store-event` | `BOARD_STORE_WEBHOOK_SECRET` | Store events → board message |
 
 ## Basecamp import

@@ -1,5 +1,5 @@
-import { createMessage, getMemberByEmail, recordActivity } from "@/lib/board/db";
-import { secret, getDb } from "@/lib/board/secrets";
+import { processInboundEmail, normalizeEmailAddress } from "@/lib/board/inbound-email";
+import { getDb, secret } from "@/lib/board/secrets";
 
 export const dynamic = "force-dynamic";
 
@@ -8,9 +8,10 @@ type InboundPayload = {
   subject?: string;
   text?: string;
   html?: string;
+  to?: string;
 };
 
-/** POST inbound chapter mail → board message. Requires #12 SaaSMail + BOARD_INBOUND_WEBHOOK_SECRET. */
+/** Legacy HTTP webhook (optional). Prefer Cloudflare Email Routing → Worker email(). */
 export async function POST(request: Request) {
   const expected = secret("BOARD_INBOUND_WEBHOOK_SECRET");
   if (!expected) {
@@ -23,7 +24,8 @@ export async function POST(request: Request) {
   }
 
   const body = (await request.json().catch(() => ({}))) as InboundPayload;
-  const from = String(body.from ?? "").trim().toLowerCase();
+  const from = normalizeEmailAddress(String(body.from ?? ""));
+  const to = normalizeEmailAddress(String(body.to ?? "webhook@gatorredleg.org"));
   const subject = String(body.subject ?? "(no subject)").trim();
   const text = String(body.text ?? body.html ?? "").trim();
   if (!from || !text) {
@@ -33,29 +35,19 @@ export async function POST(request: Request) {
     );
   }
 
-  const db = getDb();
-  let member = await getMemberByEmail(db, from);
-  if (!member || member.status !== "active") {
-    member = await getMemberByEmail(db, "matt@redleg.dev");
+  try {
+    const result = await processInboundEmail(getDb(), {
+      from,
+      to,
+      subject,
+      text,
+    });
+    return Response.json(
+      { ok: true, data: { id: result.boardMessageId, inboundId: result.inboundId } },
+      { status: 201 }
+    );
+  } catch (err) {
+    console.error("inbound webhook failed", err);
+    return Response.json({ ok: false, error: "Processing failed" }, { status: 422 });
   }
-  if (!member || member.status !== "active") {
-    return Response.json({ ok: false, error: "No author for post" }, { status: 422 });
-  }
-
-  const message = await createMessage(
-    db,
-    `[Email] ${subject}`,
-    `From: ${from}\n\n${text}`,
-    member.id
-  );
-  await recordActivity(
-    db,
-    member.id,
-    "imported",
-    "message",
-    message.id,
-    subject
-  );
-
-  return Response.json({ ok: true, data: { id: message.id } }, { status: 201 });
 }

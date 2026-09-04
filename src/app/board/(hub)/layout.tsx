@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Container } from "@/components/Container";
 import { BoardPublicSiteLink } from "@/components/board/BoardChrome";
 import { BoardNav } from "@/components/board/BoardNav";
