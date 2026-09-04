@@ -1,8 +1,9 @@
+import { cookies } from "next/headers";
+import { SESSION_COOKIE, hashToken, signSession } from "@/lib/board/auth";
 import {
-  SESSION_COOKIE,
-  hashToken,
-  signSession,
-} from "@/lib/board/auth";
+  boardSessionCookieOptions,
+  SESSION_TTL_SECONDS,
+} from "@/lib/board/cookie-options";
 import {
   canMemberLogin,
   consumeLoginToken,
@@ -13,7 +14,23 @@ import { getDb, secret } from "@/lib/board/secrets";
 
 export const dynamic = "force-dynamic";
 
-const SESSION_TTL_SECONDS = 30 * 24 * 60 * 60;
+async function readToken(request: Request): Promise<string> {
+  const contentType = request.headers.get("content-type") ?? "";
+  if (contentType.includes("application/json")) {
+    const body = (await request.json().catch(() => ({}))) as { token?: string };
+    return String(body.token ?? "").trim();
+  }
+  const form = await request.formData().catch(() => null);
+  return String(form?.get("token") ?? "").trim();
+}
+
+function wantsJson(request: Request): boolean {
+  return (request.headers.get("content-type") ?? "").includes("application/json");
+}
+
+function loginError(request: Request) {
+  return Response.redirect(new URL("/board/login?error=1", request.url), 303);
+}
 
 export async function POST(request: Request) {
   const signingKey = secret("BOARD_SESSION_SECRET");
@@ -21,17 +38,20 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: "Not configured" }, { status: 503 });
   }
 
-  const body = (await request.json().catch(() => ({}))) as { token?: string };
-  const token = String(body.token ?? "").trim();
+  const token = await readToken(request);
   if (!token) {
-    return Response.json({ ok: false, error: "token required" }, { status: 400 });
+    return wantsJson(request)
+      ? Response.json({ ok: false, error: "token required" }, { status: 400 })
+      : loginError(request);
   }
 
   const db = getDb();
   const now = Math.floor(Date.now() / 1000);
   const email = await consumeLoginToken(db, await hashToken(token), now);
   if (!email) {
-    return Response.json({ ok: false, error: "Invalid token" }, { status: 401 });
+    return wantsJson(request)
+      ? Response.json({ ok: false, error: "Invalid token" }, { status: 401 })
+      : loginError(request);
   }
 
   const allowed = await canMemberLogin(db, email, {
@@ -39,21 +59,25 @@ export async function POST(request: Request) {
     presidentAllowlist: secret("BOARD_PRESIDENT_ALLOWLIST"),
   });
   if (!allowed) {
-    return Response.json({ ok: false, error: "Forbidden" }, { status: 403 });
+    return wantsJson(request)
+      ? Response.json({ ok: false, error: "Forbidden" }, { status: 403 })
+      : loginError(request);
   }
 
   const member = await getActiveMemberByEmail(db, email);
   if (!member) {
-    return Response.json({ ok: false, error: "Forbidden" }, { status: 403 });
+    return wantsJson(request)
+      ? Response.json({ ok: false, error: "Forbidden" }, { status: 403 })
+      : loginError(request);
   }
   await touchMemberLastSeen(db, member.id);
 
   const cookie = await signSession(email, now + SESSION_TTL_SECONDS, signingKey);
-  const secure = new URL(request.url).protocol === "https:" ? "; Secure" : "";
-  const response = Response.json({ ok: true });
-  response.headers.append(
-    "Set-Cookie",
-    `${SESSION_COOKIE}=${cookie}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${SESSION_TTL_SECONDS}${secure}`
-  );
-  return response;
+  const cookieStore = await cookies();
+  cookieStore.set(SESSION_COOKIE, cookie, boardSessionCookieOptions(request));
+
+  if (wantsJson(request)) {
+    return Response.json({ ok: true });
+  }
+  return Response.redirect(new URL("/board", request.url), 303);
 }

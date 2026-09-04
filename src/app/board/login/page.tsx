@@ -1,12 +1,18 @@
+import { redirect } from "next/navigation";
 import { BoardLoginForm } from "@/components/board/BoardLoginForm";
 import { Container } from "@/components/Container";
 import { PageHero } from "@/components/PageHero";
+import { getMember } from "@/lib/board/session";
+
+export const dynamic = "force-dynamic";
 
 export default async function BoardLoginPage({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string }>;
 }) {
+  if (await getMember()) redirect("/board");
+
   const params = await searchParams;
   return (
     <>

@@ -24,6 +24,13 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Canonical host: apex → www so session cookies stay consistent.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "gatorredleg.org" }],
+        destination: "https://www.gatorredleg.org/:path*",
+        permanent: true,
+      },
       // URL parity: live home is /home; we serve it at /.
       { source: "/home", destination: "/", permanent: true },
       // URL parity: correct the misspelled "activites" base, preserving inbound links.
