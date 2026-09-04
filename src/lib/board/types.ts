@@ -69,6 +69,19 @@ export type TaskListWithCounts = TaskListRow & {
 
 export type CommentWithAuthor = CommentRow & {
   author_name: string;
+  /** Present when this comment is an outbound email reply (#39). */
+  email_reply?: {
+    to_address: string;
+    from_address: string;
+    subject: string;
+  };
+};
+
+export type InboundEmailMeta = {
+  id: string;
+  from_address: string;
+  to_address: string;
+  subject: string;
 };
 
 export type AttachmentRow = {

@@ -18,10 +18,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match the literal broken URL path. Next interprets :param in matchers,
-     * so we escape via a regex that equals "/:path*".
-     */
-    "/:path(.*)",
+    // Avoid :param syntax here — it is a path-to-regexp capture, not a literal.
+    "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };

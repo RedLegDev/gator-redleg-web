@@ -4,7 +4,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MessageThread } from "@/components/board/MessageThread";
 import { listThreadAttachments } from "@/lib/board/attachments";
-import { getMessage, listComments } from "@/lib/board/db";
+import {
+  getInboundEmailByMessageId,
+  getMessage,
+  listComments,
+} from "@/lib/board/db";
 import { getDb } from "@/lib/board/secrets";
 import { requireMember } from "@/lib/board/session";
 
@@ -16,12 +20,16 @@ export default async function BoardMessagePage({ params }: Props) {
   const db = getDb();
   const message = await getMessage(db, id);
   if (!message) notFound();
-  const comments = await listComments(db, "message", id);
-  const { message: messageAttachments, byCommentId } = await listThreadAttachments(
-    db,
-    id,
-    comments.map((c) => c.id)
-  );
+  const [comments, inbound] = await Promise.all([
+    listComments(db, "message", id),
+    getInboundEmailByMessageId(db, id),
+  ]);
+  const { message: messageAttachments, byCommentId } =
+    await listThreadAttachments(
+      db,
+      id,
+      comments.map((c) => c.id)
+    );
 
   return (
     <div>
@@ -32,11 +40,12 @@ export default async function BoardMessagePage({ params }: Props) {
         ← All messages
       </Link>
       <MessageThread
-      message={message}
-      comments={comments}
-      messageAttachments={messageAttachments}
-      commentAttachments={byCommentId}
-      canPin
+        message={message}
+        comments={comments}
+        messageAttachments={messageAttachments}
+        commentAttachments={byCommentId}
+        canPin
+        inbound={inbound}
       />
     </div>
   );
