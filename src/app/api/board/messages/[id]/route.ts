@@ -3,6 +3,7 @@ import {
   getMessage,
   listComments,
   recordActivity,
+  setMessageArchived,
   setMessagePinned,
 } from "@/lib/board/db";
 import { linkAttachments } from "@/lib/board/attachments";
@@ -31,13 +32,35 @@ export async function PATCH(request: Request, { params }: Params) {
   const auth = await requireMemberApi();
   if (auth instanceof Response) return auth;
   const { id } = await params;
-  const body = (await request.json().catch(() => ({}))) as { pinned?: boolean };
-  if (typeof body.pinned !== "boolean") {
-    return Response.json({ ok: false, error: "pinned boolean required" }, { status: 400 });
+  const body = (await request.json().catch(() => ({}))) as {
+    pinned?: boolean;
+    archived?: boolean;
+  };
+
+  const hasPinned = typeof body.pinned === "boolean";
+  const hasArchived = typeof body.archived === "boolean";
+  if (!hasPinned && !hasArchived) {
+    return Response.json(
+      { ok: false, error: "pinned or archived boolean required" },
+      { status: 400 }
+    );
   }
-  const ok = await setMessagePinned(getDb(), id, body.pinned);
-  if (!ok) {
-    return Response.json({ ok: false, error: "Not found" }, { status: 404 });
+
+  const db = getDb();
+  if (hasArchived) {
+    const ok = await setMessageArchived(db, id, body.archived!);
+    if (!ok) {
+      return Response.json({ ok: false, error: "Not found" }, { status: 404 });
+    }
+  }
+  if (hasPinned) {
+    const ok = await setMessagePinned(db, id, body.pinned!);
+    if (!ok) {
+      return Response.json(
+        { ok: false, error: "Not found or message is archived" },
+        { status: 404 }
+      );
+    }
   }
   return Response.json({ ok: true });
 }
@@ -49,11 +72,13 @@ export async function POST(request: Request, { params }: Params) {
   const body = (await request.json().catch(() => ({}))) as {
     bodyMd?: string;
     attachmentIds?: string[];
+    notify?: boolean;
   };
   const bodyMd = String(body.bodyMd ?? "").trim();
   const attachmentIds = Array.isArray(body.attachmentIds)
     ? body.attachmentIds.map(String)
     : [];
+  const notify = body.notify !== false;
   if (!bodyMd) {
     return Response.json({ ok: false, error: "bodyMd required" }, { status: 400 });
   }
@@ -95,12 +120,14 @@ export async function POST(request: Request, { params }: Params) {
     link,
   }).catch(() => [] as string[]);
 
-  await notifyBoard({
-    subject: `[Board] Re: ${message.subject}`,
-    text: `${auth.name} commented on: ${message.subject}\n\n${link}`,
-    html: `<p><strong>${auth.name}</strong> commented on: ${message.subject}</p><p><a href="${link}">View thread</a></p>`,
-    excludeEmails: [auth.email, ...mentionEmails],
-  }).catch(() => {});
+  if (notify) {
+    await notifyBoard({
+      subject: `[Board] Re: ${message.subject}`,
+      text: `${auth.name} commented on: ${message.subject}\n\n${link}`,
+      html: `<p><strong>${auth.name}</strong> commented on: ${message.subject}</p><p><a href="${link}">View thread</a></p>`,
+      excludeEmails: [auth.email, ...mentionEmails],
+    }).catch(() => {});
+  }
 
   return Response.json(
     {

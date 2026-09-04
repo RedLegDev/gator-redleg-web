@@ -7,7 +7,7 @@ export default function NewBoardMessagePage() {
     <div>
       <BoardPageHeader
         title="New message"
-        description="Post to the full board. Use @mentions to notify specific members."
+        description="Posts email all active members by default. Uncheck notify to post quietly, or @mention someone for a targeted alert."
       />
       <div className={`p-5 lg:p-8 ${boardInsetPanelClass}`}>
         <NewMessageForm />

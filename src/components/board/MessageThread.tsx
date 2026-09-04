@@ -50,7 +50,9 @@ export function MessageThread({
     useState(commentAttachments);
   const [bodyMd, setBodyMd] = useState("");
   const [attachments, setAttachments] = useState<PendingAttachment[]>([]);
+  const [notifyAll, setNotifyAll] = useState(true);
   const [pinned, setPinned] = useState(message.pinned === 1);
+  const [archived, setArchived] = useState(message.status === "archived");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<ComposerMode>("comment");
@@ -71,6 +73,7 @@ export function MessageThread({
       body: JSON.stringify({
         bodyMd,
         attachmentIds: attachments.map((a) => a.id),
+        notify: notifyAll,
       }),
     });
     const json = (await res.json()) as {
@@ -125,6 +128,7 @@ export function MessageThread({
   }
 
   async function togglePin() {
+    if (archived) return;
     const res = await fetch(`/api/board/messages/${message.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -136,14 +140,33 @@ export function MessageThread({
     }
   }
 
+  async function toggleArchive() {
+    const next = !archived;
+    const res = await fetch(`/api/board/messages/${message.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ archived: next }),
+    });
+    if (res.ok) {
+      setArchived(next);
+      if (next) setPinned(false);
+      router.refresh();
+    }
+  }
+
   return (
     <div className="space-y-8">
       <article className={`p-4 shadow-sm sm:p-6 lg:p-8 ${boardPanelClass}`}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            {pinned && (
+            {pinned && !archived && (
               <span className="mb-2 inline-block rounded bg-gold/20 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-artillery">
                 Pinned
+              </span>
+            )}
+            {archived && (
+              <span className="mb-2 mr-2 inline-block rounded bg-neutral-200/80 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-neutral-600">
+                Archived
               </span>
             )}
             {isEmailThread && (
@@ -165,15 +188,24 @@ export function MessageThread({
               </p>
             )}
           </div>
-          {canPin && (
+          <div className="flex flex-wrap items-center gap-3">
+            {canPin && !archived && (
+              <button
+                type="button"
+                onClick={togglePin}
+                className="text-xs font-semibold uppercase tracking-wide text-redleg hover:underline"
+              >
+                {pinned ? "Unpin" : "Pin"}
+              </button>
+            )}
             <button
               type="button"
-              onClick={togglePin}
-              className="text-xs font-semibold uppercase tracking-wide text-redleg hover:underline"
+              onClick={toggleArchive}
+              className="text-xs font-semibold uppercase tracking-wide text-neutral-500 hover:text-artillery hover:underline"
             >
-              {pinned ? "Unpin" : "Pin"}
+              {archived ? "Unarchive" : "Archive"}
             </button>
-          )}
+          </div>
         </div>
         <div className="mt-4 border-t border-neutral-100 pt-4">
           <BoardMarkdown content={message.body_md} />
@@ -311,6 +343,21 @@ export function MessageThread({
                 onChange={setAttachments}
                 disabled={saving}
               />
+              <label className="flex items-start gap-2.5 text-sm text-neutral-700">
+                <input
+                  type="checkbox"
+                  checked={notifyAll}
+                  onChange={(e) => setNotifyAll(e.target.checked)}
+                  disabled={saving}
+                  className="mt-0.5 h-4 w-4 accent-redleg"
+                />
+                <span>
+                  Notify all active members by email
+                  <span className="mt-0.5 block text-xs text-neutral-500">
+                    @mentions are always emailed, even if this is off.
+                  </span>
+                </span>
+              </label>
               {error && (
                 <p className="text-sm text-redleg" role="alert">
                   {error}

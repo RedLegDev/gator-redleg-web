@@ -10,13 +10,15 @@ export type Member = {
   status: MemberStatus;
 };
 
+export type MessageStatus = "active" | "archived";
+
 export type MessageRow = {
   id: string;
   subject: string;
   body_md: string;
   author_id: string;
   pinned: number;
-  status: string;
+  status: MessageStatus;
   created_at: number;
   updated_at: number;
 };

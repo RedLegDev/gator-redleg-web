@@ -36,7 +36,11 @@ export default async function BoardMessagePage({ params }: Props) {
   return (
     <div>
       <Link
-        href="/board/messages"
+        href={
+          message.status === "archived"
+            ? "/board/messages?archived=1"
+            : "/board/messages"
+        }
         className="mb-6 inline-flex text-sm text-neutral-500 transition-colors hover:text-redleg lg:mb-8"
       >
         ← All messages

@@ -4,7 +4,7 @@ import {
   recordActivity,
 } from "@/lib/board/db";
 import { linkAttachments } from "@/lib/board/attachments";
-import { boardLink, notifyBoard, notifyMentions, notifyMember } from "@/lib/board/notify";
+import { boardLink, notifyBoard, notifyMentions } from "@/lib/board/notify";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
 
@@ -25,12 +25,14 @@ export async function POST(request: Request) {
     subject?: string;
     bodyMd?: string;
     attachmentIds?: string[];
+    notify?: boolean;
   };
   const subject = String(body.subject ?? "").trim();
   const bodyMd = String(body.bodyMd ?? "").trim();
   const attachmentIds = Array.isArray(body.attachmentIds)
     ? body.attachmentIds.map(String)
     : [];
+  const notify = body.notify !== false;
   if (!subject || !bodyMd) {
     return Response.json(
       { ok: false, error: "subject and bodyMd required" },
@@ -70,12 +72,14 @@ export async function POST(request: Request) {
     link,
   }).catch(() => [] as string[]);
 
-  await notifyBoard({
-    subject: `[Board] ${subject}`,
-    text: `${auth.name} posted: ${subject}\n\n${link}`,
-    html: `<p><strong>${auth.name}</strong> posted: ${subject}</p><p><a href="${link}">View on board hub</a></p>`,
-    excludeEmails: [auth.email, ...mentionEmails],
-  }).catch(() => {});
+  if (notify) {
+    await notifyBoard({
+      subject: `[Board] ${subject}`,
+      text: `${auth.name} posted: ${subject}\n\n${link}`,
+      html: `<p><strong>${auth.name}</strong> posted: ${subject}</p><p><a href="${link}">View on board hub</a></p>`,
+      excludeEmails: [auth.email, ...mentionEmails],
+    }).catch(() => {});
+  }
 
   return Response.json({ ok: true, data: message }, { status: 201 });
 }

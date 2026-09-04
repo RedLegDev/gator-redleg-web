@@ -17,6 +17,7 @@ export function NewMessageForm() {
   const [subject, setSubject] = useState("");
   const [bodyMd, setBodyMd] = useState("");
   const [attachments, setAttachments] = useState<PendingAttachment[]>([]);
+  const [notifyAll, setNotifyAll] = useState(true);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -32,6 +33,7 @@ export function NewMessageForm() {
           subject,
           bodyMd,
           attachmentIds: attachments.map((a) => a.id),
+          notify: notifyAll,
         }),
       });
       const json = (await res.json()) as { ok?: boolean; data?: { id: string } };
@@ -79,6 +81,21 @@ export function NewMessageForm() {
         onChange={setAttachments}
         disabled={saving}
       />
+      <label className="flex items-start gap-2.5 text-sm text-neutral-700">
+        <input
+          type="checkbox"
+          checked={notifyAll}
+          onChange={(e) => setNotifyAll(e.target.checked)}
+          disabled={saving}
+          className="mt-0.5 h-4 w-4 accent-redleg"
+        />
+        <span>
+          Notify all active members by email
+          <span className="mt-0.5 block text-xs text-neutral-500">
+            @mentions are always emailed, even if this is off.
+          </span>
+        </span>
+      </label>
       <button
         type="submit"
         disabled={saving}

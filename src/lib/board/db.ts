@@ -142,24 +142,42 @@ export async function recordActivity(
 
 export async function listMessages(
   db: D1Database,
-  limit = 50
+  opts: { limit?: number; status?: "active" | "archived" | "all" } = {}
 ): Promise<MessageWithMeta[]> {
-  const { results } = await db
-    .prepare(
-      `SELECT m.id, m.subject, m.body_md, m.author_id, m.pinned, m.status,
-              m.created_at, m.updated_at,
-              a.name AS author_name,
-              (SELECT COUNT(*) FROM comments c
-                 WHERE c.parent_type = 'message' AND c.parent_id = m.id) AS comment_count
-       FROM messages m
-       JOIN members a ON a.id = m.author_id
-       WHERE m.status = 'active'
-       ORDER BY m.pinned DESC, m.updated_at DESC
-       LIMIT ?1`
-    )
-    .bind(limit)
-    .all<MessageWithMeta>();
+  const limit = opts.limit ?? 50;
+  const status = opts.status ?? "active";
+  const statusClause =
+    status === "all"
+      ? `m.status IN ('active', 'archived')`
+      : `m.status = ?2`;
+  const stmt = db.prepare(
+    `SELECT m.id, m.subject, m.body_md, m.author_id, m.pinned, m.status,
+            m.created_at, m.updated_at,
+            a.name AS author_name,
+            (SELECT COUNT(*) FROM comments c
+               WHERE c.parent_type = 'message' AND c.parent_id = m.id) AS comment_count
+     FROM messages m
+     JOIN members a ON a.id = m.author_id
+     WHERE ${statusClause}
+     ORDER BY m.pinned DESC, m.updated_at DESC
+     LIMIT ?1`
+  );
+  const { results } =
+    status === "all"
+      ? await stmt.bind(limit).all<MessageWithMeta>()
+      : await stmt.bind(limit, status).all<MessageWithMeta>();
   return results ?? [];
+}
+
+export async function countMessages(
+  db: D1Database,
+  status: "active" | "archived"
+): Promise<number> {
+  const row = await db
+    .prepare(`SELECT COUNT(*) AS n FROM messages WHERE status = ?1`)
+    .bind(status)
+    .first<{ n: number }>();
+  return row?.n ?? 0;
 }
 
 export async function getMessage(
@@ -218,6 +236,25 @@ export async function setMessagePinned(
       `UPDATE messages SET pinned = ?2, updated_at = ?3 WHERE id = ?1 AND status = 'active'`
     )
     .bind(id, pinned ? 1 : 0, nowSec())
+    .run();
+  return (result.meta.changes ?? 0) === 1;
+}
+
+export async function setMessageArchived(
+  db: D1Database,
+  id: string,
+  archived: boolean
+): Promise<boolean> {
+  const status = archived ? "archived" : "active";
+  const result = await db
+    .prepare(
+      archived
+        ? `UPDATE messages SET status = ?2, pinned = 0, updated_at = ?3
+           WHERE id = ?1 AND status IN ('active', 'archived')`
+        : `UPDATE messages SET status = ?2, updated_at = ?3
+           WHERE id = ?1 AND status IN ('active', 'archived')`
+    )
+    .bind(id, status, nowSec())
     .run();
   return (result.meta.changes ?? 0) === 1;
 }
