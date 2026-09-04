@@ -103,12 +103,7 @@ export function BoardMemberBadge({ name }: { name: string }) {
       >
         {memberInitials(name)}
       </div>
-      <div className="min-w-0">
-        <p className="truncate font-medium text-white">{name}</p>
-        <p className="text-xs uppercase tracking-wider text-white/50">
-          Active member
-        </p>
-      </div>
+      <p className="min-w-0 truncate font-medium text-white">{name}</p>
     </div>
   );
 }

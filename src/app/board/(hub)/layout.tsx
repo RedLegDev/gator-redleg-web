@@ -19,7 +19,7 @@ export default async function BoardLayout({
 
   return (
     <div className="border-t-4 border-redleg bg-neutral-100/80 lg:bg-neutral-100">
-      <Container className="py-4 sm:py-6 lg:py-8">
+      <Container className="max-w-screen-2xl py-4 sm:py-6 lg:py-8">
         {/* Mobile page chrome */}
         <div className="mb-4 lg:hidden">
           <div className="flex flex-wrap items-end justify-between gap-3">
