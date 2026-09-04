@@ -4,7 +4,7 @@ import {
   recordActivity,
 } from "@/lib/board/db";
 import { linkAttachments } from "@/lib/board/attachments";
-import { boardLink, notifyBoard } from "@/lib/board/notify";
+import { boardLink, notifyBoard, notifyMentions, notifyMember } from "@/lib/board/notify";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
 
@@ -63,11 +63,18 @@ export async function POST(request: Request) {
   );
 
   const link = boardLink(`/board/messages/${message.id}`);
+  const mentionEmails = await notifyMentions({
+    bodyMd,
+    author: auth,
+    contextLabel: `message: ${subject}`,
+    link,
+  }).catch(() => [] as string[]);
+
   await notifyBoard({
     subject: `[Board] ${subject}`,
     text: `${auth.name} posted: ${subject}\n\n${link}`,
     html: `<p><strong>${auth.name}</strong> posted: ${subject}</p><p><a href="${link}">View on board hub</a></p>`,
-    excludeEmail: auth.email,
+    excludeEmails: [auth.email, ...mentionEmails],
   }).catch(() => {});
 
   return Response.json({ ok: true, data: message }, { status: 201 });

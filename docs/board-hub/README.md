@@ -53,6 +53,24 @@ npx wrangler secret put BOARD_PRESIDENT_ALLOWLIST
 
 Any active board member can manage roster at `/board/people` — add members, revoke access, update roles. The president/officer/member labels are for the roster record, not permissions.
 
+## Cron (due-soon reminders)
+
+```bash
+# Set once:
+npx wrangler secret put BOARD_CRON_SECRET
+
+# Daily (manual or CF cron hitting this route):
+curl -X POST https://www.gatorredleg.org/api/board/cron/due-reminders \
+  -H "Authorization: Bearer $BOARD_CRON_SECRET"
+```
+
+## Webhooks (when configured)
+
+| Route | Secret | Purpose |
+|-------|--------|---------|
+| `POST /api/board/inbound-email` | `BOARD_INBOUND_WEBHOOK_SECRET` | SaaSMail → board message (#12) |
+| `POST /api/board/internal/store-event` | `BOARD_STORE_WEBHOOK_SECRET` | Store events → board message |
+
 ## Basecamp import
 
 ```bash

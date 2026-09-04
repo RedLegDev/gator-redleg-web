@@ -86,41 +86,51 @@ function loadJson(file) {
 
 function buildImportSql() {
   const statements = [];
-  const memberIds = new Map();
+  const syntheticMembers = new Map();
 
-  function memberIdFor(email, name) {
-    const key = (email || name || "unknown").toLowerCase();
-    if (!memberIds.has(key)) {
-      const id = `import_${memberIds.size + 1}`;
-      memberIds.set(key, id);
-      const safeEmail = email || `${id}@import.local`;
+  function memberAuthorRef(email, name) {
+    const normalized = String(email ?? "").trim().toLowerCase();
+    if (normalized && !normalized.includes("•")) {
       statements.push(
-        `INSERT OR IGNORE INTO members (id, email, name, role, created_at) VALUES ('${id}', '${sqlEscape(safeEmail)}', '${sqlEscape(name || "Unknown")}', 'member', strftime('%s','now'));`
+        `INSERT INTO members (id, email, name, role, status, created_at)
+         VALUES ('import_${sqlEscape(normalized).replace(/[^a-z0-9]/g, "_").slice(0, 40)}', '${sqlEscape(normalized)}', '${sqlEscape(name || "Unknown")}', 'member', 'active', strftime('%s','now'))
+         ON CONFLICT(email) DO UPDATE SET name = excluded.name;`
+      );
+      return `(SELECT id FROM members WHERE email = '${sqlEscape(normalized)}' LIMIT 1)`;
+    }
+
+    const key = (name || "unknown").toLowerCase();
+    if (!syntheticMembers.has(key)) {
+      const id = `import_${syntheticMembers.size + 1}`;
+      syntheticMembers.set(key, id);
+      const safeEmail = `${id}@import.local`;
+      statements.push(
+        `INSERT OR IGNORE INTO members (id, email, name, role, status, created_at) VALUES ('${id}', '${safeEmail}', '${sqlEscape(name || "Unknown")}', 'member', 'active', strftime('%s','now'));`
       );
     }
-    return memberIds.get(key);
+    return `'${syntheticMembers.get(key)}'`;
   }
 
   const messages = loadJson("messages.json");
   for (const m of messages) {
-    const authorId = memberIdFor(
+    const authorId = memberAuthorRef(
       m.creator?.email_address,
       m.creator?.name
     );
     const created = Math.floor(new Date(m.created_at).getTime() / 1000);
     const updated = Math.floor(new Date(m.updated_at).getTime() / 1000);
     statements.push(
-      `INSERT OR IGNORE INTO messages (id, subject, body_md, author_id, pinned, status, created_at, updated_at) VALUES ('bc_msg_${m.id}', '${sqlEscape(m.subject)}', '${sqlEscape(stripHtml(m.content || ""))}', '${authorId}', 0, 'active', ${created}, ${updated});`
+      `INSERT OR IGNORE INTO messages (id, subject, body_md, author_id, pinned, status, created_at, updated_at) VALUES ('bc_msg_${m.id}', '${sqlEscape(m.subject)}', '${sqlEscape(stripHtml(m.content || ""))}', ${authorId}, 0, 'active', ${created}, ${updated});`
     );
     try {
       const comments = JSON.parse(
         run(`basecamp comments list ${m.id} --in ${PROJECT} --json`)
       ).data;
       for (const c of comments ?? []) {
-        const cid = memberIdFor(c.creator?.email_address, c.creator?.name);
+        const cid = memberAuthorRef(c.creator?.email_address, c.creator?.name);
         const cAt = Math.floor(new Date(c.created_at).getTime() / 1000);
         statements.push(
-          `INSERT OR IGNORE INTO comments (id, parent_type, parent_id, author_id, body_md, created_at, updated_at) VALUES ('bc_cmt_${c.id}', 'message', 'bc_msg_${m.id}', '${cid}', '${sqlEscape(stripHtml(c.content || ""))}', ${cAt}, ${cAt});`
+          `INSERT OR IGNORE INTO comments (id, parent_type, parent_id, author_id, body_md, created_at, updated_at) VALUES ('bc_cmt_${c.id}', 'message', 'bc_msg_${m.id}', ${cid}, '${sqlEscape(stripHtml(c.content || ""))}', ${cAt}, ${cAt});`
         );
       }
     } catch {
@@ -135,7 +145,7 @@ function buildImportSql() {
     for (const t of todos) {
       const assignee = t.assignees?.[0];
       const assigneeId = assignee
-        ? memberIdFor(assignee.email_address, assignee.name)
+        ? memberAuthorRef(assignee.email_address, assignee.name)
         : null;
       const created = Math.floor(new Date(t.created_at).getTime() / 1000);
       const updated = Math.floor(new Date(t.updated_at).getTime() / 1000);
@@ -143,7 +153,7 @@ function buildImportSql() {
         ? Math.floor(new Date(t.updated_at).getTime() / 1000)
         : null;
       statements.push(
-        `INSERT OR IGNORE INTO tasks (id, list_id, title, description_md, assignee_id, due_date, completed_at, completed_by, position, created_at, updated_at) VALUES ('bc_todo_${t.id}', '${listId}', '${sqlEscape(t.title)}', '${sqlEscape(stripHtml(t.description || ""))}', ${assigneeId ? `'${assigneeId}'` : "NULL"}, ${t.due_on ? `'${t.due_on}'` : "NULL"}, ${completed ?? "NULL"}, NULL, ${t.position ?? 0}, ${created}, ${updated});`
+        `INSERT OR IGNORE INTO tasks (id, list_id, title, description_md, assignee_id, due_date, completed_at, completed_by, position, created_at, updated_at) VALUES ('bc_todo_${t.id}', '${listId}', '${sqlEscape(t.title)}', '${sqlEscape(stripHtml(t.description || ""))}', ${assigneeId ?? "NULL"}, ${t.due_on ? `'${t.due_on}'` : "NULL"}, ${completed ?? "NULL"}, NULL, ${t.position ?? 0}, ${created}, ${updated});`
       );
     }
   }

@@ -22,6 +22,9 @@ export function TaskListPanel({
   const [assigneeId, setAssigneeId] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [saving, setSaving] = useState(false);
+  const [commentTaskId, setCommentTaskId] = useState<string | null>(null);
+  const [commentText, setCommentText] = useState("");
+  const [commentSaving, setCommentSaving] = useState(false);
 
   async function toggleComplete(task: TaskWithMeta) {
     await fetch(`/api/board/tasks/${task.id}`, {
@@ -65,6 +68,20 @@ export function TaskListPanel({
       router.refresh();
     }
     setSaving(false);
+  }
+
+  async function addTaskComment(taskId: string) {
+    if (!commentText.trim()) return;
+    setCommentSaving(true);
+    await fetch(`/api/board/tasks/${taskId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bodyMd: commentText }),
+    });
+    setCommentText("");
+    setCommentTaskId(null);
+    setCommentSaving(false);
+    router.refresh();
   }
 
   const open = tasks.filter((t) => !t.completed_at);
@@ -123,9 +140,38 @@ export function TaskListPanel({
         </button>
       </form>
 
-      <TaskGroup label="Open" tasks={open} onToggle={toggleComplete} />
+      <TaskGroup
+        label="Open"
+        tasks={open}
+        onToggle={toggleComplete}
+        commentTaskId={commentTaskId}
+        commentText={commentText}
+        commentSaving={commentSaving}
+        onCommentOpen={(id) => {
+          setCommentTaskId(id);
+          setCommentText("");
+        }}
+        onCommentText={setCommentText}
+        onCommentSubmit={addTaskComment}
+        onCommentCancel={() => setCommentTaskId(null)}
+      />
       {done.length > 0 && (
-        <TaskGroup label="Completed" tasks={done} onToggle={toggleComplete} muted />
+        <TaskGroup
+          label="Completed"
+          tasks={done}
+          onToggle={toggleComplete}
+          muted
+          commentTaskId={commentTaskId}
+          commentText={commentText}
+          commentSaving={commentSaving}
+          onCommentOpen={(id) => {
+            setCommentTaskId(id);
+            setCommentText("");
+          }}
+          onCommentText={setCommentText}
+          onCommentSubmit={addTaskComment}
+          onCommentCancel={() => setCommentTaskId(null)}
+        />
       )}
     </div>
   );
@@ -136,11 +182,25 @@ function TaskGroup({
   tasks,
   onToggle,
   muted,
+  commentTaskId,
+  commentText,
+  commentSaving,
+  onCommentOpen,
+  onCommentText,
+  onCommentSubmit,
+  onCommentCancel,
 }: {
   label: string;
   tasks: TaskWithMeta[];
   onToggle: (t: TaskWithMeta) => void;
   muted?: boolean;
+  commentTaskId: string | null;
+  commentText: string;
+  commentSaving: boolean;
+  onCommentOpen: (id: string) => void;
+  onCommentText: (v: string) => void;
+  onCommentSubmit: (id: string) => void;
+  onCommentCancel: () => void;
 }) {
   if (tasks.length === 0) return null;
   return (
@@ -152,28 +212,64 @@ function TaskGroup({
         {tasks.map((task) => (
           <li
             key={task.id}
-            className="flex items-start gap-3 rounded-lg border border-neutral-200 bg-white px-3 py-2"
+            className="rounded-lg border border-neutral-200 bg-white px-3 py-2"
           >
-            <input
-              type="checkbox"
-              checked={!!task.completed_at}
-              onChange={() => onToggle(task)}
-              className="mt-1 h-4 w-4 accent-redleg"
-            />
-            <div className="min-w-0 flex-1">
-              <p
-                className={`text-sm font-medium ${task.completed_at ? "line-through text-neutral-500" : "text-artillery"}`}
-              >
-                {task.title}
-              </p>
-              <p className="text-xs text-neutral-500">
-                {task.assignee_name ? `Assigned: ${task.assignee_name}` : "Unassigned"}
-                {task.due_date ? ` · Due ${task.due_date}` : ""}
-                {task.completed_at
-                  ? ` · Done ${formatBoardTimestamp(task.completed_at)}`
-                  : ""}
-              </p>
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                checked={!!task.completed_at}
+                onChange={() => onToggle(task)}
+                className="mt-1 h-4 w-4 accent-redleg"
+              />
+              <div className="min-w-0 flex-1">
+                <p
+                  className={`text-sm font-medium ${task.completed_at ? "line-through text-neutral-500" : "text-artillery"}`}
+                >
+                  {task.title}
+                </p>
+                <p className="text-xs text-neutral-500">
+                  {task.assignee_name ? `Assigned: ${task.assignee_name}` : "Unassigned"}
+                  {task.due_date ? ` · Due ${task.due_date}` : ""}
+                  {task.completed_at
+                    ? ` · Done ${formatBoardTimestamp(task.completed_at)}`
+                    : ""}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => onCommentOpen(task.id)}
+                  className="mt-1 text-xs font-semibold text-redleg hover:underline"
+                >
+                  Comment
+                </button>
+              </div>
             </div>
+            {commentTaskId === task.id && (
+              <div className="mt-2 space-y-2 border-t border-neutral-100 pt-2 pl-7">
+                <textarea
+                  className="w-full rounded border border-neutral-300 px-2 py-1.5 text-sm min-h-16"
+                  placeholder="Comment… @Name to mention"
+                  value={commentText}
+                  onChange={(e) => onCommentText(e.target.value)}
+                />
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    disabled={commentSaving}
+                    onClick={() => onCommentSubmit(task.id)}
+                    className="rounded bg-artillery px-3 py-1 text-xs font-semibold text-white disabled:opacity-60"
+                  >
+                    {commentSaving ? "Saving…" : "Post"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={onCommentCancel}
+                    className="text-xs text-neutral-500 hover:underline"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
           </li>
         ))}
       </ul>

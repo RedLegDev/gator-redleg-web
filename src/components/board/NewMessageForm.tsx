@@ -70,6 +70,7 @@ export function NewMessageForm() {
           className={`${inputClass} min-h-48 font-mono`}
           value={bodyMd}
           onChange={(e) => setBodyMd(e.target.value)}
+          placeholder="Markdown supported. @Name or @email to mention someone."
           required
         />
       </label>

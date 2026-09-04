@@ -107,13 +107,16 @@ export function SiteFooter() {
             >
               Store
             </a>
+            <Link href="/board/login" className="transition-colors hover:text-gold">
+              Board Hub
+            </Link>
             <a
               href={BASECAMP_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-gold"
             >
-              Basecamp
+              Basecamp (legacy)
             </a>
             <Link href={ZOOM_PATH} className="transition-colors hover:text-gold">
               Zoom

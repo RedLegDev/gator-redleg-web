@@ -6,7 +6,7 @@ import {
   setMessagePinned,
 } from "@/lib/board/db";
 import { linkAttachments } from "@/lib/board/attachments";
-import { boardLink, notifyBoard } from "@/lib/board/notify";
+import { boardLink, notifyBoard, notifyMentions } from "@/lib/board/notify";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
 
@@ -88,11 +88,18 @@ export async function POST(request: Request, { params }: Params) {
   );
 
   const link = boardLink(`/board/messages/${id}`);
+  const mentionEmails = await notifyMentions({
+    bodyMd,
+    author: auth,
+    contextLabel: `comment on: ${message.subject}`,
+    link,
+  }).catch(() => [] as string[]);
+
   await notifyBoard({
     subject: `[Board] Re: ${message.subject}`,
     text: `${auth.name} commented on: ${message.subject}\n\n${link}`,
     html: `<p><strong>${auth.name}</strong> commented on: ${message.subject}</p><p><a href="${link}">View thread</a></p>`,
-    excludeEmail: auth.email,
+    excludeEmails: [auth.email, ...mentionEmails],
   }).catch(() => {});
 
   return Response.json(

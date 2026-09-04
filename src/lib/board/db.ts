@@ -449,3 +449,93 @@ export async function boardStats(db: D1Database): Promise<{
     messages: msgs?.n ?? 0,
   };
 }
+
+export type ActivityWithActor = {
+  id: string;
+  actor_id: string;
+  actor_name: string;
+  verb: string;
+  object_type: string;
+  object_id: string;
+  summary: string;
+  created_at: number;
+};
+
+export async function listRecentActivity(
+  db: D1Database,
+  limit = 20
+): Promise<ActivityWithActor[]> {
+  const { results } = await db
+    .prepare(
+      `SELECT a.id, a.actor_id, a.verb, a.object_type, a.object_id, a.summary,
+              a.created_at, m.name AS actor_name
+       FROM activity a
+       JOIN members m ON m.id = a.actor_id
+       ORDER BY a.created_at DESC
+       LIMIT ?1`
+    )
+    .bind(limit)
+    .all<ActivityWithActor>();
+  return results ?? [];
+}
+
+export async function listOverdueTasks(
+  db: D1Database,
+  limit = 10
+): Promise<(TaskWithMeta & { list_name: string })[]> {
+  const today = new Date().toISOString().slice(0, 10);
+  const { results } = await db
+    .prepare(
+      `SELECT t.id, t.list_id, t.title, t.description_md, t.assignee_id, t.due_date,
+              t.completed_at, t.completed_by, t.position, t.created_at, t.updated_at,
+              m.name AS assignee_name, tl.name AS list_name
+       FROM tasks t
+       JOIN task_lists tl ON tl.id = t.list_id
+       LEFT JOIN members m ON m.id = t.assignee_id
+       WHERE t.completed_at IS NULL AND t.due_date IS NOT NULL AND t.due_date < ?1
+       ORDER BY t.due_date ASC
+       LIMIT ?2`
+    )
+    .bind(today, limit)
+    .all<TaskWithMeta & { list_name: string }>();
+  return results ?? [];
+}
+
+export async function listTasksNeedingDueReminder(
+  db: D1Database
+): Promise<(TaskWithMeta & { list_name: string })[]> {
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setUTCDate(today.getUTCDate() + 1);
+  const todayStr = today.toISOString().slice(0, 10);
+  const tomorrowStr = tomorrow.toISOString().slice(0, 10);
+
+  const { results } = await db
+    .prepare(
+      `SELECT t.id, t.list_id, t.title, t.description_md, t.assignee_id, t.due_date,
+              t.completed_at, t.completed_by, t.position, t.created_at, t.updated_at,
+              m.name AS assignee_name, tl.name AS list_name
+       FROM tasks t
+       JOIN task_lists tl ON tl.id = t.list_id
+       LEFT JOIN members m ON m.id = t.assignee_id
+       WHERE t.completed_at IS NULL
+         AND t.assignee_id IS NOT NULL
+         AND t.due_date IS NOT NULL
+         AND t.due_date >= ?1 AND t.due_date <= ?2
+         AND t.due_reminder_sent_at IS NULL
+       ORDER BY t.due_date ASC`
+    )
+    .bind(todayStr, tomorrowStr)
+    .all<TaskWithMeta & { list_name: string }>();
+  return results ?? [];
+}
+
+export async function markDueReminderSent(
+  db: D1Database,
+  taskId: string
+): Promise<void> {
+  await db
+    .prepare(`UPDATE tasks SET due_reminder_sent_at = ?2 WHERE id = ?1`)
+    .bind(taskId, nowSec())
+    .run();
+}
