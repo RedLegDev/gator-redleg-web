@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/cn";
+import { boardInputClass } from "@/lib/board/ui";
 
-const inputClass =
-  "w-full rounded border border-neutral-300 bg-white px-3 py-2 text-sm text-artillery focus:border-redleg focus:outline-none focus:ring-2 focus:ring-redleg/30";
+const inputClass = boardInputClass;
 
 export function BoardLoginForm({ error }: { error?: boolean }) {
   const [email, setEmail] = useState("");
@@ -76,7 +76,7 @@ export function BoardLoginForm({ error }: { error?: boolean }) {
         type="submit"
         disabled={state === "sending"}
         className={cn(
-          "w-full rounded bg-redleg px-4 py-3 font-display text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-redleg-dark disabled:opacity-60"
+          "w-full min-h-11 rounded bg-redleg px-4 py-3 text-base font-display font-semibold uppercase tracking-wide text-white transition-colors hover:bg-redleg-dark disabled:opacity-60 md:text-sm"
         )}
       >
         {state === "sending" ? "Sending…" : "Email me a sign-in link"}

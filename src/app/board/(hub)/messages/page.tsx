@@ -10,13 +10,13 @@ export default async function BoardMessagesPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <h2 className="font-display text-xl font-semibold text-artillery">
           Message Board
         </h2>
         <Link
           href="/board/messages/new"
-          className="rounded bg-redleg px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white hover:bg-redleg-dark"
+          className="inline-flex min-h-11 items-center justify-center rounded bg-redleg px-4 py-2.5 text-sm font-semibold uppercase tracking-wide text-white hover:bg-redleg-dark"
         >
           New message
         </Link>

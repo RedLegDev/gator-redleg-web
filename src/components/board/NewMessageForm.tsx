@@ -6,9 +6,9 @@ import {
   BoardAttachmentPicker,
 } from "./BoardAttachments";
 import type { AttachmentMeta } from "@/lib/board/types";
+import { boardInputClass, boardButtonPrimaryClass } from "@/lib/board/ui";
 
-const inputClass =
-  "w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-redleg focus:outline-none focus:ring-2 focus:ring-redleg/30";
+const inputClass = boardInputClass;
 
 type PendingAttachment = AttachmentMeta & { url: string };
 
@@ -82,7 +82,7 @@ export function NewMessageForm() {
       <button
         type="submit"
         disabled={saving}
-        className="rounded bg-redleg px-5 py-2.5 font-display text-sm font-semibold uppercase tracking-wide text-white hover:bg-redleg-dark disabled:opacity-60"
+        className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
       >
         {saving ? "Posting…" : "Post message"}
       </button>

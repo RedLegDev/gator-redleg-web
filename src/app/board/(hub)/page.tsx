@@ -88,12 +88,11 @@ export default async function BoardDashboardPage() {
               <li key={t.id}>
                 <Link
                   href={`/board/tasks/${t.list_id}`}
-                  className="block rounded border border-red-200 bg-red-50/50 px-3 py-2 text-sm hover:bg-red-50"
+                  className="block rounded border border-red-200 bg-red-50/50 px-3 py-3 text-sm hover:bg-red-50 sm:py-2"
                 >
-                  <span className="font-medium text-artillery">{t.title}</span>
-                  <span className="text-neutral-500">
-                    {" "}
-                    · {t.list_name} · due {t.due_date}
+                  <span className="block font-medium text-artillery">{t.title}</span>
+                  <span className="mt-1 block text-neutral-500 sm:mt-0 sm:inline">
+                    {t.list_name} · due {t.due_date}
                     {t.assignee_name ? ` · ${t.assignee_name}` : ""}
                   </span>
                 </Link>

@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Member, TaskWithMeta } from "@/lib/board/types";
 import { formatBoardTimestamp } from "@/lib/board/format";
+import { boardInputClass, boardButtonPrimaryClass } from "@/lib/board/ui";
 
-const inputClass =
-  "w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-redleg focus:outline-none focus:ring-2 focus:ring-redleg/30";
+const inputClass = boardInputClass;
 
 export function TaskListPanel({
   listId,
@@ -165,9 +165,9 @@ export function TaskListPanel({
 
       <form
         onSubmit={addTask}
-        className="flex flex-col gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-4 sm:flex-row sm:flex-wrap sm:items-end"
+        className="flex flex-col gap-3 rounded-lg border border-neutral-200 bg-neutral-50 p-4"
       >
-        <label className="min-w-[12rem] flex-1">
+        <label className="block w-full sm:min-w-[12rem] sm:flex-1">
           <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
             New task
           </span>
@@ -178,12 +178,12 @@ export function TaskListPanel({
             placeholder="Task title"
           />
         </label>
-        <label>
+        <label className="block w-full sm:w-auto">
           <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
             Assignee
           </span>
           <select
-            className={inputClass}
+            className={`${inputClass} sm:min-w-[10rem]`}
             value={assigneeId}
             onChange={(e) => setAssigneeId(e.target.value)}
           >
@@ -195,7 +195,7 @@ export function TaskListPanel({
             ))}
           </select>
         </label>
-        <label>
+        <label className="block w-full sm:w-auto">
           <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
             Due
           </span>
@@ -209,7 +209,7 @@ export function TaskListPanel({
         <button
           type="submit"
           disabled={saving}
-          className="rounded bg-redleg px-4 py-2 text-sm font-semibold text-white hover:bg-redleg-dark disabled:opacity-60"
+          className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
         >
           Add
         </button>
@@ -352,7 +352,7 @@ function TaskGroup({
                     type="button"
                     disabled={editSaving}
                     onClick={() => onEditSave(task.id)}
-                    className="rounded bg-redleg px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-60"
+                    className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
                   >
                     {editSaving ? "Saving…" : "Save"}
                   </button>
@@ -391,18 +391,18 @@ function TaskGroup({
                       ? ` · Done ${formatBoardTimestamp(task.completed_at)}`
                       : ""}
                   </p>
-                  <div className="mt-1 flex gap-3">
+                  <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
                     <button
                       type="button"
                       onClick={() => onEdit(task)}
-                      className="text-xs font-semibold text-redleg hover:underline"
+                      className="min-h-11 py-2 text-xs font-semibold text-redleg hover:underline"
                     >
                       Edit
                     </button>
                     <button
                       type="button"
                       onClick={() => onCommentOpen(task.id)}
-                      className="text-xs font-semibold text-redleg hover:underline"
+                      className="min-h-11 py-2 text-xs font-semibold text-redleg hover:underline"
                     >
                       Comment
                     </button>

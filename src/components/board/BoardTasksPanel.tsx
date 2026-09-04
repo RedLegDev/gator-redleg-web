@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { TaskListWithCounts } from "@/lib/board/types";
 
-const inputClass =
-  "w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-redleg focus:outline-none focus:ring-2 focus:ring-redleg/30";
+import { boardInputClass, boardButtonPrimaryClass } from "@/lib/board/ui";
 
 export function BoardTasksPanel({
   lists: initialLists,
@@ -71,7 +70,7 @@ export function BoardTasksPanel({
               Name
             </span>
             <input
-              className={inputClass}
+              className={boardInputClass}
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -83,7 +82,7 @@ export function BoardTasksPanel({
               Description <span className="font-normal normal-case">(optional)</span>
             </span>
             <input
-              className={inputClass}
+              className={boardInputClass}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="What this list is for"
@@ -93,7 +92,7 @@ export function BoardTasksPanel({
         <button
           type="submit"
           disabled={saving}
-          className="rounded bg-redleg px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white hover:bg-redleg-dark disabled:opacity-60"
+          className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
         >
           {saving ? "Creating…" : "Create list"}
         </button>
@@ -104,7 +103,7 @@ export function BoardTasksPanel({
           <li key={list.id}>
             <Link
               href={`/board/tasks/${list.id}`}
-              className="flex items-center justify-between rounded-lg border border-neutral-200 bg-white px-4 py-3 hover:border-redleg/40"
+              className="flex flex-col gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-3 hover:border-redleg/40 sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
                 <span className="font-medium text-artillery">{list.name}</span>

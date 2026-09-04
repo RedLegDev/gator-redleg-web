@@ -15,8 +15,8 @@ export default async function BoardLoginPage({
         title="Sign in"
         subtitle="Magic link for executive board and members at large."
       />
-      <Container className="pb-16">
-        <div className="mx-auto max-w-md rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+      <Container className="px-4 pb-12 sm:px-5 sm:pb-16">
+        <div className="mx-auto max-w-md rounded-xl border border-neutral-200 bg-white p-4 shadow-sm sm:p-6">
           <BoardLoginForm error={params.error === "1"} />
         </div>
       </Container>

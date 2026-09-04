@@ -9,6 +9,7 @@ import {
 } from "./BoardAttachments";
 import type { AttachmentMeta, CommentWithAuthor, MessageWithMeta } from "@/lib/board/types";
 import { formatBoardTimestamp } from "@/lib/board/format";
+import { boardInputClass, boardButtonPrimaryClass } from "@/lib/board/ui";
 
 type PendingAttachment = AttachmentMeta & { url: string };
 
@@ -81,7 +82,7 @@ export function MessageThread({
 
   return (
     <div className="space-y-8">
-      <article className="rounded-lg border border-neutral-200 bg-white p-5 shadow-sm">
+      <article className="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm sm:p-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             {pinned && (
@@ -89,7 +90,7 @@ export function MessageThread({
                 Pinned
               </span>
             )}
-            <h2 className="font-display text-xl font-semibold text-artillery">
+            <h2 className="font-display text-lg font-semibold text-artillery sm:text-xl">
               {message.subject}
             </h2>
             <p className="mt-1 text-sm text-neutral-500">
@@ -133,7 +134,7 @@ export function MessageThread({
         ))}
         <form onSubmit={addComment} className="space-y-2">
           <textarea
-            className="w-full rounded border border-neutral-300 px-3 py-2 text-sm min-h-24"
+            className={`${boardInputClass} min-h-24`}
             placeholder="Add a comment…"
             value={bodyMd}
             onChange={(e) => setBodyMd(e.target.value)}
@@ -146,7 +147,7 @@ export function MessageThread({
           <button
             type="submit"
             disabled={saving}
-            className="rounded bg-artillery px-4 py-2 text-sm font-semibold text-white hover:bg-neutral-800 disabled:opacity-60"
+            className={`${boardButtonPrimaryClass} w-full bg-artillery hover:bg-neutral-800 sm:w-auto`}
           >
             {saving ? "Saving…" : "Comment"}
           </button>

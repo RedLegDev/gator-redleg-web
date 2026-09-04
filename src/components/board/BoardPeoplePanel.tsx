@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Member } from "@/lib/board/types";
 
-const inputClass =
-  "w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-redleg focus:outline-none focus:ring-2 focus:ring-redleg/30";
+import { boardInputClass, boardButtonPrimaryClass } from "@/lib/board/ui";
 
 export function BoardPeoplePanel({
   members: initialMembers,
@@ -99,7 +98,7 @@ export function BoardPeoplePanel({
             <input
               type="email"
               required
-              className={inputClass}
+              className={boardInputClass}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -109,7 +108,7 @@ export function BoardPeoplePanel({
               Name
             </span>
             <input
-              className={inputClass}
+              className={boardInputClass}
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -119,13 +118,48 @@ export function BoardPeoplePanel({
         <button
           type="submit"
           disabled={saving}
-          className="rounded bg-redleg px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white hover:bg-redleg-dark disabled:opacity-60"
+          className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
         >
           {saving ? "Adding…" : "Add member"}
         </button>
       </form>
 
-      <div className="overflow-x-auto rounded-lg border border-neutral-200">
+      {/* Mobile: card list */}
+      <ul className="space-y-3 md:hidden">
+        {members.map((m) => (
+          <li
+            key={m.id}
+            className={`rounded-lg border border-neutral-200 bg-white p-4 ${m.status === "revoked" ? "opacity-70" : ""}`}
+          >
+            <p className="font-medium text-artillery">{m.name}</p>
+            <p className="mt-1 break-all font-mono text-xs text-neutral-600">{m.email}</p>
+            <div className="mt-3 flex items-center justify-between gap-3">
+              <span className="text-sm capitalize text-neutral-500">{m.status}</span>
+              {m.status === "active" ? (
+                <button
+                  type="button"
+                  className="min-h-11 rounded px-3 text-sm font-semibold text-neutral-600 hover:bg-neutral-50"
+                  onClick={() => patchMember(m.id, { status: "revoked" })}
+                  disabled={m.id === currentMemberId}
+                >
+                  Revoke
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="min-h-11 rounded px-3 text-sm font-semibold text-redleg hover:bg-red-50"
+                  onClick={() => patchMember(m.id, { status: "active" })}
+                >
+                  Restore
+                </button>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {/* Desktop: table */}
+      <div className="hidden overflow-x-auto rounded-lg border border-neutral-200 md:block">
         <table className="min-w-full text-sm">
           <thead className="bg-neutral-50 text-left text-xs font-semibold uppercase tracking-wide text-neutral-600">
             <tr>

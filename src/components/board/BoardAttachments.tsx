@@ -7,6 +7,7 @@ import {
   MAX_ATTACHMENT_BYTES,
 } from "@/lib/board/attachments";
 import type { AttachmentMeta } from "@/lib/board/types";
+import { boardButtonSecondaryClass } from "@/lib/board/ui";
 
 type PendingAttachment = AttachmentMeta & { url: string };
 
@@ -90,7 +91,7 @@ export function BoardAttachmentPicker({
           type="button"
           disabled={disabled || uploading || value.length >= MAX_ATTACHMENTS_PER_POST}
           onClick={() => inputRef.current?.click()}
-          className="rounded border border-neutral-300 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+          className={boardButtonSecondaryClass}
         >
           {uploading ? "Uploading…" : "Attach file"}
         </button>
@@ -150,7 +151,7 @@ export function BoardAttachmentList({
                 <img
                   src={url}
                   alt={a.filename}
-                  className="max-h-80 rounded border border-neutral-200"
+                  className="h-auto max-h-80 max-w-full rounded border border-neutral-200"
                 />
               </a>
             ) : (
