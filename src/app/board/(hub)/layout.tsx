@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { BoardNav } from "@/components/board/BoardNav";
-import { requireMember } from "@/lib/board/session";
+import { requireMember, isPresident } from "@/lib/board/session";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +36,10 @@ export default async function BoardLayout({
           </Link>
         </div>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
-          <BoardNav memberName={member.name} />
+          <BoardNav
+            memberName={member.name}
+            isPresident={isPresident(member)}
+          />
           <div className="min-w-0 flex-1">{children}</div>
         </div>
       </Container>

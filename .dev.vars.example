@@ -1,3 +1,4 @@
 BOARD_SESSION_SECRET=dev-only-change-me-32chars-min!!
-BOARD_ALLOWLIST=matt@redleg.dev
-BOARD_PRESIDENT_ALLOWLIST=matt@redleg.dev
+# Legacy bootstrap only — roster lives in D1 `members` after migration 0005.
+# BOARD_ALLOWLIST=matt@redleg.dev
+# BOARD_PRESIDENT_ALLOWLIST=ahyman2@yahoo.com

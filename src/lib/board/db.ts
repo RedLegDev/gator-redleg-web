@@ -1,9 +1,6 @@
-import { displayNameFromEmail, parseAllowlist } from "./auth";
 import type {
   CommentRow,
   CommentWithAuthor,
-  Member,
-  MemberRole,
   MessageRow,
   MessageWithMeta,
   TaskListRow,
@@ -13,13 +10,24 @@ import type {
 } from "./types";
 import { newId, nowSec } from "./ids";
 
-export function memberRoleForEmail(
-  email: string,
-  presidentAllowlistRaw: string | undefined
-): MemberRole {
-  const presidents = parseAllowlist(presidentAllowlistRaw);
-  return presidents.includes(email.trim().toLowerCase()) ? "president" : "member";
-}
+export {
+  bootstrapMembersFromSecrets,
+  canMemberLogin,
+  countActiveMembers,
+  countActiveMembersExcept,
+  countActivePresidents,
+  createMember,
+  getActiveMemberByEmail,
+  getMemberByEmail,
+  getMemberById,
+  listActiveMembers,
+  listAllMembers,
+  touchMemberLastSeen,
+  updateMember,
+  upsertMember,
+} from "./members";
+
+export { listActiveMembers as listMembers } from "./members";
 
 export async function countRecentLoginRequests(
   db: D1Database,
@@ -33,19 +41,6 @@ export async function countRecentLoginRequests(
     .bind(email.trim().toLowerCase(), sinceSec)
     .first<{ n: number }>();
   return row?.n ?? 0;
-}
-
-export async function syncAllowlistMembers(
-  db: D1Database,
-  allowlistEmails: string[],
-  presidentAllowlistRaw: string | undefined
-): Promise<Member[]> {
-  for (const email of allowlistEmails) {
-    const normalized = email.trim().toLowerCase();
-    const role = memberRoleForEmail(normalized, presidentAllowlistRaw);
-    await ensureMember(db, normalized, displayNameFromEmail(normalized), role);
-  }
-  return listMembers(db);
 }
 
 export async function insertLoginToken(
@@ -83,71 +78,6 @@ export async function consumeLoginToken(
     .bind(tokenHash)
     .first<{ email: string }>();
   return row?.email ?? null;
-}
-
-export async function ensureMember(
-  db: D1Database,
-  email: string,
-  name: string,
-  role: MemberRole = "member"
-): Promise<Member> {
-  const normalized = email.trim().toLowerCase();
-  const existing = await db
-    .prepare(
-      `SELECT id, email, name, role FROM members WHERE email = ?1 LIMIT 1`
-    )
-    .bind(normalized)
-    .first<Member>();
-
-  const ts = nowSec();
-  if (existing) {
-    await db
-      .prepare(`UPDATE members SET last_seen_at = ?2 WHERE id = ?1`)
-      .bind(existing.id, ts)
-      .run();
-    return existing;
-  }
-
-  const id = newId();
-  await db
-    .prepare(
-      `INSERT INTO members (id, email, name, role, created_at, last_seen_at)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?5)`
-    )
-    .bind(id, normalized, name, role, ts)
-    .run();
-  return { id, email: normalized, name, role };
-}
-
-export async function getMemberByEmail(
-  db: D1Database,
-  email: string
-): Promise<Member | null> {
-  return db
-    .prepare(
-      `SELECT id, email, name, role FROM members WHERE email = ?1 LIMIT 1`
-    )
-    .bind(email.trim().toLowerCase())
-    .first<Member>();
-}
-
-export async function getMemberById(
-  db: D1Database,
-  id: string
-): Promise<Member | null> {
-  return db
-    .prepare(`SELECT id, email, name, role FROM members WHERE id = ?1 LIMIT 1`)
-    .bind(id)
-    .first<Member>();
-}
-
-export async function listMembers(db: D1Database): Promise<Member[]> {
-  const { results } = await db
-    .prepare(
-      `SELECT id, email, name, role FROM members ORDER BY name COLLATE NOCASE`
-    )
-    .all<Member>();
-  return results ?? [];
 }
 
 export async function recordActivity(

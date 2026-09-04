@@ -2,13 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { notFound } from "next/navigation";
 import { TaskListPanel } from "@/components/board/TaskListPanel";
-import {
-  getTaskList,
-  listTasksInList,
-  syncAllowlistMembers,
-} from "@/lib/board/db";
-import { getDb, secret } from "@/lib/board/secrets";
-import { parseAllowlist } from "@/lib/board/auth";
+import { getTaskList, listActiveMembers, listTasksInList } from "@/lib/board/db";
+import { getDb } from "@/lib/board/secrets";
 
 type Props = { params: Promise<{ listId: string }> };
 
@@ -19,11 +14,7 @@ export default async function BoardTaskListPage({ params }: Props) {
   if (!list) notFound();
   const [tasks, members] = await Promise.all([
     listTasksInList(db, listId),
-    syncAllowlistMembers(
-      db,
-      parseAllowlist(secret("BOARD_ALLOWLIST")),
-      secret("BOARD_PRESIDENT_ALLOWLIST")
-    ),
+    listActiveMembers(db),
   ]);
 
   return (

@@ -20,7 +20,7 @@ Build the board hub as **`/board/*` routes in `gator-redleg-web`** with:
 | Compute | Cloudflare Workers via `@opennextjs/cloudflare` | Same as public site; one deploy pipeline |
 | Database | D1 (`gator-board`) | Relational fit for threads, tasks, assignments; proven in store |
 | Attachments | R2 (`gator-board-attachments`) | Message images; optional P2 |
-| Auth | Magic-link + HMAC cookie (`rl_board`) | Port from store; small allowlist; no Clerk cost |
+| Auth | Magic-link + HMAC cookie (`rl_board`) | Port from store; roster in D1 `members` |
 | Auth boundary | Per-route `requireMember()` | Match store — no middleware |
 | Outbound email | `SEND_EMAIL` on site worker | Already works; notifications, magic links |
 | Inbound email | **SaaSMail webhook** (after #12) | Do not add `email()` handler to site worker |
@@ -85,8 +85,11 @@ INTERIM (before #12)
 | Secret | Purpose |
 |--------|---------|
 | `BOARD_SESSION_SECRET` | HMAC session cookie |
-| `BOARD_ALLOWLIST` | Comma-separated login emails |
+| `BOARD_ALLOWLIST` | *(legacy)* Bootstrap D1 roster when empty |
+| `BOARD_PRESIDENT_ALLOWLIST` | *(legacy)* President role during bootstrap |
 | `BOARD_INBOUND_WEBHOOK_SECRET` | Verify SaaSMail signatures (#31) |
+
+Active members, roles, and revoke are stored in D1. Presidents manage roster at `/board/people`.
 
 ## Won't do in v1
 

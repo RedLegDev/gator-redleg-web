@@ -1,12 +1,14 @@
 import {
   SESSION_COOKIE,
-  displayNameFromEmail,
   hashToken,
-  isAllowed,
-  parseAllowlist,
   signSession,
 } from "@/lib/board/auth";
-import { consumeLoginToken, ensureMember, memberRoleForEmail } from "@/lib/board/db";
+import {
+  canMemberLogin,
+  consumeLoginToken,
+  getActiveMemberByEmail,
+  touchMemberLastSeen,
+} from "@/lib/board/db";
 import { getDb, secret } from "@/lib/board/secrets";
 
 export const dynamic = "force-dynamic";
@@ -25,19 +27,26 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: "token required" }, { status: 400 });
   }
 
+  const db = getDb();
   const now = Math.floor(Date.now() / 1000);
-  const email = await consumeLoginToken(getDb(), await hashToken(token), now);
+  const email = await consumeLoginToken(db, await hashToken(token), now);
   if (!email) {
     return Response.json({ ok: false, error: "Invalid token" }, { status: 401 });
   }
 
-  const allowlist = parseAllowlist(secret("BOARD_ALLOWLIST"));
-  if (!isAllowed(email, allowlist)) {
+  const allowed = await canMemberLogin(db, email, {
+    allowlist: secret("BOARD_ALLOWLIST"),
+    presidentAllowlist: secret("BOARD_PRESIDENT_ALLOWLIST"),
+  });
+  if (!allowed) {
     return Response.json({ ok: false, error: "Forbidden" }, { status: 403 });
   }
 
-  const role = memberRoleForEmail(email, secret("BOARD_PRESIDENT_ALLOWLIST"));
-  await ensureMember(getDb(), email, displayNameFromEmail(email), role);
+  const member = await getActiveMemberByEmail(db, email);
+  if (!member) {
+    return Response.json({ ok: false, error: "Forbidden" }, { status: 403 });
+  }
+  await touchMemberLastSeen(db, member.id);
 
   const cookie = await signSession(email, now + SESSION_TTL_SECONDS, signingKey);
   const secure = new URL(request.url).protocol === "https:" ? "; Secure" : "";

@@ -2,8 +2,8 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export type BoardSecretName =
   | "BOARD_SESSION_SECRET"
-  | "BOARD_ALLOWLIST"
-  | "BOARD_PRESIDENT_ALLOWLIST"
+  | "BOARD_ALLOWLIST" // legacy bootstrap when D1 roster is empty
+  | "BOARD_PRESIDENT_ALLOWLIST" // legacy bootstrap
   | "BOARD_INBOUND_WEBHOOK_SECRET";
 
 export function secret(name: BoardSecretName): string | undefined {

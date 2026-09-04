@@ -1,13 +1,11 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import {
   generateLoginToken,
   hashToken,
-  isAllowed,
-  parseAllowlist,
 } from "@/lib/board/auth";
-import { countRecentLoginRequests, insertLoginToken } from "@/lib/board/db";
+import { canMemberLogin, countRecentLoginRequests, insertLoginToken } from "@/lib/board/db";
 import { BOARD_EMAIL_FROM, buildMagicLinkEmail } from "@/lib/board/email";
 import { secret, getDb } from "@/lib/board/secrets";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export const dynamic = "force-dynamic";
 
@@ -23,10 +21,13 @@ export async function POST(request: Request) {
 
   if (!secret("BOARD_SESSION_SECRET")) return ok;
 
-  const allowlist = parseAllowlist(secret("BOARD_ALLOWLIST"));
-  if (!isAllowed(email, allowlist)) return ok;
-
   const db = getDb();
+  const allowed = await canMemberLogin(db, email, {
+    allowlist: secret("BOARD_ALLOWLIST"),
+    presidentAllowlist: secret("BOARD_PRESIDENT_ALLOWLIST"),
+  });
+  if (!allowed) return ok;
+
   const now = Math.floor(Date.now() / 1000);
   const recent = await countRecentLoginRequests(
     db,

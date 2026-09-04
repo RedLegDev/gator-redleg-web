@@ -1,10 +1,13 @@
 export type MemberRole = "president" | "officer" | "member";
 
+export type MemberStatus = "active" | "revoked";
+
 export type Member = {
   id: string;
   email: string;
   name: string;
   role: MemberRole;
+  status: MemberStatus;
 };
 
 export type MessageRow = {

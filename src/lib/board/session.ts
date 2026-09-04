@@ -1,9 +1,20 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { isAllowed, parseAllowlist, SESSION_COOKIE, verifySession } from "./auth";
-import { getMemberByEmail } from "./db";
+import { SESSION_COOKIE, verifySession } from "./auth";
+import {
+  bootstrapMembersFromSecrets,
+  getActiveMemberByEmail,
+} from "./db";
 import { secret, getDb } from "./secrets";
 import type { Member } from "./types";
+
+async function legacyBootstrap(): Promise<void> {
+  await bootstrapMembersFromSecrets(
+    getDb(),
+    secret("BOARD_ALLOWLIST"),
+    secret("BOARD_PRESIDENT_ALLOWLIST")
+  );
+}
 
 export async function getSessionEmail(): Promise<string | null> {
   const signingKey = secret("BOARD_SESSION_SECRET");
@@ -16,14 +27,15 @@ export async function getSessionEmail(): Promise<string | null> {
     Math.floor(Date.now() / 1000)
   );
   if (!email) return null;
-  const allowlist = parseAllowlist(secret("BOARD_ALLOWLIST"));
-  return isAllowed(email, allowlist) ? email : null;
+  await legacyBootstrap();
+  const member = await getActiveMemberByEmail(getDb(), email);
+  return member?.email ?? null;
 }
 
 export async function getMember(): Promise<Member | null> {
   const email = await getSessionEmail();
   if (!email) return null;
-  return getMemberByEmail(getDb(), email);
+  return getActiveMemberByEmail(getDb(), email);
 }
 
 /** Authorization boundary for board pages and API routes. */
@@ -39,6 +51,15 @@ export async function requireMemberApi(): Promise<Member | Response> {
     return Response.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
   return member;
+}
+
+export async function requirePresidentApi(): Promise<Member | Response> {
+  const auth = await requireMemberApi();
+  if (auth instanceof Response) return auth;
+  if (!isPresident(auth)) {
+    return Response.json({ ok: false, error: "Forbidden" }, { status: 403 });
+  }
+  return auth;
 }
 
 export function isPresident(member: Member): boolean {

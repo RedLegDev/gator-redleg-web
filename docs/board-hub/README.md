@@ -4,10 +4,11 @@
 
 ```bash
 BOARD_SESSION_SECRET=dev-only-change-me-32chars-min!!
-BOARD_ALLOWLIST=you@example.com
 ```
 
 Generate a production secret with `openssl rand -base64 32`.
+
+Board roster lives in D1 (`members` table). After `db:migrate:local`, migration `0005_board_roster.sql` seeds the executive board. Legacy `BOARD_ALLOWLIST` / `BOARD_PRESIDENT_ALLOWLIST` wrangler secrets are only used to bootstrap D1 when the roster is empty.
 
 ## Database
 
@@ -39,11 +40,18 @@ Health check (needs D1 in dev): http://localhost:3021/api/board/health
 
 ```bash
 npx wrangler secret put BOARD_SESSION_SECRET
+```
+
+Optional legacy bootstrap (only if D1 roster is empty):
+
+```bash
 npx wrangler secret put BOARD_ALLOWLIST
 npx wrangler secret put BOARD_PRESIDENT_ALLOWLIST
 ```
 
-President allowlist emails get `role=president` (pin messages). Comma-separated, same format as `BOARD_ALLOWLIST`.
+## People admin
+
+Presidents manage roster at `/board/people` — add members, revoke access, promote president (demotes the previous president to officer).
 
 ## Basecamp import
 

@@ -35,12 +35,12 @@ export function BoardLoginForm({ error }: { error?: boolean }) {
           Check your inbox
         </p>
         <p className="mt-2">
-          If <strong>{email}</strong> is on the board allowlist, a sign-in link
+          If <strong>{email}</strong> is an active board member, a sign-in link
           is on its way. Links expire in 15 minutes.
         </p>
         <p className="mt-2 text-neutral-600">
           Using a <code className="text-xs">.mil</code> address? If nothing
-          arrives, try a personal email that&apos;s on the allowlist.
+          arrives, try a personal email on file with the chapter.
         </p>
       </div>
     );
