@@ -97,7 +97,26 @@ npm run email:test       # terminal 2
 
 Legacy HTTP webhook (optional): `POST /api/board/inbound-email` with `BOARD_INBOUND_WEBHOOK_SECRET`.
 
-### Comment vs Respond (outbound reply)
+### Web Push (inbound email)
+
+Opt-in from the board hub UI (`BoardPushOptIn`). Service worker: `/board-sw.js`.
+
+| Secret / var | Purpose |
+|--------------|---------|
+| `VAPID_PUBLIC_KEY` | Wrangler `vars` (applicationServerKey) |
+| `VAPID_PRIVATE_KEY` | Wrangler secret |
+| `VAPID_SUBJECT` | e.g. `mailto:president@gatorredleg.org` |
+
+```bash
+npx web-push generate-vapid-keys
+npx wrangler secret put VAPID_PRIVATE_KEY
+# put public key + subject in wrangler.jsonc vars
+npm run db:migrate:remote   # 0012_push_subscriptions
+```
+
+Inbound Email Routing fan-outs push after `processInboundEmail`. Gone/410 subscriptions are pruned.
+
+## Webhooks
 
 Email-origin threads (`inbound_emails` linked to a message) get two composers:
 

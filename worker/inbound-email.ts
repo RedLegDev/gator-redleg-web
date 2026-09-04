@@ -49,6 +49,20 @@ export async function onInboundEmail(
       text,
     });
 
+    try {
+      const { fanOutInboundEmailPush } = await import(
+        "../src/lib/board/push"
+      );
+      const push = await fanOutInboundEmailPush(env, {
+        subject,
+        from,
+        messageId: boardMessageId,
+      });
+      console.log("inbound push", push);
+    } catch (pushErr) {
+      console.warn("inbound push failed", pushErr);
+    }
+
     const forwardTo = env.BOARD_INBOX_FORWARD?.trim();
     if (forwardTo) {
       await message.forward(forwardTo);

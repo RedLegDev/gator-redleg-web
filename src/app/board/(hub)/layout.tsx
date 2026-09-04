@@ -1,6 +1,7 @@
 import { Container } from "@/components/Container";
 import { BoardPublicSiteLink } from "@/components/board/BoardChrome";
 import { BoardNav } from "@/components/board/BoardNav";
+import { BoardPushOptIn } from "@/components/board/BoardPushOptIn";
 import { requireMember } from "@/lib/board/session";
 
 export const dynamic = "force-dynamic";
@@ -54,7 +55,10 @@ export default async function BoardLayout({
             <div className="hidden items-center justify-end border-b border-neutral-200/60 px-8 py-3 lg:flex">
               <BoardPublicSiteLink />
             </div>
-            <div className="lg:px-8 lg:py-8 xl:px-10 xl:py-10">{children}</div>
+            <div className="lg:px-8 lg:py-8 xl:px-10 xl:py-10">
+              <BoardPushOptIn />
+              {children}
+            </div>
           </div>
         </div>
       </Container>

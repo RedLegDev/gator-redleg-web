@@ -1,6 +1,8 @@
 /// <reference path="../cloudflare-env.d.ts" />
 
-/** Optional forward copy after inbound board post (wrangler var). */
-declare interface __BaseEnv_CloudflareEnv {
+declare interface CloudflareEnv {
   BOARD_INBOX_FORWARD?: string;
+  VAPID_PUBLIC_KEY?: string;
+  VAPID_PRIVATE_KEY?: string;
+  VAPID_SUBJECT?: string;
 }

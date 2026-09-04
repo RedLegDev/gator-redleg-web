@@ -18,6 +18,7 @@
     "email:test": "node scripts/test-inbound-email.mjs"
   },
   "dependencies": {
+    "@block65/webcrypto-web-push": "^2.0.0",
     "clsx": "^2.1.1",
     "next": "15.5.20",
     "postal-mime": "^3.0.0",

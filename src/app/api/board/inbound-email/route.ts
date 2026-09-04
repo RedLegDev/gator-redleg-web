@@ -1,4 +1,6 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { processInboundEmail, normalizeEmailAddress } from "@/lib/board/inbound-email";
+import { fanOutInboundEmailPush } from "@/lib/board/push";
 import { getDb, secret } from "@/lib/board/secrets";
 
 export const dynamic = "force-dynamic";
@@ -42,6 +44,16 @@ export async function POST(request: Request) {
       subject,
       text,
     });
+    try {
+      const { env } = getCloudflareContext();
+      await fanOutInboundEmailPush(env, {
+        subject,
+        from,
+        messageId: result.boardMessageId,
+      });
+    } catch (pushErr) {
+      console.warn("inbound webhook push failed", pushErr);
+    }
     return Response.json(
       { ok: true, data: { id: result.boardMessageId, inboundId: result.inboundId } },
       { status: 201 }
