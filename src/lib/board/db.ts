@@ -142,30 +142,43 @@ export async function recordActivity(
 
 export async function listMessages(
   db: D1Database,
-  opts: { limit?: number; status?: "active" | "archived" | "all" } = {}
+  opts: {
+    limit?: number;
+    offset?: number;
+    status?: "active" | "archived" | "all";
+  } = {}
 ): Promise<MessageWithMeta[]> {
   const limit = opts.limit ?? 50;
+  const offset = Math.max(0, opts.offset ?? 0);
   const status = opts.status ?? "active";
-  const statusClause =
-    status === "all"
-      ? `m.status IN ('active', 'archived')`
-      : `m.status = ?2`;
-  const stmt = db.prepare(
-    `SELECT m.id, m.subject, m.body_md, m.author_id, m.pinned, m.status,
+  const select = `SELECT m.id, m.subject, m.body_md, m.author_id, m.pinned, m.status,
             m.created_at, m.updated_at,
             a.name AS author_name,
             (SELECT COUNT(*) FROM comments c
                WHERE c.parent_type = 'message' AND c.parent_id = m.id) AS comment_count
      FROM messages m
-     JOIN members a ON a.id = m.author_id
-     WHERE ${statusClause}
-     ORDER BY m.pinned DESC, m.updated_at DESC
-     LIMIT ?1`
-  );
+     JOIN members a ON a.id = m.author_id`;
+  const order = `ORDER BY m.pinned DESC, m.updated_at DESC`;
   const { results } =
     status === "all"
-      ? await stmt.bind(limit).all<MessageWithMeta>()
-      : await stmt.bind(limit, status).all<MessageWithMeta>();
+      ? await db
+          .prepare(
+            `${select}
+     WHERE m.status IN ('active', 'archived')
+     ${order}
+     LIMIT ?1 OFFSET ?2`
+          )
+          .bind(limit, offset)
+          .all<MessageWithMeta>()
+      : await db
+          .prepare(
+            `${select}
+     WHERE m.status = ?1
+     ${order}
+     LIMIT ?2 OFFSET ?3`
+          )
+          .bind(status, limit, offset)
+          .all<MessageWithMeta>();
   return results ?? [];
 }
 

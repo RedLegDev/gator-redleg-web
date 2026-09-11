@@ -1,12 +1,21 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import {
   BoardEmptyState,
   BoardPageHeader,
+  BoardPager,
 } from "@/components/board/BoardChrome";
 import { countMessages, listMessages } from "@/lib/board/db";
 import { formatBoardTimestamp } from "@/lib/board/format";
+import {
+  MESSAGE_PAGE_SIZE,
+  clampPage,
+  messagesListHref,
+  pageCount,
+  parsePage,
+} from "@/lib/board/pagination";
 import { getDb } from "@/lib/board/secrets";
 import { cn } from "@/lib/cn";
 import {
@@ -15,15 +24,28 @@ import {
   boardPanelClass,
 } from "@/lib/board/ui";
 
-type Props = { searchParams: Promise<{ archived?: string }> };
+type Props = { searchParams: Promise<{ archived?: string; page?: string }> };
 
 export default async function BoardMessagesPage({ searchParams }: Props) {
-  const showArchived = (await searchParams).archived === "1";
+  const params = await searchParams;
+  const showArchived = params.archived === "1";
+  const status = showArchived ? "archived" : "active";
   const db = getDb();
-  const [messages, archivedCount] = await Promise.all([
-    listMessages(db, { status: showArchived ? "archived" : "active" }),
+  const [activeCount, archivedCount] = await Promise.all([
+    countMessages(db, "active"),
     countMessages(db, "archived"),
   ]);
+  const listTotal = showArchived ? archivedCount : activeCount;
+  const requested = parsePage(params.page);
+  const page = clampPage(requested, listTotal, MESSAGE_PAGE_SIZE);
+  if (requested !== page) {
+    redirect(messagesListHref({ archived: showArchived, page }));
+  }
+  const messages = await listMessages(db, {
+    status,
+    limit: MESSAGE_PAGE_SIZE,
+    offset: (page - 1) * MESSAGE_PAGE_SIZE,
+  });
 
   return (
     <div>
@@ -38,9 +60,7 @@ export default async function BoardMessagesPage({ searchParams }: Props) {
         <div className="flex flex-wrap items-center gap-3">
           {archivedCount > 0 && (
             <Link
-              href={
-                showArchived ? "/board/messages" : "/board/messages?archived=1"
-              }
+              href={messagesListHref({ archived: !showArchived })}
               className="text-sm font-medium text-neutral-500 underline-offset-2 transition-colors hover:text-artillery hover:underline"
               aria-pressed={showArchived}
             >
@@ -77,68 +97,77 @@ export default async function BoardMessagesPage({ searchParams }: Props) {
           {showArchived ? "No archived messages." : "No messages yet."}
         </BoardEmptyState>
       ) : (
-        <ul className={cn("divide-y divide-neutral-100", boardPanelClass)}>
-          {messages.map((m) => {
-            const isArchived = m.status === "archived";
-            const isPinned = m.pinned === 1 && !isArchived;
-            return (
-              <li key={m.id}>
-                <Link
-                  href={`/board/messages/${m.id}`}
-                  className={cn(
-                    boardListLinkClass,
-                    "relative px-5 py-4 sm:px-6 sm:py-5",
-                    isArchived && "opacity-70"
-                  )}
-                >
-                  {isPinned && (
-                    <span
-                      className="absolute inset-y-3 left-0 w-0.5 rounded-full bg-gold"
-                      aria-hidden
-                    />
-                  )}
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        {isPinned && (
-                          <span className="font-heading text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-gold-dark">
-                            Pinned
-                          </span>
-                        )}
-                        {isArchived && (
-                          <span className="font-heading text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-neutral-500">
-                            Archived
-                          </span>
-                        )}
+        <>
+          <ul className={cn("divide-y divide-neutral-100", boardPanelClass)}>
+            {messages.map((m) => {
+              const isArchived = m.status === "archived";
+              const isPinned = m.pinned === 1 && !isArchived;
+              return (
+                <li key={m.id}>
+                  <Link
+                    href={`/board/messages/${m.id}`}
+                    className={cn(
+                      boardListLinkClass,
+                      "relative px-5 py-4 sm:px-6 sm:py-5",
+                      isArchived && "opacity-70"
+                    )}
+                  >
+                    {isPinned && (
+                      <span
+                        className="absolute inset-y-3 left-0 w-0.5 rounded-full bg-gold"
+                        aria-hidden
+                      />
+                    )}
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          {isPinned && (
+                            <span className="font-heading text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-gold-dark">
+                              Pinned
+                            </span>
+                          )}
+                          {isArchived && (
+                            <span className="font-heading text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-neutral-500">
+                              Archived
+                            </span>
+                          )}
+                        </div>
+                        <p
+                          className={cn(
+                            "font-medium leading-snug text-artillery sm:text-lg",
+                            isPinned || isArchived ? "mt-1" : ""
+                          )}
+                        >
+                          {m.subject}
+                        </p>
+                        <p className="mt-1.5 text-sm text-neutral-500">
+                          {m.author_name}
+                          <span className="mx-1.5 text-neutral-300">·</span>
+                          {formatBoardTimestamp(m.updated_at)}
+                        </p>
                       </div>
-                      <p
-                        className={cn(
-                          "font-medium leading-snug text-artillery sm:text-lg",
-                          isPinned || isArchived ? "mt-1" : ""
-                        )}
-                      >
-                        {m.subject}
-                      </p>
-                      <p className="mt-1.5 text-sm text-neutral-500">
-                        {m.author_name}
-                        <span className="mx-1.5 text-neutral-300">·</span>
-                        {formatBoardTimestamp(m.updated_at)}
-                      </p>
+                      <div className="shrink-0 pt-0.5 text-right">
+                        <p className="font-heading text-xs font-semibold uppercase tracking-[0.12em] text-neutral-400">
+                          {m.comment_count}
+                        </p>
+                        <p className="mt-0.5 text-[11px] text-neutral-400">
+                          {m.comment_count === 1 ? "reply" : "replies"}
+                        </p>
+                      </div>
                     </div>
-                    <div className="shrink-0 pt-0.5 text-right">
-                      <p className="font-heading text-xs font-semibold uppercase tracking-[0.12em] text-neutral-400">
-                        {m.comment_count}
-                      </p>
-                      <p className="mt-0.5 text-[11px] text-neutral-400">
-                        {m.comment_count === 1 ? "reply" : "replies"}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          <BoardPager
+            page={page}
+            totalPages={pageCount(listTotal, MESSAGE_PAGE_SIZE)}
+            hrefForPage={(next) =>
+              messagesListHref({ archived: showArchived, page: next })
+            }
+          />
+        </>
       )}
     </div>
   );

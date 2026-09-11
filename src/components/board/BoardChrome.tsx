@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import { boardButtonSecondaryClass } from "@/lib/board/ui";
 
 export function BoardPageHeader({
   title,
@@ -48,6 +49,46 @@ export function BoardEmptyState({
       <p className="text-neutral-500">{children}</p>
       {action && <div className="mt-4">{action}</div>}
     </div>
+  );
+}
+
+export function BoardPager({
+  page,
+  totalPages,
+  hrefForPage,
+}: {
+  page: number;
+  totalPages: number;
+  hrefForPage: (page: number) => string;
+}) {
+  if (totalPages <= 1) return null;
+  return (
+    <nav
+      aria-label="Pagination"
+      className="mt-6 flex items-center justify-between gap-3"
+    >
+      {page > 1 ? (
+        <Link href={hrefForPage(page - 1)} className={boardButtonSecondaryClass}>
+          Previous
+        </Link>
+      ) : (
+        <span className={cn(boardButtonSecondaryClass, "pointer-events-none opacity-40")}>
+          Previous
+        </span>
+      )}
+      <p className="text-sm text-neutral-500">
+        Page {page} of {totalPages}
+      </p>
+      {page < totalPages ? (
+        <Link href={hrefForPage(page + 1)} className={boardButtonSecondaryClass}>
+          Next
+        </Link>
+      ) : (
+        <span className={cn(boardButtonSecondaryClass, "pointer-events-none opacity-40")}>
+          Next
+        </span>
+      )}
+    </nav>
   );
 }
 

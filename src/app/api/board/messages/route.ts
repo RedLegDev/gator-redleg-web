@@ -1,20 +1,37 @@
 import {
+  countMessages,
   createMessage,
   listMessages,
   recordActivity,
 } from "@/lib/board/db";
 import { linkAttachments } from "@/lib/board/attachments";
 import { boardLink, notifyBoard, notifyMentions } from "@/lib/board/notify";
+import {
+  clampPage,
+  parsePage,
+  parsePageSize,
+} from "@/lib/board/pagination";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
   const auth = await requireMemberApi();
   if (auth instanceof Response) return auth;
-  const messages = await listMessages(getDb());
-  return Response.json({ ok: true, data: messages });
+  const url = new URL(request.url);
+  const archived = url.searchParams.get("archived") === "1";
+  const status = archived ? "archived" : "active";
+  const pageSize = parsePageSize(url.searchParams.get("limit"));
+  const db = getDb();
+  const total = await countMessages(db, status);
+  const page = clampPage(parsePage(url.searchParams.get("page") ?? undefined), total, pageSize);
+  const messages = await listMessages(db, {
+    status,
+    limit: pageSize,
+    offset: (page - 1) * pageSize,
+  });
+  return Response.json({ ok: true, data: messages, page, pageSize, total });
 }
 
 export async function POST(request: Request) {
