@@ -343,19 +343,33 @@ export async function getInboundEmailByMessageId(
   db: D1Database,
   messageId: string
 ): Promise<InboundEmailMeta | null> {
-  const row = await db
-    .prepare(
-      `SELECT id, from_address, to_address, COALESCE(subject, '') AS subject,
-              body_html
-       FROM inbound_emails
-       WHERE board_message_id = ?1
-       ORDER BY received_at DESC
-       LIMIT 1`
-    )
-    .bind(messageId)
-    .first<InboundEmailMeta>();
-  if (!row) return null;
-  return { ...row, body_html: row.body_html ?? null };
+  try {
+    const row = await db
+      .prepare(
+        `SELECT id, from_address, to_address, COALESCE(subject, '') AS subject,
+                body_html
+         FROM inbound_emails
+         WHERE board_message_id = ?1
+         ORDER BY received_at DESC
+         LIMIT 1`
+      )
+      .bind(messageId)
+      .first<InboundEmailMeta>();
+    if (!row) return null;
+    return { ...row, body_html: row.body_html ?? null };
+  } catch {
+    const row = await db
+      .prepare(
+        `SELECT id, from_address, to_address, COALESCE(subject, '') AS subject
+         FROM inbound_emails
+         WHERE board_message_id = ?1
+         ORDER BY received_at DESC
+         LIMIT 1`
+      )
+      .bind(messageId)
+      .first<Omit<InboundEmailMeta, "body_html">>();
+    return row ? { ...row, body_html: null } : null;
+  }
 }
 
 export async function recordOutboundEmailReply(

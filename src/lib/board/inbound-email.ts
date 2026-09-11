@@ -58,24 +58,36 @@ export async function processInboundEmail(
 
   const inboundId = newId();
   const receivedAt = nowSec();
-  await db
-    .prepare(
-      `INSERT INTO inbound_emails
-         (id, from_address, to_address, subject, body_text, body_html,
-          board_message_id, received_at)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)`
-    )
-    .bind(
-      inboundId,
-      from,
-      to,
-      subject,
-      text,
-      storedHtml || null,
-      boardMessage.id,
-      receivedAt
-    )
-    .run();
+  try {
+    await db
+      .prepare(
+        `INSERT INTO inbound_emails
+           (id, from_address, to_address, subject, body_text, body_html,
+            board_message_id, received_at)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)`
+      )
+      .bind(
+        inboundId,
+        from,
+        to,
+        subject,
+        text,
+        storedHtml || null,
+        boardMessage.id,
+        receivedAt
+      )
+      .run();
+  } catch {
+    await db
+      .prepare(
+        `INSERT INTO inbound_emails
+           (id, from_address, to_address, subject, body_text,
+            board_message_id, received_at)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)`
+      )
+      .bind(inboundId, from, to, subject, text, boardMessage.id, receivedAt)
+      .run();
+  }
 
   await recordActivity(
     db,
