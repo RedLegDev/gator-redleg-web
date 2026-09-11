@@ -1,4 +1,5 @@
 import { createMessage, getMemberByEmail, recordActivity } from "./db";
+import { inboundHtmlToStore, textFromHtml } from "./email-html";
 import { newId, nowSec } from "./ids";
 
 export type ParsedInboundEmail = {
@@ -6,6 +7,7 @@ export type ParsedInboundEmail = {
   to: string;
   subject: string;
   text: string;
+  html?: string;
   /** Board subject prefix. Defaults to `[Email]` for inbound mail. */
   subjectPrefix?: string;
 };
@@ -29,10 +31,13 @@ export async function processInboundEmail(
   const from = normalizeAddress(parsed.from);
   const to = normalizeAddress(parsed.to);
   const subject = parsed.subject.trim() || "(no subject)";
-  const text = parsed.text.trim();
+  const html = parsed.html?.trim() || "";
+  const text =
+    parsed.text.trim() || (html ? textFromHtml(html) : "");
   const prefix = (parsed.subjectPrefix ?? "[Email]").trim() || "[Email]";
+  const storedHtml = inboundHtmlToStore(html, text);
 
-  if (!from || !text) {
+  if (!from || (!text && !storedHtml)) {
     throw new Error("Inbound email missing from or body");
   }
 
@@ -47,7 +52,7 @@ export async function processInboundEmail(
   const boardMessage = await createMessage(
     db,
     `${prefix} ${subject}`,
-    `From: ${from}\nTo: ${to}\n\n${text}`,
+    `From: ${from}\nTo: ${to}\n\n${text || "(no plain-text body)"}`,
     author.id
   );
 
@@ -56,8 +61,9 @@ export async function processInboundEmail(
   await db
     .prepare(
       `INSERT INTO inbound_emails
-         (id, from_address, to_address, subject, body_text, board_message_id, received_at)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)`
+         (id, from_address, to_address, subject, body_text, body_html,
+          board_message_id, received_at)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)`
     )
     .bind(
       inboundId,
@@ -65,6 +71,7 @@ export async function processInboundEmail(
       to,
       subject,
       text,
+      storedHtml || null,
       boardMessage.id,
       receivedAt
     )

@@ -84,6 +84,7 @@ export type InboundEmailMeta = {
   from_address: string;
   to_address: string;
   subject: string;
+  body_html: string | null;
 };
 
 export type SendIdentity = {

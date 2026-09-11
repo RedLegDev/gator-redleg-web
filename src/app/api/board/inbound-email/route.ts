@@ -1,4 +1,5 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { textFromHtml } from "@/lib/board/email-html";
 import { processInboundEmail, normalizeEmailAddress } from "@/lib/board/inbound-email";
 import { fanOutInboundEmailPush } from "@/lib/board/push";
 import { getDb, secret } from "@/lib/board/secrets";
@@ -29,8 +30,10 @@ export async function POST(request: Request) {
   const from = normalizeEmailAddress(String(body.from ?? ""));
   const to = normalizeEmailAddress(String(body.to ?? "webhook@gatorredleg.org"));
   const subject = String(body.subject ?? "(no subject)").trim();
-  const text = String(body.text ?? body.html ?? "").trim();
-  if (!from || !text) {
+  const html = String(body.html ?? "").trim();
+  const text =
+    String(body.text ?? "").trim() || (html ? textFromHtml(html) : "");
+  if (!from || (!text && !html)) {
     return Response.json(
       { ok: false, error: "from and text required" },
       { status: 400 }
@@ -43,6 +46,7 @@ export async function POST(request: Request) {
       to,
       subject,
       text,
+      html: html || undefined,
     });
     try {
       const { env } = getCloudflareContext();

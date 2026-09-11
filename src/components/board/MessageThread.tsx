@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BoardAvatar } from "./BoardChrome";
 import { BoardMarkdown } from "./BoardMarkdown";
+import { SandboxedEmail } from "./SandboxedEmail";
 import {
   BoardAttachmentList,
   BoardAttachmentPicker,
@@ -14,6 +15,7 @@ import type {
   InboundEmailMeta,
   MessageWithMeta,
 } from "@/lib/board/types";
+import { looksLikeHtml } from "@/lib/board/email-html";
 import { formatBoardTimestamp } from "@/lib/board/format";
 import { cn } from "@/lib/cn";
 import {
@@ -84,6 +86,11 @@ export function MessageThread({
   );
 
   const isEmailThread = Boolean(inbound);
+  const previewHtml =
+    inbound?.body_html?.trim() ||
+    (isEmailThread && looksLikeHtml(message.body_md)
+      ? message.body_md
+      : "");
   const replyCount = comments.length;
 
   async function submitComment(e: React.FormEvent) {
@@ -256,7 +263,11 @@ export function MessageThread({
         </header>
 
         <div className="px-5 py-5 sm:px-7 sm:py-6 lg:px-8 lg:py-7">
-          <BoardMarkdown content={message.body_md} />
+          {previewHtml ? (
+            <SandboxedEmail html={previewHtml} />
+          ) : (
+            <BoardMarkdown content={message.body_md} />
+          )}
           <BoardAttachmentList attachments={messageAttachments} />
         </div>
       </article>

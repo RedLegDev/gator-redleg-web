@@ -19,6 +19,7 @@ export async function publishFormToBoard(args: {
     to: BOARD_INBOX_ADDRESS,
     subject: args.subject,
     text: args.text,
+    html: args.html,
     subjectPrefix: args.subjectPrefix,
   });
 

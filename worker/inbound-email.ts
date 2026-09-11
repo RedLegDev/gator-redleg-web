@@ -1,4 +1,5 @@
 import PostalMime from "postal-mime";
+import { textFromHtml } from "../src/lib/board/email-html";
 import {
   normalizeEmailAddress,
   processInboundEmail,
@@ -8,15 +9,7 @@ type ParsedMail = Awaited<ReturnType<PostalMime["parse"]>>;
 
 function textFromParsed(parsed: ParsedMail): string {
   if (parsed.text?.trim()) return parsed.text.trim();
-  if (parsed.html?.trim()) {
-    return parsed.html
-      .replace(/<br\s*\/?>/gi, "\n")
-      .replace(/<\/p>/gi, "\n\n")
-      .replace(/<[^>]+>/g, "")
-      .replace(/&nbsp;/g, " ")
-      .replace(/&amp;/g, "&")
-      .trim();
-  }
+  if (parsed.html?.trim()) return textFromHtml(parsed.html);
   return "";
 }
 
@@ -35,8 +28,9 @@ export async function onInboundEmail(
     const to = normalizeEmailAddress(parsed.to?.[0]?.address ?? message.to ?? "");
     const subject = parsed.subject ?? message.headers.get("subject") ?? "";
     const text = textFromParsed(parsed);
+    const html = parsed.html?.trim() || "";
 
-    if (!text) {
+    if (!text && !html) {
       console.warn("inbound email dropped: empty body", { from, to, subject });
       message.setReject("Empty message body");
       return;
@@ -47,6 +41,7 @@ export async function onInboundEmail(
       to,
       subject,
       text,
+      html: html || undefined,
     });
 
     try {

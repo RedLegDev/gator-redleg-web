@@ -343,9 +343,10 @@ export async function getInboundEmailByMessageId(
   db: D1Database,
   messageId: string
 ): Promise<InboundEmailMeta | null> {
-  return db
+  const row = await db
     .prepare(
-      `SELECT id, from_address, to_address, COALESCE(subject, '') AS subject
+      `SELECT id, from_address, to_address, COALESCE(subject, '') AS subject,
+              body_html
        FROM inbound_emails
        WHERE board_message_id = ?1
        ORDER BY received_at DESC
@@ -353,6 +354,8 @@ export async function getInboundEmailByMessageId(
     )
     .bind(messageId)
     .first<InboundEmailMeta>();
+  if (!row) return null;
+  return { ...row, body_html: row.body_html ?? null };
 }
 
 export async function recordOutboundEmailReply(
