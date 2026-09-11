@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { BOARD_REQUEST_ACCESS_PATH } from "@/lib/nav";
 import {
   boardButtonPrimaryClass,
   boardInputClass,
@@ -170,6 +172,8 @@ export function BoardLoginForm({ error }: { error?: boolean }) {
           address? Codes may arrive slowly — a personal email on the roster is
           more reliable.
         </p>
+
+        <RequestAccessLink email={email} />
       </form>
     );
   }
@@ -222,6 +226,24 @@ export function BoardLoginForm({ error }: { error?: boolean }) {
       <p className="text-center text-xs leading-relaxed text-neutral-500">
         Codes expire in 15 minutes and work once.
       </p>
+
+      <RequestAccessLink email={email} />
     </form>
+  );
+}
+
+function RequestAccessLink({ email }: { email: string }) {
+  const trimmed = email.trim();
+  const href = trimmed
+    ? `${BOARD_REQUEST_ACCESS_PATH}?email=${encodeURIComponent(trimmed)}`
+    : BOARD_REQUEST_ACCESS_PATH;
+
+  return (
+    <p className="text-center text-sm text-neutral-500">
+      Didn&apos;t get a code?{" "}
+      <Link href={href} className="font-semibold text-redleg hover:underline">
+        Request access.
+      </Link>
+    </p>
   );
 }

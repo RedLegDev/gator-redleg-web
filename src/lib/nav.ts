@@ -30,6 +30,7 @@ export const CHARITABLE_PLAYBOOK_URL = `https://www.gatorredleg.org${CHARITABLE_
 export const TAX_EXEMPTION_PDF = "/docs/gator-redleg-501c3-tax-exemption.pdf";
 export const ZOOM_PATH = "/zoom";
 export const BOARD_HUB_PATH = "/board";
+export const BOARD_REQUEST_ACCESS_PATH = "/board/request-access";
 
 export const NAV: NavGroup[] = [
   { label: "Home", href: "/" },

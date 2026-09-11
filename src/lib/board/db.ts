@@ -43,6 +43,25 @@ export async function countRecentLoginRequests(
   return row?.n ?? 0;
 }
 
+export async function countRecentAccessRequests(
+  db: D1Database,
+  email: string,
+  sinceSec: number
+): Promise<number> {
+  const row = await db
+    .prepare(
+      `SELECT COUNT(*) AS n
+         FROM inbound_emails ie
+         INNER JOIN messages m ON m.id = ie.board_message_id
+        WHERE ie.from_address = ?1
+          AND ie.received_at >= ?2
+          AND m.subject LIKE '[Access Request]%'`
+    )
+    .bind(email.trim().toLowerCase(), sinceSec)
+    .first<{ n: number }>();
+  return row?.n ?? 0;
+}
+
 export async function insertLoginToken(
   db: D1Database,
   tokenHash: string,
