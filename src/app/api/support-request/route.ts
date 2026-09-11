@@ -1,15 +1,11 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { publishFormToBoard } from "@/lib/board/form-intake";
 import {
+  buildBoardSubject,
   buildEmailHtml,
   buildEmailText,
-  buildSubject,
   isValidProgram,
   type SupportRequestData,
 } from "@/lib/support-request";
-
-const RECIPIENT = "president@gatorredleg.org";
-// Must be an address on the Cloudflare Email Sending-onboarded domain.
-const FROM = { email: "noreply@gatorredleg.org", name: "Gator Redleg Support" };
 
 const REQUIRED_FIELDS: (keyof SupportRequestData)[] = [
   "requesterName",
@@ -50,22 +46,19 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { env } = getCloudflareContext();
-    await env.SEND_EMAIL.send({
-      from: FROM,
-      to: RECIPIENT,
-      // Replies land in the requester's inbox, not a noreply void.
-      replyTo: data.email,
-      subject: buildSubject(data),
-      html: buildEmailHtml(data),
+    await publishFormToBoard({
+      from: data.email,
+      subject: buildBoardSubject(data),
+      subjectPrefix: "[Support]",
       text: buildEmailText(data),
+      html: buildEmailHtml(data),
     });
   } catch (error) {
     const code =
       error && typeof error === "object" && "code" in error
         ? String((error as { code: unknown }).code)
         : "unknown";
-    console.error(`Support request email failed: ${code}`, error);
+    console.error(`Support request board post failed: ${code}`, error);
     return Response.json(
       { error: "Unable to send the request right now." },
       { status: 502 }

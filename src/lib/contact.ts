@@ -1,6 +1,6 @@
 // Shared, server-safe contact-form data + email rendering.
 // The React form posts ContactData; the API route imports
-// buildEmailHtml/buildEmailText/buildSubject to compose the email.
+// buildEmailHtml/buildEmailText/buildBoardSubject to compose the board post.
 // Mirrors the support-request pattern (see src/lib/support-request.ts).
 
 export type ContactData = {
@@ -10,9 +10,9 @@ export type ContactData = {
   message: string;
 };
 
-export function buildSubject(data: ContactData): string {
+export function buildBoardSubject(data: ContactData): string {
   const topic = data.subject.trim() || "General Inquiry";
-  return `Contact Form: ${topic} - ${data.name}`;
+  return `${topic} — ${data.name}`;
 }
 
 function escapeHtml(value: string): string {

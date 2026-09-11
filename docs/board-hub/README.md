@@ -87,7 +87,7 @@ Optional wrangler var to forward a copy after posting:
 2. Deploy worker
 3. Cloudflare dashboard → **Email Service → Routing** → create rule(s) → **Send to Worker** → `gator-redleg-web`
 4. Start with one address (e.g. `president@gatorredleg.org`), verify board post, then expand
-5. Remove `BOARD_CC` from contact/support forms once routing is live
+5. Site contact/support forms post to the board directly (`publishFormToBoard`); do not CC `president@` (that would duplicate the thread if routing is live)
 
 ### Local smoke test
 

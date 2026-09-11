@@ -122,7 +122,7 @@ Used by:
 - `src/app/api/contact/route.ts`
 - `src/app/api/support-request/route.ts`
 
-Forms send to `president@gatorredleg.org` with Basecamp CC. **Remove CC at cutover** (#31, #32); route to `board@gatorredleg.org` after #12.
+Forms now post to the board hub (`publishFormToBoard`) and notify active members. Basecamp CC is gone (#31, #32, #43).
 
 ---
 

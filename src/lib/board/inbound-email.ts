@@ -6,6 +6,8 @@ export type ParsedInboundEmail = {
   to: string;
   subject: string;
   text: string;
+  /** Board subject prefix. Defaults to `[Email]` for inbound mail. */
+  subjectPrefix?: string;
 };
 
 const SYSTEM_AUTHOR_EMAIL = "matt@redleg.dev";
@@ -28,6 +30,7 @@ export async function processInboundEmail(
   const to = normalizeAddress(parsed.to);
   const subject = parsed.subject.trim() || "(no subject)";
   const text = parsed.text.trim();
+  const prefix = (parsed.subjectPrefix ?? "[Email]").trim() || "[Email]";
 
   if (!from || !text) {
     throw new Error("Inbound email missing from or body");
@@ -43,7 +46,7 @@ export async function processInboundEmail(
 
   const boardMessage = await createMessage(
     db,
-    `[Email] ${subject}`,
+    `${prefix} ${subject}`,
     `From: ${from}\nTo: ${to}\n\n${text}`,
     author.id
   );

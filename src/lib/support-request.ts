@@ -2,7 +2,7 @@ import { CHARITABLE_PLAYBOOK_URL } from "@/lib/nav";
 
 // Shared, server-safe support-request data + email rendering.
 // The React form imports PROGRAM_GROUPS for the program picker; the API route
-// imports optionLabel/buildEmailHtml/buildSubject to compose the email.
+// imports optionLabel/buildEmailHtml/buildBoardSubject to compose the post.
 
 export type SupportRequestData = {
   requesterName: string;
@@ -182,10 +182,10 @@ export function isValidProgram(value: string): boolean {
   return Boolean(findProgram(value));
 }
 
-export function buildSubject(data: SupportRequestData): string {
+export function buildBoardSubject(data: SupportRequestData): string {
   const program = findProgram(data.requestType);
   const programName = program?.name ?? data.requestType;
-  return `Support Request: ${programName} - ${data.requesterName}`;
+  return `${programName} — ${data.requesterName}`;
 }
 
 function escapeHtml(value: string): string {

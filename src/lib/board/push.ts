@@ -152,7 +152,12 @@ async function deleteByEndpoint(db: D1Database, endpoint: string): Promise<void>
 
 export async function fanOutInboundEmailPush(
   env: PushEnv,
-  args: { subject: string; from: string; messageId: string }
+  args: {
+    subject: string;
+    from: string;
+    messageId: string;
+    titlePrefix?: string;
+  }
 ): Promise<{ sent: number; pruned: number }> {
   const keys = vapidKeys(env);
   if (!keys) {
@@ -166,7 +171,7 @@ export async function fanOutInboundEmailPush(
   const url = `https://www.gatorredleg.org/board/messages/${args.messageId}`;
   const message: PushMessage = {
     data: JSON.stringify({
-      title: `[Email] ${args.subject}`,
+      title: `${args.titlePrefix ?? "[Email]"} ${args.subject}`,
       body: `From ${args.from}`,
       url,
     }),

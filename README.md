@@ -15,8 +15,8 @@ Repo: `RedLegDev/gator-redleg-web`
 - **Tailwind CSS v4** — brand tokens in `src/app/globals.css`
 - **Fonts:** Cinzel (display), Oswald (labels/nav), Inter (body)
 - **Cloudflare Workers** via `@opennextjs/cloudflare` (`wrangler.jsonc`)
-- **Email:** Cloudflare Email Sending (`SEND_EMAIL` binding) for contact +
-  support-request forms → `president@gatorredleg.org`
+- **Email:** Cloudflare Email Sending (`SEND_EMAIL` binding) for board
+  notifications; contact + support-request forms post to the board hub
 - **Payments / store:** link-out to [store.gatorredleg.org](https://store.gatorredleg.org)
   (Stripe) — donations live; ball ticketing opens later
 - **Newsletter:** on-site signup → chapter listmonk
@@ -93,7 +93,7 @@ Custom domains: `gatorredleg.org` and `www.gatorredleg.org` (DNS on Cloudflare).
 ## What's live
 
 - Membership page links out to USFAA (never reprint dues)
-- Support request + contact forms (Cloudflare Email Sending)
+- Support request + contact forms (board hub + member notify)
 - Newsletter signup
 - Donations → `store.gatorredleg.org/donate`
 - Chapter Vision, Bylaws (`/chapter-bylaws`), SOP (`/chapter-sop`), Bullard
