@@ -8,7 +8,7 @@ import {
   BoardPager,
 } from "@/components/board/BoardChrome";
 import { countMessages, listMessages } from "@/lib/board/db";
-import { formatBoardTimestamp } from "@/lib/board/format";
+import { formatBoardTimestamp, messagePosterName } from "@/lib/board/format";
 import {
   MESSAGE_PAGE_SIZE,
   clampPage,
@@ -141,7 +141,7 @@ export default async function BoardMessagesPage({ searchParams }: Props) {
                           {m.subject}
                         </p>
                         <p className="mt-1.5 text-sm text-neutral-500">
-                          {m.author_name}
+                          {messagePosterName(m)}
                           <span className="mx-1.5 text-neutral-300">·</span>
                           {formatBoardTimestamp(m.updated_at)}
                         </p>

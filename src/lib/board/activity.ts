@@ -11,6 +11,9 @@ export function activityHref(row: ActivityWithActor): string | null {
 }
 
 export function activityLabel(row: ActivityWithActor): string {
+  if (row.verb === "imported") {
+    return `Received ${row.summary}`;
+  }
   const verb = row.verb.replace(/_/g, " ");
   return `${row.actor_name} ${verb} ${row.summary}`;
 }

@@ -12,6 +12,7 @@ export type ParsedInboundEmail = {
   subjectPrefix?: string;
 };
 
+/** FK placeholder for messages.author_id. Inbound threads display the sender, not this member. */
 const SYSTEM_AUTHOR_EMAIL = "matt@redleg.dev";
 
 function normalizeAddress(raw: string): string {
