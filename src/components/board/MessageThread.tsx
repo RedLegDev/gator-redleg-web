@@ -16,7 +16,7 @@ import type {
   MessageWithMeta,
 } from "@/lib/board/types";
 import { looksLikeHtml } from "@/lib/board/email-html";
-import { formatBoardTimestamp } from "@/lib/board/format";
+import { formatBoardTimestamp, messagePosterName } from "@/lib/board/format";
 import { cn } from "@/lib/cn";
 import {
   boardInputClass,
@@ -86,6 +86,10 @@ export function MessageThread({
   );
 
   const isEmailThread = Boolean(inbound);
+  const posterName = messagePosterName({
+    author_name: message.author_name,
+    inbound_from_address: inbound?.from_address,
+  });
   const previewHtml =
     inbound?.body_html?.trim() ||
     (isEmailThread && looksLikeHtml(message.body_md)
@@ -216,27 +220,21 @@ export function MessageThread({
                 {message.subject}
               </h1>
               <div className="flex items-start gap-3">
-                <BoardAvatar name={message.author_name} size="sm" />
+                <BoardAvatar name={posterName} size="sm" />
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-artillery">
-                    {message.author_name}
+                    {posterName}
                   </p>
                   <p className="mt-0.5 text-xs text-neutral-500">
                     {formatBoardTimestamp(message.created_at)}
+                    {inbound?.to_address ? (
+                      <>
+                        {" "}
+                        <span className="text-neutral-400">·</span> to{" "}
+                        {inbound.to_address}
+                      </>
+                    ) : null}
                   </p>
-                  {inbound && (
-                    <p className="mt-1.5 text-xs leading-relaxed text-neutral-500">
-                      <span className="font-medium text-neutral-600">From</span>{" "}
-                      {inbound.from_address}
-                      {inbound.to_address ? (
-                        <>
-                          {" "}
-                          <span className="text-neutral-400">→</span>{" "}
-                          {inbound.to_address}
-                        </>
-                      ) : null}
-                    </p>
-                  )}
                 </div>
               </div>
             </div>

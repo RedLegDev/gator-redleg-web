@@ -9,6 +9,15 @@ export function formatBoardTimestamp(unixSec: number): string {
   });
 }
 
+/** Who to show as the poster. Inbound mail uses the sender, not the system author. */
+export function messagePosterName(message: {
+  author_name: string;
+  inbound_from_address?: string | null;
+}): string {
+  const from = message.inbound_from_address?.trim();
+  return from || message.author_name;
+}
+
 export function parseOptionalDate(value: unknown): string | null {
   if (value === null || value === undefined || value === "") return null;
   const s = String(value).trim();

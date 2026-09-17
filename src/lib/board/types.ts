@@ -58,6 +58,8 @@ export type CommentRow = {
 export type MessageWithMeta = MessageRow & {
   author_name: string;
   comment_count: number;
+  /** Set when this thread was created from inbound mail or a public form. */
+  inbound_from_address: string | null;
 };
 
 export type TaskWithMeta = TaskRow & {

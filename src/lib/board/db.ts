@@ -173,6 +173,9 @@ export async function listMessages(
   const select = `SELECT m.id, m.subject, m.body_md, m.author_id, m.pinned, m.status,
             m.created_at, m.updated_at,
             a.name AS author_name,
+            (SELECT ie.from_address FROM inbound_emails ie
+               WHERE ie.board_message_id = m.id
+               ORDER BY ie.received_at ASC LIMIT 1) AS inbound_from_address,
             (SELECT COUNT(*) FROM comments c
                WHERE c.parent_type = 'message' AND c.parent_id = m.id) AS comment_count
      FROM messages m
@@ -221,6 +224,9 @@ export async function getMessage(
       `SELECT m.id, m.subject, m.body_md, m.author_id, m.pinned, m.status,
               m.created_at, m.updated_at,
               a.name AS author_name,
+              (SELECT ie.from_address FROM inbound_emails ie
+                 WHERE ie.board_message_id = m.id
+                 ORDER BY ie.received_at ASC LIMIT 1) AS inbound_from_address,
               (SELECT COUNT(*) FROM comments c
                  WHERE c.parent_type = 'message' AND c.parent_id = m.id) AS comment_count
        FROM messages m
