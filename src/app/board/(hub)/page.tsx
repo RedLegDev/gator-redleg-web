@@ -46,8 +46,8 @@ export default async function BoardDashboardPage() {
             Welcome back
           </h2>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-neutral-600 lg:text-base">
-            Executive board coordination — messages and tasks. Mention teammates
-            with{" "}
+            Executive board coordination — messages, tasks, and store money.
+            Mention teammates with{" "}
             <code className="rounded bg-neutral-100 px-1.5 py-0.5 text-xs">
               @Name
             </code>{" "}
@@ -59,7 +59,7 @@ export default async function BoardDashboardPage() {
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-3">
           <Link href="/board/messages" className={boardStatCardClass}>
             <span className={boardAccentBar()} aria-hidden />
             <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-redleg">
@@ -79,6 +79,18 @@ export default async function BoardDashboardPage() {
               {stats.openTasks}
             </p>
             <p className="mt-1 text-sm text-neutral-500">Across all lists</p>
+          </Link>
+          <Link href="/board/transactions" className={boardStatCardClass}>
+            <span className={boardAccentBar()} aria-hidden />
+            <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-redleg">
+              Transactions
+            </p>
+            <p className="mt-3 font-display text-2xl font-semibold text-artillery">
+              Store ledger
+            </p>
+            <p className="mt-1 text-sm text-neutral-500">
+              Donations &amp; purchases
+            </p>
           </Link>
         </div>
 

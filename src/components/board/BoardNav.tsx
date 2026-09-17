@@ -7,8 +7,9 @@ import { cn } from "@/lib/cn";
 
 const links = [
   { href: "/board", label: "Home", mobileLabel: "Home", exact: true },
-  { href: "/board/messages", label: "Messages", mobileLabel: "Messages" },
+  { href: "/board/messages", label: "Messages", mobileLabel: "Msg" },
   { href: "/board/tasks", label: "Tasks", mobileLabel: "Tasks" },
+  { href: "/board/transactions", label: "Transactions", mobileLabel: "Money" },
   { href: "/board/me", label: "My Tasks", mobileLabel: "Mine" },
   { href: "/board/people", label: "People", mobileLabel: "People" },
 ];
@@ -85,7 +86,7 @@ export function BoardNav({ memberName }: { memberName: string }) {
         className="fixed inset-x-0 bottom-0 z-50 border-t border-neutral-200 bg-white pb-[env(safe-area-inset-bottom)] lg:hidden"
         aria-label="Board navigation"
       >
-        <ul className="grid grid-cols-5">
+        <ul className="grid grid-cols-6">
           {links.map(({ href, mobileLabel, exact }) => {
             const active = linkActive(pathname, href, exact);
             return (

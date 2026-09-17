@@ -144,6 +144,19 @@ Multi-identity send-as: GitHub #40.
 |-------|--------|---------|
 | `POST /api/board/internal/store-event` | `BOARD_STORE_WEBHOOK_SECRET` | Store events → board message |
 
+## Transactions (store ledger)
+
+Board members view Stripe donations/purchases at `/board/transactions`.
+
+| Route | Auth | Purpose |
+|-------|------|---------|
+| `GET /api/board/transactions` | Board session | Proxies `store.gatorredleg.org/api/transactions` |
+| `POST /api/board/transactions/sync` | Board session | Proxies Stein sheet ID sync |
+
+Both proxies send `x-board-store-secret: $BOARD_STORE_WEBHOOK_SECRET` to the store.
+The same secret must be set on **both** Workers. The old public store `/transactions`
+page redirects here.
+
 ## Basecamp import
 
 ```bash
