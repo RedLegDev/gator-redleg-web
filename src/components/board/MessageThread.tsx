@@ -88,7 +88,8 @@ export function MessageThread({
   const isEmailThread = Boolean(inbound);
   const posterName = messagePosterName({
     author_name: message.author_name,
-    inbound_from_address: inbound?.from_address,
+    inbound_from_address:
+      inbound?.from_address ?? message.inbound_from_address,
   });
   const previewHtml =
     inbound?.body_html?.trim() ||
