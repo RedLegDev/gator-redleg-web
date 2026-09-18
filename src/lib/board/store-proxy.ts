@@ -7,6 +7,8 @@ export type StoreTransaction = {
   amount: number;
   fee: number | null;
   net: number | null;
+  refundedAmount: number;
+  refundStatus: "none" | "partial" | "full";
   currency: string;
   customer: string | null;
   customerEmail: string | null;
@@ -22,13 +24,6 @@ export type StoreTransaction = {
 export type StoreTransactionsResponse = {
   transactions: StoreTransaction[];
   hasMore?: boolean;
-  error?: string;
-};
-
-export type StoreSyncResponse = {
-  success?: boolean;
-  updated?: number;
-  errors?: string[];
   error?: string;
 };
 
@@ -53,28 +48,6 @@ export async function fetchStoreTransactions(
   });
 
   const data = (await res.json().catch(() => ({}))) as StoreTransactionsResponse;
-  if (!res.ok) {
-    return {
-      ok: false,
-      status: res.status,
-      error: data.error || `Store returned ${res.status}`,
-    };
-  }
-
-  return { ok: true, data };
-}
-
-export async function syncStoreTransactionIds(): Promise<
-  { ok: true; data: StoreSyncResponse } | { ok: false; status: number; error: string }
-> {
-  const webhookSecret = storeSecretOrThrow();
-  const res = await fetch(`${STORE_BASE_URL}/api/sync-transaction-ids`, {
-    method: "POST",
-    headers: { "x-board-store-secret": webhookSecret },
-    cache: "no-store",
-  });
-
-  const data = (await res.json().catch(() => ({}))) as StoreSyncResponse;
   if (!res.ok) {
     return {
       ok: false,

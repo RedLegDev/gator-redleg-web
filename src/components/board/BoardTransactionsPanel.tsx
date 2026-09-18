@@ -38,6 +38,17 @@ function formatCurrency(amount: number, currency: string) {
   }).format(amount);
 }
 
+function statusLabel(status: string) {
+  switch (status) {
+    case "partial_refund":
+      return "Partial refund";
+    case "requires_confirmation":
+      return "Needs confirmation";
+    default:
+      return status.replace(/_/g, " ");
+  }
+}
+
 function statusClass(status: string) {
   switch (status) {
     case "succeeded":
@@ -48,9 +59,20 @@ function statusClass(status: string) {
       return "bg-red-50 text-red-800 border-red-200";
     case "canceled":
       return "bg-orange-50 text-orange-800 border-orange-200";
+    case "refunded":
+    case "partial_refund":
+      return "bg-violet-50 text-violet-800 border-violet-200";
     default:
       return "bg-neutral-50 text-neutral-700 border-neutral-200";
   }
+}
+
+function isKeptRevenue(t: StoreTransaction) {
+  return t.status === "succeeded" || t.status === "partial_refund";
+}
+
+function keptAmount(t: StoreTransaction) {
+  return Math.max(0, t.amount - (t.refundedAmount ?? 0));
 }
 
 export function BoardTransactionsPanel() {
@@ -61,8 +83,6 @@ export function BoardTransactionsPanel() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [startDate, setStartDate] = useState(defaultStartDate);
   const [endDate, setEndDate] = useState(defaultEndDate);
-  const [syncing, setSyncing] = useState(false);
-  const [syncResult, setSyncResult] = useState<string | null>(null);
 
   const fetchTransactions = useCallback(
     async (showLoading = true) => {
@@ -103,30 +123,6 @@ export function BoardTransactionsPanel() {
     return () => clearInterval(interval);
   }, [fetchTransactions]);
 
-  async function syncTransactionIds() {
-    try {
-      setSyncing(true);
-      setSyncResult(null);
-      const res = await fetch("/api/board/transactions/sync", { method: "POST" });
-      const body = (await res.json()) as {
-        ok?: boolean;
-        data?: { updated?: number; errors?: string[] };
-        error?: string;
-      };
-      if (res.ok && body.ok) {
-        setSyncResult(`Synced ${body.data?.updated ?? 0} transaction IDs to the sheet`);
-      } else {
-        setSyncResult(
-          `Sync failed: ${body.error || body.data?.errors?.join(", ") || "Unknown error"}`
-        );
-      }
-    } catch (err) {
-      setSyncResult(err instanceof Error ? err.message : "Failed to sync");
-    } finally {
-      setSyncing(false);
-    }
-  }
-
   const filtered = transactions.filter((t) => {
     const q = searchTerm.toLowerCase();
     const matchesSearch =
@@ -135,16 +131,33 @@ export function BoardTransactionsPanel() {
       t.customer?.toLowerCase().includes(q) ||
       t.id.toLowerCase().includes(q) ||
       t.items?.some((item) => item.name.toLowerCase().includes(q));
-    const matchesStatus = statusFilter === "all" || t.status === statusFilter;
+
+    let matchesStatus = true;
+    if (statusFilter === "refunded") {
+      matchesStatus = t.status === "refunded" || t.status === "partial_refund";
+    } else if (statusFilter !== "all") {
+      matchesStatus = t.status === statusFilter;
+    }
+
     return matchesSearch && matchesStatus;
   });
 
-  const succeeded = filtered.filter((t) => t.status === "succeeded");
-  const totalRevenue = succeeded.reduce((sum, t) => sum + t.amount, 0);
-  const totalFees = succeeded.reduce((sum, t) => sum + (t.fee ?? 0), 0);
-  const totalNet = succeeded.reduce((sum, t) => sum + (t.net ?? t.amount), 0);
-  const hasFeeData = succeeded.some((t) => t.fee != null || t.net != null);
-  const succeededCount = transactions.filter((t) => t.status === "succeeded").length;
+  const revenueRows = filtered.filter(isKeptRevenue);
+  const totalRevenue = revenueRows.reduce((sum, t) => sum + keptAmount(t), 0);
+  const totalRefunded = filtered.reduce(
+    (sum, t) => sum + (t.refundedAmount ?? 0),
+    0
+  );
+  const totalFees = revenueRows.reduce((sum, t) => sum + (t.fee ?? 0), 0);
+  const totalNet = revenueRows.reduce((sum, t) => {
+    if (t.status === "partial_refund") return sum + keptAmount(t);
+    return sum + (t.net ?? t.amount);
+  }, 0);
+  const hasFeeData = revenueRows.some((t) => t.fee != null || t.net != null);
+  const keptCount = transactions.filter(isKeptRevenue).length;
+  const refundedCount = transactions.filter(
+    (t) => t.status === "refunded" || t.status === "partial_refund"
+  ).length;
 
   if (loading) {
     return (
@@ -174,12 +187,25 @@ export function BoardTransactionsPanel() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div className={boardStatCardClass}>
           <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-redleg">
-            Gross
+            Gross kept
           </p>
           <p className="mt-3 font-display text-3xl font-semibold text-artillery">
             {formatCurrency(totalRevenue, "USD")}
           </p>
-          <p className="mt-1 text-sm text-neutral-500">Filtered succeeded charges</p>
+          <p className="mt-1 text-sm text-neutral-500">
+            After refunds in this filter
+          </p>
+        </div>
+        <div className={boardStatCardClass}>
+          <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-redleg">
+            Refunded
+          </p>
+          <p className="mt-3 font-display text-3xl font-semibold text-artillery">
+            {formatCurrency(totalRefunded, "USD")}
+          </p>
+          <p className="mt-1 text-sm text-neutral-500">
+            {refundedCount} refunded in range
+          </p>
         </div>
         <div className={boardStatCardClass}>
           <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-redleg">
@@ -192,38 +218,18 @@ export function BoardTransactionsPanel() {
         </div>
         <div className={boardStatCardClass}>
           <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-redleg">
-            Net
+            Kept payments
           </p>
           <p className="mt-3 font-display text-3xl font-semibold text-artillery">
-            {formatCurrency(totalNet, "USD")}
+            {keptCount}
           </p>
-          <p className="mt-1 text-sm text-neutral-500">After fees</p>
-        </div>
-        <div className={boardStatCardClass}>
-          <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-redleg">
-            Succeeded
+          <p className="mt-1 text-sm text-neutral-500">
+            Net {formatCurrency(totalNet, "USD")} after fees
           </p>
-          <p className="mt-3 font-display text-3xl font-semibold text-artillery">
-            {succeededCount}
-          </p>
-          <p className="mt-1 text-sm text-neutral-500">In selected date range</p>
         </div>
       </div>
 
       <div className={cn(boardPanelClass, "space-y-4 p-4 lg:p-5")}>
-        {syncResult && (
-          <p
-            className={cn(
-              "rounded-lg border px-3 py-2 text-sm",
-              syncResult.startsWith("Synced")
-                ? "border-green-200 bg-green-50 text-green-800"
-                : "border-amber-200 bg-amber-50 text-amber-900"
-            )}
-          >
-            {syncResult}
-          </p>
-        )}
-
         <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-end">
           <label className="block text-sm">
             <span className="mb-1 block font-medium text-neutral-600">From</span>
@@ -260,14 +266,6 @@ export function BoardTransactionsPanel() {
           >
             Refresh
           </button>
-          <button
-            type="button"
-            onClick={() => void syncTransactionIds()}
-            disabled={syncing}
-            className={boardButtonPrimaryClass}
-          >
-            {syncing ? "Syncing…" : "Sync IDs to sheet"}
-          </button>
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
@@ -285,8 +283,9 @@ export function BoardTransactionsPanel() {
           >
             <option value="all">All status</option>
             <option value="succeeded">Succeeded</option>
+            <option value="refunded">Refunded</option>
             <option value="pending">Pending</option>
-            <option value="requires_confirmation">Requires confirmation</option>
+            <option value="requires_confirmation">Needs confirmation</option>
             <option value="failed">Failed</option>
             <option value="canceled">Canceled</option>
           </select>
@@ -347,10 +346,23 @@ export function BoardTransactionsPanel() {
                       )}
                     </td>
                     <td className="whitespace-nowrap px-4 py-3.5">
-                      <div className="font-semibold text-artillery">
+                      <div
+                        className={cn(
+                          "font-semibold text-artillery",
+                          t.status === "refunded" && "line-through text-neutral-400"
+                        )}
+                      >
                         {formatCurrency(t.amount, t.currency)}
                       </div>
-                      {t.net != null && (
+                      {(t.refundedAmount ?? 0) > 0 && (
+                        <div className="mt-0.5 text-xs font-medium text-violet-700">
+                          Refunded {formatCurrency(t.refundedAmount, t.currency)}
+                          {t.status === "partial_refund"
+                            ? ` · kept ${formatCurrency(keptAmount(t), t.currency)}`
+                            : ""}
+                        </div>
+                      )}
+                      {t.net != null && t.status === "succeeded" && (
                         <div className="mt-0.5 text-xs text-neutral-500">
                           Net {formatCurrency(t.net, t.currency)}
                           {t.fee != null
@@ -362,11 +374,11 @@ export function BoardTransactionsPanel() {
                     <td className="whitespace-nowrap px-4 py-3.5">
                       <span
                         className={cn(
-                          "inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium",
+                          "inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium capitalize",
                           statusClass(t.status)
                         )}
                       >
-                        {t.status}
+                        {statusLabel(t.status)}
                       </span>
                     </td>
                   </tr>
