@@ -268,27 +268,37 @@ export function BoardTransactionsPanel() {
           </button>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <input
-            type="search"
-            placeholder="Search email, customer, item, or ID…"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className={cn(boardInputClass, "flex-1")}
-          />
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className={boardInputClass}
-          >
-            <option value="all">All status</option>
-            <option value="succeeded">Succeeded</option>
-            <option value="refunded">Refunded</option>
-            <option value="pending">Pending</option>
-            <option value="requires_confirmation">Needs confirmation</option>
-            <option value="failed">Failed</option>
-            <option value="canceled">Canceled</option>
-          </select>
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
+          <label className="block min-w-0 flex-1 text-sm">
+            <span className="mb-1 block font-medium text-neutral-600">
+              Search
+            </span>
+            <input
+              type="search"
+              placeholder="Email, name, item, or payment ID"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={boardInputClass}
+            />
+          </label>
+          <label className="block text-sm lg:w-56">
+            <span className="mb-1 block font-medium text-neutral-600">
+              Status
+            </span>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className={boardInputClass}
+            >
+              <option value="all">All</option>
+              <option value="succeeded">Succeeded</option>
+              <option value="refunded">Refunded</option>
+              <option value="pending">Pending</option>
+              <option value="requires_confirmation">Needs confirmation</option>
+              <option value="failed">Failed</option>
+              <option value="canceled">Canceled</option>
+            </select>
+          </label>
         </div>
       </div>
 
