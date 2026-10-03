@@ -344,6 +344,14 @@ export function BoardTransactionsPanel() {
                         {t.customerEmail || t.customer || "No email"}
                       </div>
                       <div className="mt-0.5 font-mono text-xs text-neutral-400">{t.id}</div>
+                      {t.legacy && (
+                        <div
+                          className="mt-1 text-xs text-neutral-500"
+                          title="Paid before the chapter's own Stripe account. Refunds are issued from the Red Leg Dev Stripe account."
+                        >
+                          Red Leg Dev account
+                        </div>
+                      )}
                     </td>
                     <td className="px-4 py-3.5 text-neutral-700">
                       {t.items && t.items.length > 0 ? (

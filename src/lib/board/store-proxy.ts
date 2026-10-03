@@ -16,6 +16,8 @@ export type StoreTransaction = {
   organization?: string | null;
   status: string;
   created: number;
+  /** Taken on the Red Leg Dev Stripe account before the chapter account; refunds happen there */
+  legacy?: boolean;
   items?: Array<{
     name: string;
     quantity: number;
