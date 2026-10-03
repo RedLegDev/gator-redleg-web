@@ -12,6 +12,8 @@ export type StoreTransaction = {
   currency: string;
   customer: string | null;
   customerEmail: string | null;
+  /** Donor-entered organization for the receipt; absent on older store builds */
+  organization?: string | null;
   status: string;
   created: number;
   items?: Array<{

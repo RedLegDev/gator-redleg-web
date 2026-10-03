@@ -128,6 +128,7 @@ export function BoardTransactionsPanel() {
     const matchesSearch =
       !q ||
       t.customerEmail?.toLowerCase().includes(q) ||
+      t.organization?.toLowerCase().includes(q) ||
       t.customer?.toLowerCase().includes(q) ||
       t.id.toLowerCase().includes(q) ||
       t.items?.some((item) => item.name.toLowerCase().includes(q));
@@ -336,7 +337,10 @@ export function BoardTransactionsPanel() {
                       {formatDate(t.created)}
                     </td>
                     <td className="px-4 py-3.5">
-                      <div className="font-medium text-artillery">
+                      {t.organization && (
+                        <div className="font-medium text-artillery">{t.organization}</div>
+                      )}
+                      <div className={t.organization ? "text-sm text-neutral-600" : "font-medium text-artillery"}>
                         {t.customerEmail || t.customer || "No email"}
                       </div>
                       <div className="mt-0.5 font-mono text-xs text-neutral-400">{t.id}</div>
