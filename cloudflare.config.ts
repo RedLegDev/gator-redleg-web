@@ -1,11 +1,13 @@
-import { bindings, defineConfig, defineWorker, triggers } from "cf/config";
+import { bindings, defineConfig, defineWorker } from "cf/config";
 
 export default defineConfig({
   // Red Leg Dev account — gatorredleg.org and Email Sending live here.
   accountId: "ab1da25c524f59bc61f776304bd88558",
   worker: defineWorker({
     // Must stay `gator-redleg-web` — custom domains, secrets, and Email Routing
-    // catch-all are on this name.
+    // catch-all (*@gatorredleg.org → this Worker) are on this name. Catch-all
+    // is dashboard-managed; do not add triggers.email — Builds token cannot
+    // write email_routing and omit is a no-op on existing rules.
     name: "gator-redleg-web",
     entrypoint: "./worker/index.ts",
     compatibilityDate: "2025-12-01",
@@ -28,10 +30,6 @@ export default defineConfig({
         headSamplingRate: 1,
       },
     },
-    triggers: [
-      // Catch-all already routes *@gatorredleg.org → this Worker (dashboard).
-      triggers.email({ addresses: ["*@gatorredleg.org"] }),
-    ],
     env: {
       ASSETS: bindings.assets(),
       DB: bindings.d1({
