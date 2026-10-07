@@ -37,10 +37,12 @@ yarn-error.log*
 # vercel
 .vercel
 
-# cloudflare / opennext
+# cloudflare / vinext
 /.open-next/
 /.wrangler/
-cloudflare-env.d.ts
+.vinext/
+.cloudflare/
+/dist/
 
 # basecamp import scratch (generated JSON/SQL)
 /scripts/basecamp-export/

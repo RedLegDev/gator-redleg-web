@@ -1,4 +1,4 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { env } from "cloudflare:workers";
 import {
   deletePushSubscription,
   getVapidPublicKey,
@@ -12,7 +12,6 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const auth = await requireMemberApi();
   if (auth instanceof Response) return auth;
-  const { env } = getCloudflareContext();
   const publicKey = getVapidPublicKey(env);
   if (!publicKey) {
     return Response.json(

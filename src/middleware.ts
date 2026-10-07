@@ -18,7 +18,8 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Avoid :param syntax here — it is a path-to-regexp capture, not a literal.
-    "/((?!_next/static|_next/image|favicon.ico).*)",
+    // Flat $ -anchored extension list — vinext 1.x rejects nested-optional
+    // matchers ("ambiguous sequence expansion"). Keep `/` and `/:path*` recovery.
+    "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:html|htm|css|js|json|jpg|jpeg|gif|png|svg|webp|ico|woff|woff2|ttf|eot|otf|map|txt|xml|webmanifest)$).*)",
   ],
 };

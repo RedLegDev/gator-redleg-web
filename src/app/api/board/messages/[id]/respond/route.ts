@@ -1,4 +1,4 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { env } from "cloudflare:workers";
 import {
   addComment,
   getInboundEmailByMessageId,
@@ -75,7 +75,6 @@ export async function POST(request: Request, { params }: Params) {
   });
 
   try {
-    const { env } = getCloudflareContext();
     await env.SEND_EMAIL.send({
       from,
       to: inbound.from_address,

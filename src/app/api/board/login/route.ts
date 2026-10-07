@@ -11,7 +11,7 @@ import {
 } from "@/lib/board/db";
 import { BOARD_EMAIL_FROM, buildOtpEmail } from "@/lib/board/email";
 import { secret, getDb } from "@/lib/board/secrets";
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { env } from "cloudflare:workers";
 
 export const dynamic = "force-dynamic";
 
@@ -53,7 +53,6 @@ export async function POST(request: Request) {
   );
 
   const mail = buildOtpEmail(code);
-  const { env } = getCloudflareContext();
   await env.SEND_EMAIL.send({
     from: BOARD_EMAIL_FROM,
     to: email,

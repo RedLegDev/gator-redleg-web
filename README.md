@@ -4,8 +4,8 @@ Live site: [gatorredleg.org](https://www.gatorredleg.org/)
 
 Next.js 15 (App Router) rebuild of the chapter site, replacing the old Google
 Sites. Scarlet + gold Field Artillery branding. Deployed to Cloudflare Workers
-via `@opennextjs/cloudflare`. **Push to `main` auto-deploys** via Cloudflare
-Workers Builds.
+via vinext 1.x (`cloudflare.config.ts`). **Push to `main` auto-deploys** via
+Cloudflare Workers Builds.
 
 Repo: `RedLegDev/gator-redleg-web`
 
@@ -14,7 +14,7 @@ Repo: `RedLegDev/gator-redleg-web`
 - **Next.js 15** App Router, React 19, TypeScript
 - **Tailwind CSS v4** — brand tokens in `src/app/globals.css`
 - **Fonts:** Cinzel (display), Oswald (labels/nav), Inter (body)
-- **Cloudflare Workers** via `@opennextjs/cloudflare` (`wrangler.jsonc`)
+- **Cloudflare Workers** via vinext (`cloudflare.config.ts`; slim `wrangler.jsonc` for D1)
 - **Email:** Cloudflare Email Sending (`SEND_EMAIL` binding) for board
   notifications; contact + support-request forms post to the board hub
 - **Payments / store:** link-out to [store.gatorredleg.org](https://store.gatorredleg.org)
@@ -29,12 +29,10 @@ npm install
 PORT=3021 npm run dev   # prefer 3021 — localhost:3000 may be hijacked by another app's SW
 ```
 
-Do **not** run `npm run build` / `build:worker` while `npm run dev` is running —
-the production build overwrites `.next` and breaks the dev server. Stop dev
-first, and `rm -rf .next` before restarting after a worker build.
+Stop `npm run dev` before `npm run build` / deploy.
 
-`account_id` is pinned in `wrangler.jsonc` so Email Sending / OpenNext remote
-proxy resolve to the Red Leg Dev Cloudflare account non-interactively.
+`account_id` is pinned in `cloudflare.config.ts` (and slim `wrangler.jsonc` for
+D1) so Email Sending resolves to the Red Leg Dev Cloudflare account.
 
 ## Structure
 
@@ -53,8 +51,8 @@ proxy resolve to the Red Leg Dev Cloudflare account non-interactively.
 
 Bylaws, SOP, and Bullard Award SOP live in `content/*.md` and are rendered via
 `MarkdownProse`. They must be **bundled as raw string imports** through
-`src/lib/chapter-docs.ts` (webpack `asset/source` + turbopack `raw-loader` in
-`next.config.ts`). Do not `fs.readFileSync` at runtime — Cloudflare Workers
+`src/lib/chapter-docs.ts` (Vite plugin in `vite.config.ts` inlines `.md` as
+strings). Do not `fs.readFileSync` at runtime — Cloudflare Workers
 have no access to the repo `content/` tree, and those pages 500 in production
 if loaded that way. Always verify the live Worker URL after deploy.
 
@@ -78,15 +76,15 @@ In `next.config.ts` (and mirrored where needed in Cloudflare):
 Local:
 
 ```sh
-npm run preview    # build + local workerd preview
-npm run deploy     # build + deploy from your machine
+npm run build      # vinext build
+npm run deploy     # npx @vinext/cloudflare deploy
 ```
 
 **Cloudflare Workers Builds** (CI on push to `main`):
 
-- Build: `npm run build:worker` (`opennextjs-cloudflare build` → `.open-next/`)
-- Deploy: `npx wrangler deploy`
-- Config: `wrangler.jsonc`, `open-next.config.ts`
+- Build: `npm run build`
+- Deploy: `npx @vinext/cloudflare deploy` (non-prod: `--no-promote`)
+- Config: `cloudflare.config.ts`
 
 Custom domains: `gatorredleg.org` and `www.gatorredleg.org` (DNS on Cloudflare).
 

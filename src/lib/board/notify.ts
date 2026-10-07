@@ -1,4 +1,4 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { env } from "cloudflare:workers";
 import { resolveMentionedMembers } from "./mentions";
 import { listActiveMembers } from "./db";
 import { getDb } from "./secrets";
@@ -11,7 +11,6 @@ export async function notifyBoard(args: {
   html: string;
   excludeEmails?: string[];
 }): Promise<void> {
-  const { env } = getCloudflareContext();
   const exclude = new Set(
     (args.excludeEmails ?? []).map((e) => e.trim().toLowerCase())
   );
@@ -37,7 +36,6 @@ export async function notifyMember(
   member: Pick<Member, "email" | "name">,
   args: { subject: string; text: string; html: string }
 ): Promise<void> {
-  const { env } = getCloudflareContext();
   await env.SEND_EMAIL.send({
     from: BOARD_EMAIL_FROM,
     to: member.email,

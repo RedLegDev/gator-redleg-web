@@ -1,4 +1,4 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { env } from "cloudflare:workers";
 
 export type BoardSecretName =
   | "BOARD_SESSION_SECRET"
@@ -10,14 +10,10 @@ export type BoardSecretName =
 
 export function secret(name: BoardSecretName): string | undefined {
   try {
-    const env = getCloudflareContext().env as unknown as Record<
-      string,
-      unknown
-    >;
     const value = env[name];
     if (typeof value === "string" && value.length > 0) return value;
   } catch {
-    // Outside request scope during static analysis.
+    // cloudflare:workers env can throw outside a request scope. Fall through.
   }
 
   const value = process.env[name];
@@ -25,9 +21,9 @@ export function secret(name: BoardSecretName): string | undefined {
 }
 
 export function getDb(): D1Database {
-  return getCloudflareContext().env.DB;
+  return env.DB;
 }
 
 export function getAttachmentsBucket(): R2Bucket {
-  return getCloudflareContext().env.ATTACHMENTS;
+  return env.ATTACHMENTS;
 }

@@ -1,17 +1,11 @@
 /**
- * Worker entry: OpenNext fetch handler + Cloudflare Email Routing inbound handler.
+ * Worker entry: vinext fetch handler + Cloudflare Email Routing inbound handler.
  */
-import openNext from "../.open-next/worker.js";
-export {
-  DOQueueHandler,
-  DOShardedTagCache,
-  BucketCachePurge,
-} from "../.open-next/worker.js";
-
+import handler from "vinext/server/fetch-handler";
 import { onInboundEmail } from "./inbound-email";
 
 const worker = {
-  fetch: openNext.fetch,
+  ...handler,
   email: onInboundEmail,
 };
 

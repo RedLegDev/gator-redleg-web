@@ -1,4 +1,4 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { env } from "cloudflare:workers";
 import { BOARD_INBOX_ADDRESS } from "./email";
 import { processInboundEmail } from "./inbound-email";
 import { boardLink, notifyBoard } from "./notify";
@@ -13,7 +13,6 @@ export async function publishFormToBoard(args: {
   text: string;
   html: string;
 }): Promise<{ boardMessageId: string }> {
-  const { env } = getCloudflareContext();
   const { boardMessageId } = await processInboundEmail(getDb(), {
     from: args.from,
     to: BOARD_INBOX_ADDRESS,

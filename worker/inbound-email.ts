@@ -4,8 +4,13 @@ import {
   normalizeEmailAddress,
   processInboundEmail,
 } from "../src/lib/board/inbound-email";
+import type { PushEnv } from "../src/lib/board/push";
 
 type ParsedMail = Awaited<ReturnType<PostalMime["parse"]>>;
+
+type InboundEnv = PushEnv & {
+  BOARD_INBOX_FORWARD?: string;
+};
 
 function textFromParsed(parsed: ParsedMail): string {
   if (parsed.text?.trim()) return parsed.text.trim();
@@ -16,7 +21,7 @@ function textFromParsed(parsed: ParsedMail): string {
 /** Cloudflare Email Routing → board message + D1 archive. */
 export async function onInboundEmail(
   message: ForwardableEmailMessage,
-  env: CloudflareEnv
+  env: InboundEnv
 ): Promise<void> {
   try {
     const raw = await new Response(message.raw).arrayBuffer();

@@ -1,4 +1,4 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { env } from "cloudflare:workers";
 import { textFromHtml } from "@/lib/board/email-html";
 import { processInboundEmail, normalizeEmailAddress } from "@/lib/board/inbound-email";
 import { fanOutInboundEmailPush } from "@/lib/board/push";
@@ -49,7 +49,6 @@ export async function POST(request: Request) {
       html: html || undefined,
     });
     try {
-      const { env } = getCloudflareContext();
       await fanOutInboundEmailPush(env, {
         subject,
         from,
