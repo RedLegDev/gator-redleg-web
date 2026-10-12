@@ -81,6 +81,10 @@ export type CommentWithAuthor = CommentRow & {
     from_address: string;
     subject: string;
   };
+  /** Present when an outside correspondent's email reply was threaded here. */
+  email_received?: {
+    from_address: string;
+  };
 };
 
 export type InboundEmailMeta = {

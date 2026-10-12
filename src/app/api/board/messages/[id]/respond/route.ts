@@ -15,6 +15,7 @@ import {
   displayNameForFrom,
   listAllowedFromAddresses,
 } from "@/lib/board/send-identities";
+import { replyAddressesFor } from "@/lib/board/reply-address";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
 
@@ -74,12 +75,22 @@ export async function POST(request: Request, { params }: Params) {
     senderName: auth.name,
   });
 
+  // Their reply threads back onto this message; board@ is the fallback intake.
+  const replyTo =
+    (
+      await replyAddressesFor(
+        db,
+        { parentType: "message", parentId: id },
+        "external",
+        [inbound.from_address]
+      ).catch(() => new Map<string, string>())
+    ).get(inbound.from_address) ?? BOARD_INBOX_ADDRESS;
+
   try {
     await env.SEND_EMAIL.send({
       from,
       to: inbound.from_address,
-      // Locked to shared intake so replies stay on the board (#40).
-      replyTo: BOARD_INBOX_ADDRESS,
+      replyTo,
       subject,
       text,
       html,

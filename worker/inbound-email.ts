@@ -4,6 +4,7 @@ import {
   normalizeEmailAddress,
   processInboundEmail,
 } from "../src/lib/board/inbound-email";
+import { processEmailReply } from "../src/lib/board/email-reply";
 import type { PushEnv } from "../src/lib/board/push";
 
 type ParsedMail = Awaited<ReturnType<PostalMime["parse"]>>;
@@ -38,6 +39,27 @@ export async function onInboundEmail(
     if (!text && !html) {
       console.warn("inbound email dropped: empty body", { from, to, subject });
       message.setReject("Empty message body");
+      return;
+    }
+
+    // reply-<token>@ → comment on the board item that email came from.
+    // Any failure here falls through to a new thread rather than losing the mail.
+    const reply = await processEmailReply(env.DB, {
+      from,
+      recipients: [
+        message.to,
+        ...(parsed.to ?? []).map((a) => a.address ?? ""),
+        ...(parsed.cc ?? []).map((a) => a.address ?? ""),
+      ],
+      subject,
+      text,
+      headers: message.headers,
+    }).catch((err) => {
+      console.error("inbound email reply failed", err);
+      return { outcome: "not-a-reply" } as const;
+    });
+    if (reply.outcome !== "not-a-reply") {
+      console.log("inbound email reply", { from, to, subject, ...reply });
       return;
     }
 

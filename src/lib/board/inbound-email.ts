@@ -13,7 +13,7 @@ export type ParsedInboundEmail = {
 };
 
 /** FK placeholder for messages.author_id. Inbound threads display the sender, not this member. */
-const SYSTEM_AUTHOR_EMAIL = "matt@redleg.dev";
+export const SYSTEM_AUTHOR_EMAIL = "matt@redleg.dev";
 
 function normalizeAddress(raw: string): string {
   const match = raw.match(/<([^>]+)>/);

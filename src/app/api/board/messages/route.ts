@@ -89,6 +89,7 @@ export async function POST(request: Request) {
     contextLabel: "a message:",
     title: subject,
     link,
+    replyTarget: { parentType: "message", parentId: message.id },
   }).catch(() => [] as string[]);
 
   if (notify) {
@@ -103,6 +104,7 @@ export async function POST(request: Request) {
         linkLabel: "View on board hub",
       }),
       excludeEmails: [auth.email, ...mentionEmails],
+      replyTarget: { parentType: "message", parentId: message.id },
     }).catch(() => {});
   }
 

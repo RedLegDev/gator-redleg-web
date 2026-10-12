@@ -2,13 +2,11 @@ import {
   addComment,
   getMessage,
   listComments,
-  recordActivity,
   setMessageArchived,
   setMessagePinned,
 } from "@/lib/board/db";
 import { linkAttachments } from "@/lib/board/attachments";
-import { buildBoardNotificationEmail } from "@/lib/board/notification-email";
-import { boardLink, notifyBoard, notifyMentions } from "@/lib/board/notify";
+import { announceMessageComment } from "@/lib/board/comments";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
 
@@ -104,38 +102,7 @@ export async function POST(request: Request, { params }: Params) {
       { status: 400 }
     );
   }
-  await recordActivity(
-    db,
-    auth.id,
-    "commented",
-    "message",
-    id,
-    message.subject
-  );
-
-  const link = boardLink(`/board/messages/${id}`);
-  const mentionEmails = await notifyMentions({
-    bodyMd,
-    author: auth,
-    contextLabel: "a comment on:",
-    title: message.subject,
-    link,
-  }).catch(() => [] as string[]);
-
-  if (notify) {
-    await notifyBoard({
-      subject: `[Board] Re: ${message.subject}`,
-      ...buildBoardNotificationEmail({
-        heading: "NEW COMMENT",
-        summary: `${auth.name} commented on:`,
-        title: message.subject,
-        bodyMd,
-        link,
-        linkLabel: "View thread",
-      }),
-      excludeEmails: [auth.email, ...mentionEmails],
-    }).catch(() => {});
-  }
+  await announceMessageComment(db, { message, author: auth, bodyMd, notify });
 
   return Response.json(
     {

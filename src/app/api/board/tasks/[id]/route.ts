@@ -3,12 +3,12 @@ import {
   getMemberById,
   getTask,
   listComments,
-  recordActivity,
   updateTask,
 } from "@/lib/board/db";
 import { parseOptionalDate, taskPath } from "@/lib/board/format";
 import { buildBoardNotificationEmail } from "@/lib/board/notification-email";
-import { boardLink, notifyMember, notifyMentions } from "@/lib/board/notify";
+import { announceTaskComment } from "@/lib/board/comments";
+import { boardLink, notifyMember } from "@/lib/board/notify";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
 
@@ -82,6 +82,7 @@ export async function PATCH(request: Request, { params }: Params) {
           link,
           linkLabel: "View task",
         }),
+        replyTarget: { parentType: "task", parentId: task.id },
       }).catch(() => {});
     }
   }
@@ -106,36 +107,7 @@ export async function POST(request: Request, { params }: Params) {
   }
 
   const comment = await addComment(db, "task", id, auth.id, bodyMd);
-  await recordActivity(db, auth.id, "commented", "task", id, task.title);
-
-  const link = boardLink(taskPath(task));
-  const mentionEmails = await notifyMentions({
-    bodyMd,
-    author: auth,
-    contextLabel: "a comment on task:",
-    title: task.title,
-    link,
-  }).catch(() => [] as string[]);
-
-  if (task.assignee_id && task.assignee_id !== auth.id) {
-    const assignee = await getMemberById(db, task.assignee_id);
-    if (
-      assignee?.status === "active" &&
-      !mentionEmails.includes(assignee.email)
-    ) {
-      await notifyMember(assignee, {
-        subject: `[Board] Comment on your task: ${task.title}`,
-        ...buildBoardNotificationEmail({
-          heading: "NEW COMMENT",
-          summary: `${auth.name} commented on your task:`,
-          title: task.title,
-          bodyMd,
-          link,
-          linkLabel: "View task",
-        }),
-      }).catch(() => {});
-    }
-  }
+  await announceTaskComment(db, { task, author: auth, bodyMd });
 
   return Response.json(
     { ok: true, data: { ...comment, author_name: auth.name } },

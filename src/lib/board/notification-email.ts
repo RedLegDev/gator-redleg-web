@@ -12,6 +12,9 @@ import { unified } from "unified";
 const MAROON = "#B22234";
 const GOLD = "#FFD700";
 
+/** Every board notification is sent with a per-recipient Reply-To (notify.ts). */
+const REPLY_HINT = "Reply to this email to add a comment on the board hub.";
+
 /** Inline styles per tag — mail clients ignore <style> blocks. */
 const TAG_STYLES: Record<string, string> = {
   p: "margin:0 0 12px 0;",
@@ -92,6 +95,8 @@ export function buildBoardNotificationEmail(args: {
     ...(body ? ["", body] : []),
     "",
     `${args.linkLabel}: ${args.link}`,
+    "",
+    REPLY_HINT,
   ].join("\n");
 
   const detailRows = details
@@ -123,7 +128,7 @@ export function buildBoardNotificationEmail(args: {
   </div>
   <div style="background-color:#333;color:white;padding:15px;text-align:center;">
     <p style="margin:0;font-size:12px;font-style:italic;">VESTIGIA NULLA RETRORSUM</p>
-    <p style="margin:5px 0 0 0;font-size:12px;color:#999;">You get this because you're on the Gator Redleg board hub.</p>
+    <p style="margin:5px 0 0 0;font-size:12px;color:#999;">${REPLY_HINT}</p>
   </div>
 </body></html>`.trim();
 

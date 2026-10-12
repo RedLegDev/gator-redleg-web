@@ -302,7 +302,8 @@ export async function listComments(
   parentType: "message" | "task",
   parentId: string
 ): Promise<CommentWithAuthor[]> {
-  type CommentQueryRow = Omit<CommentWithAuthor, "email_reply"> & {
+  type CommentQueryRow = Omit<CommentWithAuthor, "email_reply" | "email_received"> & {
+    received_from_address: string | null;
     reply_to_address: string | null;
     reply_from_address: string | null;
     reply_subject: string | null;
@@ -314,10 +315,12 @@ export async function listComments(
               c.created_at, c.updated_at, m.name AS author_name,
               o.to_address AS reply_to_address,
               o.from_address AS reply_from_address,
-              o.subject AS reply_subject
+              o.subject AS reply_subject,
+              ie.from_address AS received_from_address
        FROM comments c
        JOIN members m ON m.id = c.author_id
        LEFT JOIN outbound_email_replies o ON o.comment_id = c.id
+       LEFT JOIN inbound_emails ie ON ie.comment_id = c.id
        WHERE c.parent_type = ?1 AND c.parent_id = ?2
        ORDER BY c.created_at ASC`
     )
@@ -329,8 +332,16 @@ export async function listComments(
       reply_to_address,
       reply_from_address,
       reply_subject,
+      received_from_address,
       ...comment
     } = row;
+    if (received_from_address) {
+      return {
+        ...comment,
+        author_name: received_from_address,
+        email_received: { from_address: received_from_address },
+      };
+    }
     if (reply_to_address && reply_from_address && reply_subject) {
       return {
         ...comment,
@@ -355,7 +366,7 @@ export async function getInboundEmailByMessageId(
         `SELECT id, from_address, to_address, COALESCE(subject, '') AS subject,
                 body_html
          FROM inbound_emails
-         WHERE board_message_id = ?1
+         WHERE board_message_id = ?1 AND comment_id IS NULL
          ORDER BY received_at DESC
          LIMIT 1`
       )
@@ -368,7 +379,7 @@ export async function getInboundEmailByMessageId(
       .prepare(
         `SELECT id, from_address, to_address, COALESCE(subject, '') AS subject
          FROM inbound_emails
-         WHERE board_message_id = ?1
+         WHERE board_message_id = ?1 AND comment_id IS NULL
          ORDER BY received_at DESC
          LIMIT 1`
       )

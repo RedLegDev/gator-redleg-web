@@ -33,6 +33,7 @@ export async function publishFormToBoard(args: {
     subject: titled,
     text: `${args.text}\n\n${link}`,
     html,
+    replyTarget: { parentType: "message", parentId: boardMessageId },
   }).catch((err) => {
     console.error("form board notify failed", err);
   });

@@ -288,6 +288,7 @@ export function MessageThread({
           <ul className="space-y-3">
             {comments.map((c) => {
               const isOutbound = Boolean(c.email_reply);
+              const isReceived = Boolean(c.email_received);
               return (
                 <li
                   key={c.id}
@@ -309,8 +310,16 @@ export function MessageThread({
                         <p className="text-sm font-medium text-artillery">
                           {c.author_name}
                         </p>
-                        <MetaChip tone={isOutbound ? "artillery" : "neutral"}>
-                          {isOutbound ? "Sent reply" : "Internal"}
+                        <MetaChip
+                          tone={
+                            isOutbound ? "artillery" : isReceived ? "redleg" : "neutral"
+                          }
+                        >
+                          {isOutbound
+                            ? "Sent reply"
+                            : isReceived
+                              ? "Email reply"
+                              : "Internal"}
                         </MetaChip>
                       </div>
                       <p className="mt-0.5 text-xs text-neutral-500">

@@ -43,6 +43,7 @@ export async function POST(request: Request) {
         link,
         linkLabel: "View task",
       }),
+      replyTarget: { parentType: "task", parentId: task.id },
     }).catch(() => {});
     await markDueReminderSent(db, task.id);
     sent += 1;
