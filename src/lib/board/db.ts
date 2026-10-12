@@ -462,7 +462,7 @@ export async function listTaskLists(
   const { results } = await db
     .prepare(
       `SELECT tl.id, tl.name, tl.description, tl.position, tl.created_at,
-              SUM(CASE WHEN t.completed_at IS NULL THEN 1 ELSE 0 END) AS open_count,
+              SUM(CASE WHEN t.id IS NOT NULL AND t.completed_at IS NULL THEN 1 ELSE 0 END) AS open_count,
               COUNT(t.id) AS total_count
        FROM task_lists tl
        LEFT JOIN tasks t ON t.list_id = tl.id

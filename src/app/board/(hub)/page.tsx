@@ -9,7 +9,11 @@ import {
   listOverdueTasks,
   listRecentActivity,
 } from "@/lib/board/db";
-import { formatBoardTimestamp, taskPath } from "@/lib/board/format";
+import {
+  formatBoardTimestamp,
+  formatDueDate,
+  taskPath,
+} from "@/lib/board/format";
 import { getDb } from "@/lib/board/secrets";
 import {
   boardAccentBar,
@@ -106,7 +110,8 @@ export default async function BoardDashboardPage() {
                   >
                     <span className="block font-medium text-artillery">{t.title}</span>
                     <span className="mt-1 block text-sm text-neutral-500 sm:inline sm:mt-0">
-                      {t.list_name} · due {t.due_date}
+                      {t.list_name}
+                      {t.due_date && ` · due ${formatDueDate(t.due_date, false).label}`}
                       {t.assignee_name ? ` · ${t.assignee_name}` : ""}
                     </span>
                   </Link>

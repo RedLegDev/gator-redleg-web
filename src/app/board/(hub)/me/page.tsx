@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { BoardEmptyState, BoardPageHeader } from "@/components/board/BoardChrome";
 import { listMyOpenTasks } from "@/lib/board/db";
-import { taskPath } from "@/lib/board/format";
+import { formatDueDate, taskPath } from "@/lib/board/format";
 import { getDb } from "@/lib/board/secrets";
 import { requireMember } from "@/lib/board/session";
 import { boardListLinkClass, boardPanelClass } from "@/lib/board/ui";
@@ -32,7 +32,7 @@ export default async function MyTasksPage() {
                 <p className="font-medium text-artillery lg:text-lg">{t.title}</p>
                 <p className="mt-1.5 text-sm text-neutral-500">
                   <span className="text-redleg">{t.list_name}</span>
-                  {t.due_date ? ` · Due ${t.due_date}` : ""}
+                  {t.due_date && <DueLabel due={t.due_date} />}
                 </p>
               </Link>
             </li>
@@ -40,5 +40,14 @@ export default async function MyTasksPage() {
         </ul>
       )}
     </div>
+  );
+}
+
+function DueLabel({ due }: { due: string }) {
+  const { label, overdue } = formatDueDate(due, false);
+  return overdue ? (
+    <span className="font-semibold text-redleg"> · Overdue {label}</span>
+  ) : (
+    <> · Due {label}</>
   );
 }

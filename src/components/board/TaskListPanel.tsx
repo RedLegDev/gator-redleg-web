@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Member, TaskWithMeta } from "@/lib/board/types";
-import { formatBoardTimestamp, taskPath } from "@/lib/board/format";
+import { formatDueDate, taskPath } from "@/lib/board/format";
 import {
   boardInputClass,
   boardButtonPrimaryClass,
@@ -31,70 +31,37 @@ export function TaskListPanel({
   const [assigneeId, setAssigneeId] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [saving, setSaving] = useState(false);
-  const [editTaskId, setEditTaskId] = useState<string | null>(null);
-  const [editTitle, setEditTitle] = useState("");
-  const [editDescription, setEditDescription] = useState("");
-  const [editAssigneeId, setEditAssigneeId] = useState("");
-  const [editDueDate, setEditDueDate] = useState("");
-  const [editSaving, setEditSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function openEdit(task: TaskWithMeta) {
-    setEditTaskId(task.id);
-    setEditTitle(task.title);
-    setEditDescription(task.description_md ?? "");
-    setEditAssigneeId(task.assignee_id ?? "");
-    setEditDueDate(task.due_date ?? "");
-  }
-
-  function cancelEdit() {
-    setEditTaskId(null);
-  }
+  // Server data wins after router.refresh() (other officers' changes, comment counts).
+  useEffect(() => setTasks(initialTasks), [initialTasks]);
 
   async function toggleComplete(task: TaskWithMeta) {
-    await fetch(`/api/board/tasks/${task.id}`, {
+    const completed = !task.completed_at;
+    const setCompleted = (value: number | null) =>
+      setTasks((prev) =>
+        prev.map((t) => (t.id === task.id ? { ...t, completed_at: value } : t))
+      );
+    setCompleted(completed ? Math.floor(Date.now() / 1000) : null);
+    setError(null);
+    const res = await fetch(`/api/board/tasks/${task.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ completed: !task.completed_at }),
-    });
-    router.refresh();
-    setTasks((prev) =>
-      prev.map((t) =>
-        t.id === task.id
-          ? {
-              ...t,
-              completed_at: t.completed_at ? null : Math.floor(Date.now() / 1000),
-            }
-          : t
-      )
-    );
-  }
-
-  async function saveEdit(taskId: string) {
-    if (!editTitle.trim()) return;
-    setEditSaving(true);
-    const res = await fetch(`/api/board/tasks/${taskId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: editTitle,
-        descriptionMd: editDescription.trim() || null,
-        assigneeId: editAssigneeId || null,
-        dueDate: editDueDate || null,
-      }),
-    });
-    const json = (await res.json()) as { data?: TaskWithMeta };
-    if (res.ok && json.data) {
-      setTasks((prev) => prev.map((t) => (t.id === taskId ? json.data! : t)));
-      setEditTaskId(null);
-      router.refresh();
+      body: JSON.stringify({ completed }),
+    }).catch(() => null);
+    if (!res?.ok) {
+      setCompleted(task.completed_at);
+      setError(`Could not update “${task.title}”. Try again.`);
+      return;
     }
-    setEditSaving(false);
+    router.refresh();
   }
 
   async function addTask(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim()) return;
     setSaving(true);
+    setError(null);
     const res = await fetch("/api/board/tasks", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -104,37 +71,28 @@ export function TaskListPanel({
         assigneeId: assigneeId || null,
         dueDate: dueDate || null,
       }),
-    });
-    const json = (await res.json()) as { data?: TaskWithMeta };
-    if (res.ok && json.data) {
-      setTasks((t) => [...t, { ...json.data!, assignee_name: null }]);
+    }).catch(() => null);
+    const json = res
+      ? ((await res.json().catch(() => ({}))) as { data?: TaskWithMeta })
+      : {};
+    if (res?.ok && json.data) {
+      const assignee = members.find((m) => m.id === json.data!.assignee_id);
+      setTasks((t) => [
+        ...t,
+        { ...json.data!, assignee_name: assignee?.name ?? null, comment_count: 0 },
+      ]);
       setTitle("");
       setAssigneeId("");
       setDueDate("");
       router.refresh();
+    } else {
+      setError("Could not add the task. Try again.");
     }
     setSaving(false);
   }
 
   const open = tasks.filter((t) => !t.completed_at);
   const done = tasks.filter((t) => t.completed_at);
-
-  const taskGroupProps = {
-    members,
-    editTaskId,
-    editTitle,
-    editDescription,
-    editAssigneeId,
-    editDueDate,
-    editSaving,
-    onEdit: openEdit,
-    onEditTitle: setEditTitle,
-    onEditDescription: setEditDescription,
-    onEditAssigneeId: setEditAssigneeId,
-    onEditDueDate: setEditDueDate,
-    onEditSave: saveEdit,
-    onEditCancel: cancelEdit,
-  };
 
   return (
     <div className="space-y-8">
@@ -145,13 +103,16 @@ export function TaskListPanel({
         <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-artillery lg:text-3xl">
           {listName}
         </h2>
+        <p className="mt-1 text-sm text-neutral-500">
+          {open.length} open · {done.length} done
+        </p>
       </div>
 
       <form
         onSubmit={addTask}
-        className={`flex flex-col gap-3 p-4 lg:p-6 ${boardInsetPanelClass}`}
+        className={`flex flex-col gap-3 p-4 sm:flex-row sm:flex-wrap sm:items-end lg:p-5 ${boardInsetPanelClass}`}
       >
-        <label className="block w-full sm:min-w-[12rem] sm:flex-1">
+        <label className="block sm:basis-full">
           <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
             New task
           </span>
@@ -159,232 +120,149 @@ export function TaskListPanel({
             className={inputClass}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Task title"
+            placeholder="What needs doing?"
+            required
           />
         </label>
-        <label className="block w-full sm:w-auto">
-          <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
-            Assignee
-          </span>
-          <select
-            className={`${inputClass} sm:min-w-[10rem]`}
-            value={assigneeId}
-            onChange={(e) => setAssigneeId(e.target.value)}
-          >
-            <option value="">Unassigned</option>
-            {members.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="block w-full sm:w-auto">
-          <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
-            Due
-          </span>
-          <input
-            type="date"
-            className={inputClass}
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
-          />
-        </label>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-[14rem_auto]">
+          <label className="block">
+            <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
+              Assignee
+            </span>
+            <select
+              className={inputClass}
+              value={assigneeId}
+              onChange={(e) => setAssigneeId(e.target.value)}
+            >
+              <option value="">Unassigned</option>
+              {members.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
+              Due
+            </span>
+            <input
+              type="date"
+              className={inputClass}
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+          </label>
+        </div>
         <button
           type="submit"
           disabled={saving}
           className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
         >
-          Add
+          {saving ? "Adding…" : "Add task"}
         </button>
       </form>
 
-      <TaskGroup label="Open" tasks={open} onToggle={toggleComplete} {...taskGroupProps} />
+      {error && (
+        <p
+          className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
+
+      <section>
+        <h3 className="mb-2 font-heading text-xs font-semibold uppercase tracking-wide text-neutral-500">
+          Open ({open.length})
+        </h3>
+        {open.length === 0 ? (
+          <p className={`${boardPanelClass} px-4 py-6 text-center text-sm text-neutral-500`}>
+            Nothing open on this list.
+          </p>
+        ) : (
+          <TaskRows tasks={open} onToggle={toggleComplete} />
+        )}
+      </section>
+
       {done.length > 0 && (
-        <TaskGroup
-          label="Completed"
-          tasks={done}
-          onToggle={toggleComplete}
-          muted
-          {...taskGroupProps}
-        />
+        <details className="group">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 font-heading text-xs font-semibold uppercase tracking-wide text-neutral-500 hover:text-redleg">
+            <span aria-hidden className="transition-transform group-open:rotate-90">
+              ▸
+            </span>
+            Completed ({done.length})
+          </summary>
+          <div className="mt-2 opacity-70">
+            <TaskRows tasks={done} onToggle={toggleComplete} />
+          </div>
+        </details>
       )}
     </div>
   );
 }
 
-function TaskGroup({
-  label,
+function TaskRows({
   tasks,
   onToggle,
-  muted,
-  members,
-  editTaskId,
-  editTitle,
-  editDescription,
-  editAssigneeId,
-  editDueDate,
-  editSaving,
-  onEdit,
-  onEditTitle,
-  onEditDescription,
-  onEditAssigneeId,
-  onEditDueDate,
-  onEditSave,
-  onEditCancel,
 }: {
-  label: string;
   tasks: TaskWithMeta[];
   onToggle: (t: TaskWithMeta) => void;
-  muted?: boolean;
-  members: Member[];
-  editTaskId: string | null;
-  editTitle: string;
-  editDescription: string;
-  editAssigneeId: string;
-  editDueDate: string;
-  editSaving: boolean;
-  onEdit: (t: TaskWithMeta) => void;
-  onEditTitle: (v: string) => void;
-  onEditDescription: (v: string) => void;
-  onEditAssigneeId: (v: string) => void;
-  onEditDueDate: (v: string) => void;
-  onEditSave: (id: string) => void;
-  onEditCancel: () => void;
 }) {
-  if (tasks.length === 0) return null;
   return (
-    <section>
-      <h3 className="mb-2 font-heading text-xs font-semibold uppercase tracking-wide text-neutral-500">
-        {label} ({tasks.length})
-      </h3>
-      <ul className={`space-y-2 ${muted ? "opacity-70" : ""}`}>
-        {tasks.map((task) => (
-          <li
-            key={task.id}
-            className={`${boardPanelClass} px-3 py-3 lg:px-4 lg:py-4`}
-          >
-            {editTaskId === task.id ? (
-              <div className="space-y-3">
-                <label className="block">
-                  <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
-                    Title
+    <ul className={`divide-y divide-neutral-100 overflow-hidden ${boardPanelClass}`}>
+      {tasks.map((task) => {
+        const due = task.due_date
+          ? formatDueDate(task.due_date, !!task.completed_at)
+          : null;
+        return (
+          <li key={task.id} className="flex items-stretch">
+            <label className="flex min-h-11 min-w-11 shrink-0 cursor-pointer items-start justify-center pl-2 pt-3.5 lg:pl-3 lg:pt-4">
+              <input
+                type="checkbox"
+                checked={!!task.completed_at}
+                onChange={() => onToggle(task)}
+                aria-label={
+                  task.completed_at
+                    ? `Mark “${task.title}” not done`
+                    : `Mark “${task.title}” done`
+                }
+                className="h-5 w-5 accent-redleg"
+              />
+            </label>
+            <Link
+              href={taskPath(task)}
+              className="min-w-0 flex-1 py-3 pr-4 transition-colors hover:bg-neutral-50/90 lg:py-4 lg:pr-5"
+            >
+              <span
+                className={`block text-sm font-medium lg:text-base ${task.completed_at ? "line-through text-neutral-500" : "text-artillery"}`}
+              >
+                {task.title}
+              </span>
+              {task.description_md && (
+                <span className="mt-0.5 line-clamp-2 text-sm text-neutral-600">
+                  {task.description_md}
+                </span>
+              )}
+              <span className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-neutral-500">
+                <span>{task.assignee_name ?? "Unassigned"}</span>
+                {due && (
+                  <span className={due.overdue ? "font-semibold text-redleg" : undefined}>
+                    {due.overdue ? "Overdue · " : "Due "}
+                    {due.label}
                   </span>
-                  <input
-                    className={inputClass}
-                    value={editTitle}
-                    onChange={(e) => onEditTitle(e.target.value)}
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
-                    Notes
+                )}
+                {task.comment_count ? (
+                  <span>
+                    {task.comment_count}{" "}
+                    {task.comment_count === 1 ? "comment" : "comments"}
                   </span>
-                  <textarea
-                    className={`${inputClass} min-h-20`}
-                    value={editDescription}
-                    onChange={(e) => onEditDescription(e.target.value)}
-                    placeholder="Optional details"
-                  />
-                </label>
-                <div className="flex flex-wrap gap-3">
-                  <label className="block min-w-[10rem] flex-1">
-                    <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
-                      Assignee
-                    </span>
-                    <select
-                      className={inputClass}
-                      value={editAssigneeId}
-                      onChange={(e) => onEditAssigneeId(e.target.value)}
-                    >
-                      <option value="">Unassigned</option>
-                      {members.map((m) => (
-                        <option key={m.id} value={m.id}>
-                          {m.name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="block">
-                    <span className="mb-1 block text-xs font-semibold uppercase text-neutral-500">
-                      Due
-                    </span>
-                    <input
-                      type="date"
-                      className={inputClass}
-                      value={editDueDate}
-                      onChange={(e) => onEditDueDate(e.target.value)}
-                    />
-                  </label>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    disabled={editSaving}
-                    onClick={() => onEditSave(task.id)}
-                    className={`${boardButtonPrimaryClass} w-full sm:w-auto`}
-                  >
-                    {editSaving ? "Saving…" : "Save"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={onEditCancel}
-                    className="text-xs text-neutral-500 hover:underline"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  checked={!!task.completed_at}
-                  onChange={() => onToggle(task)}
-                  className="mt-1 h-4 w-4 accent-redleg"
-                />
-                <div className="min-w-0 flex-1">
-                  <Link
-                    href={taskPath(task)}
-                    className={`text-sm font-medium hover:text-redleg hover:underline ${task.completed_at ? "line-through text-neutral-500" : "text-artillery"}`}
-                  >
-                    {task.title}
-                  </Link>
-                  {task.description_md && (
-                    <p className="mt-1 whitespace-pre-wrap text-sm text-neutral-600">
-                      {task.description_md}
-                    </p>
-                  )}
-                  <p className="mt-1 text-xs text-neutral-500">
-                    {task.assignee_name ? `Assigned: ${task.assignee_name}` : "Unassigned"}
-                    {task.due_date ? ` · Due ${task.due_date}` : ""}
-                    {task.completed_at
-                      ? ` · Done ${formatBoardTimestamp(task.completed_at)}`
-                      : ""}
-                  </p>
-                  <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
-                    <button
-                      type="button"
-                      onClick={() => onEdit(task)}
-                      className="min-h-11 py-2 text-xs font-semibold text-redleg hover:underline"
-                    >
-                      Edit
-                    </button>
-                    <Link
-                      href={taskPath(task)}
-                      className="inline-flex min-h-11 items-center py-2 text-xs font-semibold text-redleg hover:underline"
-                    >
-                      {task.comment_count
-                        ? `Comments (${task.comment_count})`
-                        : "Comment"}
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            )}
+                ) : null}
+              </span>
+            </Link>
           </li>
-        ))}
-      </ul>
-    </section>
+        );
+      })}
+    </ul>
   );
 }

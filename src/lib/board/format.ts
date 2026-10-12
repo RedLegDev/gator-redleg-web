@@ -29,3 +29,24 @@ export function parseOptionalDate(value: unknown): string | null {
 export function taskPath(task: { id: string; list_id: string }): string {
   return `/board/tasks/${task.list_id}/${task.id}`;
 }
+
+/** Today as YYYY-MM-DD in the chapter's time zone. */
+function chapterToday(): string {
+  return new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+}
+
+/** "Nov 1" (or "Nov 1, 2027" outside this year) plus whether an open task is past due. */
+export function formatDueDate(
+  due: string,
+  completed: boolean
+): { label: string; overdue: boolean } {
+  const [y, m, d] = due.split("-").map(Number);
+  const today = chapterToday();
+  const label = new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("en-US", {
+    timeZone: "UTC",
+    month: "short",
+    day: "numeric",
+    ...(String(y) === today.slice(0, 4) ? {} : { year: "numeric" }),
+  });
+  return { label, overdue: !completed && due < today };
+}

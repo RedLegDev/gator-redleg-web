@@ -3,7 +3,12 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TaskThread } from "@/components/board/TaskThread";
-import { getTask, getTaskList, listComments } from "@/lib/board/db";
+import {
+  getTask,
+  getTaskList,
+  listActiveMembers,
+  listComments,
+} from "@/lib/board/db";
 import { getDb } from "@/lib/board/secrets";
 
 type Props = { params: Promise<{ listId: string; taskId: string }> };
@@ -13,9 +18,10 @@ export default async function BoardTaskPage({ params }: Props) {
   const db = getDb();
   const task = await getTask(db, taskId);
   if (!task || task.list_id !== listId) notFound();
-  const [list, comments] = await Promise.all([
+  const [list, comments, members] = await Promise.all([
     getTaskList(db, listId),
     listComments(db, "task", taskId),
+    listActiveMembers(db),
   ]);
 
   return (
@@ -26,7 +32,7 @@ export default async function BoardTaskPage({ params }: Props) {
       >
         ← {list?.name ?? "Task list"}
       </Link>
-      <TaskThread task={task} comments={comments} />
+      <TaskThread task={task} comments={comments} members={members} />
     </div>
   );
 }
