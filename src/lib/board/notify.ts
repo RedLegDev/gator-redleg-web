@@ -3,6 +3,7 @@ import { resolveMentionedMembers } from "./mentions";
 import { listActiveMembers } from "./db";
 import { getDb } from "./secrets";
 import { BOARD_EMAIL_FROM } from "./email";
+import { buildBoardNotificationEmail } from "./notification-email";
 import type { Member } from "./types";
 
 export async function notifyBoard(args: {
@@ -53,7 +54,9 @@ export function boardLink(path: string): string {
 export async function notifyMentions(args: {
   bodyMd: string;
   author: Member;
+  /** e.g. "a comment on" / "a task comment on" — followed by the title. */
   contextLabel: string;
+  title: string;
   link: string;
 }): Promise<string[]> {
   const members = await listActiveMembers(getDb());
@@ -68,8 +71,14 @@ export async function notifyMentions(args: {
     mentioned.map((member) =>
       notifyMember(member, {
         subject: `[Board] ${args.author.name} mentioned you`,
-        text: `${args.author.name} mentioned you in ${args.contextLabel}\n\n${args.link}`,
-        html: `<p><strong>${args.author.name}</strong> mentioned you in ${args.contextLabel}.</p><p><a href="${args.link}">View on board hub</a></p>`,
+        ...buildBoardNotificationEmail({
+          heading: "YOU WERE MENTIONED",
+          summary: `${args.author.name} mentioned you in ${args.contextLabel}`,
+          title: args.title,
+          bodyMd: args.bodyMd,
+          link: args.link,
+          linkLabel: "View on board hub",
+        }),
       })
     )
   );

@@ -5,6 +5,7 @@ import {
   recordActivity,
 } from "@/lib/board/db";
 import { parseOptionalDate, taskPath } from "@/lib/board/format";
+import { buildBoardNotificationEmail } from "@/lib/board/notification-email";
 import { boardLink, notifyMember } from "@/lib/board/notify";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
@@ -64,8 +65,15 @@ export async function POST(request: Request) {
       const link = boardLink(taskPath(task));
       await notifyMember(assignee, {
         subject: `[Board] Task assigned: ${title}`,
-        text: `${auth.name} assigned you: ${title}\n\n${link}`,
-        html: `<p><strong>${auth.name}</strong> assigned you: ${title}</p><p><a href="${link}">View task</a></p>`,
+        ...buildBoardNotificationEmail({
+          heading: "TASK ASSIGNED",
+          summary: `${auth.name} assigned you:`,
+          title,
+          bodyMd: task.description_md,
+          details: task.due_date ? [["Due", task.due_date]] : [],
+          link,
+          linkLabel: "View task",
+        }),
       }).catch(() => {});
     }
   }

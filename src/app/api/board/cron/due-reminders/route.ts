@@ -4,6 +4,7 @@ import {
   markDueReminderSent,
 } from "@/lib/board/db";
 import { taskPath } from "@/lib/board/format";
+import { buildBoardNotificationEmail } from "@/lib/board/notification-email";
 import { boardLink, notifyMember } from "@/lib/board/notify";
 import { secret, getDb } from "@/lib/board/secrets";
 
@@ -34,8 +35,14 @@ export async function POST(request: Request) {
     const link = boardLink(taskPath(task));
     await notifyMember(assignee, {
       subject: `[Board] Due soon: ${task.title}`,
-      text: `Reminder: "${task.title}" is due ${task.due_date}.\n\n${link}`,
-      html: `<p>Reminder: <strong>${task.title}</strong> is due ${task.due_date}.</p><p><a href="${link}">View task</a></p>`,
+      ...buildBoardNotificationEmail({
+        heading: "TASK DUE SOON",
+        summary: "Reminder: this task is due soon.",
+        title: task.title,
+        details: task.due_date ? [["Due", task.due_date]] : [],
+        link,
+        linkLabel: "View task",
+      }),
     }).catch(() => {});
     await markDueReminderSent(db, task.id);
     sent += 1;

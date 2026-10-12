@@ -5,6 +5,7 @@ import {
   recordActivity,
 } from "@/lib/board/db";
 import { linkAttachments } from "@/lib/board/attachments";
+import { buildBoardNotificationEmail } from "@/lib/board/notification-email";
 import { boardLink, notifyBoard, notifyMentions } from "@/lib/board/notify";
 import {
   clampPage,
@@ -85,15 +86,22 @@ export async function POST(request: Request) {
   const mentionEmails = await notifyMentions({
     bodyMd,
     author: auth,
-    contextLabel: `message: ${subject}`,
+    contextLabel: "a message:",
+    title: subject,
     link,
   }).catch(() => [] as string[]);
 
   if (notify) {
     await notifyBoard({
       subject: `[Board] ${subject}`,
-      text: `${auth.name} posted: ${subject}\n\n${link}`,
-      html: `<p><strong>${auth.name}</strong> posted: ${subject}</p><p><a href="${link}">View on board hub</a></p>`,
+      ...buildBoardNotificationEmail({
+        heading: "NEW MESSAGE",
+        summary: `${auth.name} posted:`,
+        title: subject,
+        bodyMd,
+        link,
+        linkLabel: "View on board hub",
+      }),
       excludeEmails: [auth.email, ...mentionEmails],
     }).catch(() => {});
   }

@@ -7,6 +7,7 @@ import {
   updateTask,
 } from "@/lib/board/db";
 import { parseOptionalDate, taskPath } from "@/lib/board/format";
+import { buildBoardNotificationEmail } from "@/lib/board/notification-email";
 import { boardLink, notifyMember, notifyMentions } from "@/lib/board/notify";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
@@ -72,8 +73,15 @@ export async function PATCH(request: Request, { params }: Params) {
       const link = boardLink(taskPath(task));
       await notifyMember(assignee, {
         subject: `[Board] Task assigned: ${task.title}`,
-        text: `${auth.name} assigned you: ${task.title}\n\n${link}`,
-        html: `<p><strong>${auth.name}</strong> assigned you: ${task.title}</p><p><a href="${link}">View task</a></p>`,
+        ...buildBoardNotificationEmail({
+          heading: "TASK ASSIGNED",
+          summary: `${auth.name} assigned you:`,
+          title: task.title,
+          bodyMd: task.description_md,
+          details: task.due_date ? [["Due", task.due_date]] : [],
+          link,
+          linkLabel: "View task",
+        }),
       }).catch(() => {});
     }
   }
@@ -104,7 +112,8 @@ export async function POST(request: Request, { params }: Params) {
   const mentionEmails = await notifyMentions({
     bodyMd,
     author: auth,
-    contextLabel: `comment on task: ${task.title}`,
+    contextLabel: "a comment on task:",
+    title: task.title,
     link,
   }).catch(() => [] as string[]);
 
@@ -116,8 +125,14 @@ export async function POST(request: Request, { params }: Params) {
     ) {
       await notifyMember(assignee, {
         subject: `[Board] Comment on your task: ${task.title}`,
-        text: `${auth.name} commented on: ${task.title}\n\n${link}`,
-        html: `<p><strong>${auth.name}</strong> commented on your task: ${task.title}</p><p><a href="${link}">View task</a></p>`,
+        ...buildBoardNotificationEmail({
+          heading: "NEW COMMENT",
+          summary: `${auth.name} commented on your task:`,
+          title: task.title,
+          bodyMd,
+          link,
+          linkLabel: "View task",
+        }),
       }).catch(() => {});
     }
   }
