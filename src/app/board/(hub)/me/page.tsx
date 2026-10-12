@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { BoardEmptyState, BoardPageHeader } from "@/components/board/BoardChrome";
 import { listMyOpenTasks } from "@/lib/board/db";
+import { taskPath } from "@/lib/board/format";
 import { getDb } from "@/lib/board/secrets";
 import { requireMember } from "@/lib/board/session";
 import { boardListLinkClass, boardPanelClass } from "@/lib/board/ui";
@@ -25,7 +26,7 @@ export default async function MyTasksPage() {
           {tasks.map((t) => (
             <li key={t.id}>
               <Link
-                href={`/board/tasks/${t.list_id}`}
+                href={taskPath(t)}
                 className={`${boardListLinkClass} block px-4 py-4 lg:px-6 lg:py-5`}
               >
                 <p className="font-medium text-artillery lg:text-lg">{t.title}</p>

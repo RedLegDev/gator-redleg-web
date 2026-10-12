@@ -6,7 +6,7 @@ import {
   recordActivity,
   updateTask,
 } from "@/lib/board/db";
-import { parseOptionalDate } from "@/lib/board/format";
+import { parseOptionalDate, taskPath } from "@/lib/board/format";
 import { boardLink, notifyMember, notifyMentions } from "@/lib/board/notify";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
@@ -69,11 +69,11 @@ export async function PATCH(request: Request, { params }: Params) {
   ) {
     const assignee = await getMemberById(db, body.assigneeId);
     if (assignee) {
-      const link = boardLink(`/board/tasks/${task.list_id}`);
+      const link = boardLink(taskPath(task));
       await notifyMember(assignee, {
         subject: `[Board] Task assigned: ${task.title}`,
         text: `${auth.name} assigned you: ${task.title}\n\n${link}`,
-        html: `<p><strong>${auth.name}</strong> assigned you: ${task.title}</p><p><a href="${link}">View list</a></p>`,
+        html: `<p><strong>${auth.name}</strong> assigned you: ${task.title}</p><p><a href="${link}">View task</a></p>`,
       }).catch(() => {});
     }
   }
@@ -100,7 +100,7 @@ export async function POST(request: Request, { params }: Params) {
   const comment = await addComment(db, "task", id, auth.id, bodyMd);
   await recordActivity(db, auth.id, "commented", "task", id, task.title);
 
-  const link = boardLink(`/board/tasks/${task.list_id}`);
+  const link = boardLink(taskPath(task));
   const mentionEmails = await notifyMentions({
     bodyMd,
     author: auth,
@@ -117,7 +117,7 @@ export async function POST(request: Request, { params }: Params) {
       await notifyMember(assignee, {
         subject: `[Board] Comment on your task: ${task.title}`,
         text: `${auth.name} commented on: ${task.title}\n\n${link}`,
-        html: `<p><strong>${auth.name}</strong> commented on your task: ${task.title}</p><p><a href="${link}">View list</a></p>`,
+        html: `<p><strong>${auth.name}</strong> commented on your task: ${task.title}</p><p><a href="${link}">View task</a></p>`,
       }).catch(() => {});
     }
   }

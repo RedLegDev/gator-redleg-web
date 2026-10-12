@@ -9,7 +9,7 @@ import {
   listOverdueTasks,
   listRecentActivity,
 } from "@/lib/board/db";
-import { formatBoardTimestamp } from "@/lib/board/format";
+import { formatBoardTimestamp, taskPath } from "@/lib/board/format";
 import { getDb } from "@/lib/board/secrets";
 import {
   boardAccentBar,
@@ -29,7 +29,7 @@ export default async function BoardDashboardPage() {
     activity.map(async (row) => {
       if (row.object_type === "task") {
         const task = await getTask(db, row.object_id);
-        return task ? `/board/tasks/${task.list_id}` : null;
+        return task ? taskPath(task) : null;
       }
       return activityHref(row);
     })
@@ -101,7 +101,7 @@ export default async function BoardDashboardPage() {
               {overdue.map((t) => (
                 <li key={t.id} className="border-b border-neutral-100 last:border-0">
                   <Link
-                    href={`/board/tasks/${t.list_id}`}
+                    href={taskPath(t)}
                     className="block px-4 py-3.5 transition-colors hover:bg-red-50/60 lg:px-5"
                   >
                     <span className="block font-medium text-artillery">{t.title}</span>

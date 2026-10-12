@@ -4,7 +4,7 @@ import {
   listMyOpenTasks,
   recordActivity,
 } from "@/lib/board/db";
-import { parseOptionalDate } from "@/lib/board/format";
+import { parseOptionalDate, taskPath } from "@/lib/board/format";
 import { boardLink, notifyMember } from "@/lib/board/notify";
 import { getDb } from "@/lib/board/secrets";
 import { requireMemberApi } from "@/lib/board/session";
@@ -61,11 +61,11 @@ export async function POST(request: Request) {
   if (task.assignee_id && task.assignee_id !== auth.id) {
     const assignee = await getMemberById(db, task.assignee_id);
     if (assignee) {
-      const link = boardLink(`/board/tasks/${listId}`);
+      const link = boardLink(taskPath(task));
       await notifyMember(assignee, {
         subject: `[Board] Task assigned: ${title}`,
         text: `${auth.name} assigned you: ${title}\n\n${link}`,
-        html: `<p><strong>${auth.name}</strong> assigned you: ${title}</p><p><a href="${link}">View list</a></p>`,
+        html: `<p><strong>${auth.name}</strong> assigned you: ${title}</p><p><a href="${link}">View task</a></p>`,
       }).catch(() => {});
     }
   }

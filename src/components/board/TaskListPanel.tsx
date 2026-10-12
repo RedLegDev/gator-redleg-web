@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Member, TaskWithMeta } from "@/lib/board/types";
-import { formatBoardTimestamp } from "@/lib/board/format";
+import { formatBoardTimestamp, taskPath } from "@/lib/board/format";
 import {
   boardInputClass,
   boardButtonPrimaryClass,
@@ -36,9 +37,6 @@ export function TaskListPanel({
   const [editAssigneeId, setEditAssigneeId] = useState("");
   const [editDueDate, setEditDueDate] = useState("");
   const [editSaving, setEditSaving] = useState(false);
-  const [commentTaskId, setCommentTaskId] = useState<string | null>(null);
-  const [commentText, setCommentText] = useState("");
-  const [commentSaving, setCommentSaving] = useState(false);
 
   function openEdit(task: TaskWithMeta) {
     setEditTaskId(task.id);
@@ -46,7 +44,6 @@ export function TaskListPanel({
     setEditDescription(task.description_md ?? "");
     setEditAssigneeId(task.assignee_id ?? "");
     setEditDueDate(task.due_date ?? "");
-    setCommentTaskId(null);
   }
 
   function cancelEdit() {
@@ -119,20 +116,6 @@ export function TaskListPanel({
     setSaving(false);
   }
 
-  async function addTaskComment(taskId: string) {
-    if (!commentText.trim()) return;
-    setCommentSaving(true);
-    await fetch(`/api/board/tasks/${taskId}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ bodyMd: commentText }),
-    });
-    setCommentText("");
-    setCommentTaskId(null);
-    setCommentSaving(false);
-    router.refresh();
-  }
-
   const open = tasks.filter((t) => !t.completed_at);
   const done = tasks.filter((t) => t.completed_at);
 
@@ -144,9 +127,6 @@ export function TaskListPanel({
     editAssigneeId,
     editDueDate,
     editSaving,
-    commentTaskId,
-    commentText,
-    commentSaving,
     onEdit: openEdit,
     onEditTitle: setEditTitle,
     onEditDescription: setEditDescription,
@@ -154,14 +134,6 @@ export function TaskListPanel({
     onEditDueDate: setEditDueDate,
     onEditSave: saveEdit,
     onEditCancel: cancelEdit,
-    onCommentOpen: (id: string) => {
-      setCommentTaskId(id);
-      setCommentText("");
-      setEditTaskId(null);
-    },
-    onCommentText: setCommentText,
-    onCommentSubmit: addTaskComment,
-    onCommentCancel: () => setCommentTaskId(null),
   };
 
   return (
@@ -253,9 +225,6 @@ function TaskGroup({
   editAssigneeId,
   editDueDate,
   editSaving,
-  commentTaskId,
-  commentText,
-  commentSaving,
   onEdit,
   onEditTitle,
   onEditDescription,
@@ -263,10 +232,6 @@ function TaskGroup({
   onEditDueDate,
   onEditSave,
   onEditCancel,
-  onCommentOpen,
-  onCommentText,
-  onCommentSubmit,
-  onCommentCancel,
 }: {
   label: string;
   tasks: TaskWithMeta[];
@@ -279,9 +244,6 @@ function TaskGroup({
   editAssigneeId: string;
   editDueDate: string;
   editSaving: boolean;
-  commentTaskId: string | null;
-  commentText: string;
-  commentSaving: boolean;
   onEdit: (t: TaskWithMeta) => void;
   onEditTitle: (v: string) => void;
   onEditDescription: (v: string) => void;
@@ -289,10 +251,6 @@ function TaskGroup({
   onEditDueDate: (v: string) => void;
   onEditSave: (id: string) => void;
   onEditCancel: () => void;
-  onCommentOpen: (id: string) => void;
-  onCommentText: (v: string) => void;
-  onCommentSubmit: (id: string) => void;
-  onCommentCancel: () => void;
 }) {
   if (tasks.length === 0) return null;
   return (
@@ -386,11 +344,12 @@ function TaskGroup({
                   className="mt-1 h-4 w-4 accent-redleg"
                 />
                 <div className="min-w-0 flex-1">
-                  <p
-                    className={`text-sm font-medium ${task.completed_at ? "line-through text-neutral-500" : "text-artillery"}`}
+                  <Link
+                    href={taskPath(task)}
+                    className={`text-sm font-medium hover:text-redleg hover:underline ${task.completed_at ? "line-through text-neutral-500" : "text-artillery"}`}
                   >
                     {task.title}
-                  </p>
+                  </Link>
                   {task.description_md && (
                     <p className="mt-1 whitespace-pre-wrap text-sm text-neutral-600">
                       {task.description_md}
@@ -411,41 +370,15 @@ function TaskGroup({
                     >
                       Edit
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => onCommentOpen(task.id)}
-                      className="min-h-11 py-2 text-xs font-semibold text-redleg hover:underline"
+                    <Link
+                      href={taskPath(task)}
+                      className="inline-flex min-h-11 items-center py-2 text-xs font-semibold text-redleg hover:underline"
                     >
-                      Comment
-                    </button>
+                      {task.comment_count
+                        ? `Comments (${task.comment_count})`
+                        : "Comment"}
+                    </Link>
                   </div>
-                </div>
-              </div>
-            )}
-            {editTaskId !== task.id && commentTaskId === task.id && (
-              <div className="mt-2 space-y-2 border-t border-neutral-100 pt-2 pl-7">
-                <textarea
-                  className={`${inputClass} min-h-16`}
-                  placeholder="Comment… @Name to mention"
-                  value={commentText}
-                  onChange={(e) => onCommentText(e.target.value)}
-                />
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    disabled={commentSaving}
-                    onClick={() => onCommentSubmit(task.id)}
-                    className="rounded bg-artillery px-3 py-1 text-xs font-semibold text-white disabled:opacity-60"
-                  >
-                    {commentSaving ? "Saving…" : "Post"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={onCommentCancel}
-                    className="text-xs text-neutral-500 hover:underline"
-                  >
-                    Cancel
-                  </button>
                 </div>
               </div>
             )}

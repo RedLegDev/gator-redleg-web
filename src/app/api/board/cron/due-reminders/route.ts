@@ -3,6 +3,7 @@ import {
   listTasksNeedingDueReminder,
   markDueReminderSent,
 } from "@/lib/board/db";
+import { taskPath } from "@/lib/board/format";
 import { boardLink, notifyMember } from "@/lib/board/notify";
 import { secret, getDb } from "@/lib/board/secrets";
 
@@ -30,11 +31,11 @@ export async function POST(request: Request) {
     const assignee = await getMemberById(db, task.assignee_id);
     if (!assignee || assignee.status !== "active") continue;
 
-    const link = boardLink(`/board/tasks/${task.list_id}`);
+    const link = boardLink(taskPath(task));
     await notifyMember(assignee, {
       subject: `[Board] Due soon: ${task.title}`,
       text: `Reminder: "${task.title}" is due ${task.due_date}.\n\n${link}`,
-      html: `<p>Reminder: <strong>${task.title}</strong> is due ${task.due_date}.</p><p><a href="${link}">View list</a></p>`,
+      html: `<p>Reminder: <strong>${task.title}</strong> is due ${task.due_date}.</p><p><a href="${link}">View task</a></p>`,
     }).catch(() => {});
     await markDueReminderSent(db, task.id);
     sent += 1;

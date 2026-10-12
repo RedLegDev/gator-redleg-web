@@ -64,6 +64,8 @@ export type MessageWithMeta = MessageRow & {
 
 export type TaskWithMeta = TaskRow & {
   assignee_name: string | null;
+  /** Present on list and single-task reads. */
+  comment_count?: number;
 };
 
 export type TaskListWithCounts = TaskListRow & {

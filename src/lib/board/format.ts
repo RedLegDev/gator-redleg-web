@@ -24,3 +24,8 @@ export function parseOptionalDate(value: unknown): string | null {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return null;
   return s;
 }
+
+/** Board hub path for a single task (its detail page with comments). */
+export function taskPath(task: { id: string; list_id: string }): string {
+  return `/board/tasks/${task.list_id}/${task.id}`;
+}

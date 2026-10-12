@@ -524,7 +524,9 @@ export async function listTasksInList(
     .prepare(
       `SELECT t.id, t.list_id, t.title, t.description_md, t.assignee_id, t.due_date,
               t.completed_at, t.completed_by, t.position, t.created_at, t.updated_at,
-              m.name AS assignee_name
+              m.name AS assignee_name,
+              (SELECT COUNT(*) FROM comments c
+                WHERE c.parent_type = 'task' AND c.parent_id = t.id) AS comment_count
        FROM tasks t
        LEFT JOIN members m ON m.id = t.assignee_id
        WHERE t.list_id = ?1
@@ -674,7 +676,9 @@ export async function getTask(
     .prepare(
       `SELECT t.id, t.list_id, t.title, t.description_md, t.assignee_id, t.due_date,
               t.completed_at, t.completed_by, t.position, t.created_at, t.updated_at,
-              m.name AS assignee_name
+              m.name AS assignee_name,
+              (SELECT COUNT(*) FROM comments c
+                WHERE c.parent_type = 'task' AND c.parent_id = t.id) AS comment_count
        FROM tasks t
        LEFT JOIN members m ON m.id = t.assignee_id
        WHERE t.id = ?1`
