@@ -96,8 +96,7 @@ export default function BallFaqPage() {
 
           <h2 id="attire">Attire</h2>
           <p>
-            For the 2026 Dining Out, dress is <strong>cocktail attire</strong>;
-            Soldiers are encouraged to attend in uniform. A traditional Saint
+            A traditional Saint
             Barbara&apos;s dining-in or dining-out is a formal affair — the
             standards below describe that traditional formality for reference.
           </p>

@@ -52,6 +52,22 @@ const nextConfig: NextConfig = {
         destination: "/chapter-activities/st-barbaras-ball",
         permanent: false,
       },
+      // 2026 ball canceled — ticketing, sponsor, and social pages fold into the notice.
+      {
+        source: "/chapter-activities/st-barbaras-ball/rsvp",
+        destination: "/chapter-activities/st-barbaras-ball",
+        permanent: false,
+      },
+      {
+        source: "/chapter-activities/st-barbaras-ball/sponsors",
+        destination: "/chapter-activities/st-barbaras-ball",
+        permanent: false,
+      },
+      {
+        source: "/chapter-activities/st-barbaras-ball/red-leg-social",
+        destination: "/chapter-activities/st-barbaras-ball",
+        permanent: false,
+      },
     ];
   },
 };

@@ -89,7 +89,7 @@ export const stBarbarasBallEventSchema: Record<string, unknown> = {
   description:
     "The Gator Redleg Chapter's premier annual event — a formal Dining Out honoring Saint Barbara, patron saint of the Field Artillery, for Soldiers, veterans, families, and friends of the Regiment.",
   startDate: "2026-12-12",
-  eventStatus: "https://schema.org/EventScheduled",
+  eventStatus: "https://schema.org/EventCancelled",
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
   url: `${SITE}/chapter-activities/st-barbaras-ball`,
   image: `${SITE}/og-image.jpg`,

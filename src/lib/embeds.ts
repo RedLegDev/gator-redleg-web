@@ -6,10 +6,6 @@
  */
 
 export const EMBEDS = {
-  // Store registration (event still draft/provisional — link is fine; no "Buy" copy).
-  ballRsvp:
-    "https://store.gatorredleg.org/events/st-barbaras-ball-2026/register" as string | null,
-
   // Support
   donate: "https://store.gatorredleg.org/donate" as string | null,
 
